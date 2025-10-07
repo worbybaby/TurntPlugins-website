@@ -83,7 +83,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
         ) : (
           <>
             <div
-              className="space-y-3 max-h-[400px] overflow-y-auto"
+              className="space-y-3 max-h-[300px] overflow-y-auto"
               style={{
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
