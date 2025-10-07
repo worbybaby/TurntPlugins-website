@@ -25,7 +25,7 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           Your support helps me continue developing new and exciting audio tools!
         </p>
         <p className="text-xs text-gray-600">
-          © 2024 Turnt Plugins. All rights reserved.
+          © 2025 Turnt Plugins. All rights reserved.
         </p>
       </div>
     </Modal>
