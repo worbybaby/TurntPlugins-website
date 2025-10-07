@@ -9,7 +9,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover',
 });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(req: NextRequest) {
@@ -88,6 +87,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Send confirmation email with download links
+        const resend = new Resend(process.env.RESEND_API_KEY!);
         await resend.emails.send({
           from: 'Turnt Plugins <onboarding@resend.dev>', // Update this with your verified domain
           to: session.customer_email || '',
