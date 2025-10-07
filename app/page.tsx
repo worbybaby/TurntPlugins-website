@@ -82,9 +82,26 @@ export default function Home() {
         isOpen={isAddedToCartOpen}
         onClose={() => setIsAddedToCartOpen(false)}
         title="Added to Cart"
-        width="w-[400px]"
+        width="w-[500px]"
       >
-        <p className="text-lg leading-loose">Item has been added to your cart!</p>
+        <p className="text-lg leading-loose mb-6">Item has been added to your cart!</p>
+        <div className="flex gap-3">
+          <RetroButton
+            onClick={() => setIsAddedToCartOpen(false)}
+            className="flex-1 !px-4 !text-base"
+          >
+            Continue Shopping
+          </RetroButton>
+          <RetroButton
+            onClick={() => {
+              setIsAddedToCartOpen(false);
+              setIsCartOpen(true);
+            }}
+            className="flex-1 !px-4 !text-base"
+          >
+            View Cart
+          </RetroButton>
+        </div>
       </Modal>
     </div>
   );

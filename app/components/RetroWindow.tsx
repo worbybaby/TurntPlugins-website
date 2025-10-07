@@ -18,7 +18,7 @@ export default function RetroWindow({
   height = 'h-auto'
 }: RetroWindowProps) {
   return (
-    <div className={`${width} ${height} bg-white border-4 border-black`}>
+    <div className={`${width} ${height} max-w-full bg-white border-4 border-black`}>
       {/* Title Bar */}
       <div className="bg-[#000080] px-4 py-3 flex items-center justify-between border-b-4 border-black">
         <div className="flex items-center gap-2">
@@ -35,7 +35,7 @@ export default function RetroWindow({
       </div>
 
       {/* Window Content */}
-      <div className="p-6">
+      <div className="p-6 modal-content">
         {children}
       </div>
     </div>

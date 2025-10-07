@@ -99,6 +99,11 @@ html {
   height: 32px;
 }
 
+/* Hide scrollbar in modals */
+.modal-content ::-webkit-scrollbar {
+  display: none;
+}
+
 ::-webkit-scrollbar-track {
   background-color: #E74C3C;
   background-image:
