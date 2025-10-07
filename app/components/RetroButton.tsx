@@ -5,11 +5,13 @@ interface RetroButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
-export default function RetroButton({ children, onClick, disabled, className = '' }: RetroButtonProps) {
+export default function RetroButton({ children, onClick, disabled, className = '', type = 'button' }: RetroButtonProps) {
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`
