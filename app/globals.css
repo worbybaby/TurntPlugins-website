@@ -99,20 +99,20 @@ html {
   height: 32px;
 }
 
-/* Hide scrollbar in modals and modal overlays */
+/* Hide scrollbar in modals and modal overlays (except .modal-scrollbar) */
 .modal-content::-webkit-scrollbar,
-.modal-content *::-webkit-scrollbar,
-.fixed.inset-0 ::-webkit-scrollbar,
-.fixed.z-50 ::-webkit-scrollbar {
+.modal-content *:not(.modal-scrollbar)::-webkit-scrollbar,
+.fixed.inset-0 :not(.modal-scrollbar)::-webkit-scrollbar,
+.fixed.z-50 :not(.modal-scrollbar)::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
 }
 
-.modal-content,
-.modal-content *,
-.fixed.inset-0 *,
-.fixed.z-50 * {
+.modal-content:not(.modal-scrollbar),
+.modal-content *:not(.modal-scrollbar),
+.fixed.inset-0 *:not(.modal-scrollbar),
+.fixed.z-50 *:not(.modal-scrollbar) {
   scrollbar-width: none !important; /* Firefox */
   -ms-overflow-style: none !important; /* IE and Edge */
 }
@@ -130,6 +130,45 @@ html.modal-open {
   scrollbar-width: none !important; /* Firefox */
   -ms-overflow-style: none !important; /* IE and Edge */
   overflow: hidden !important; /* Prevent scrolling entirely */
+}
+
+/* Retro white scrollbar for modal content */
+.modal-scrollbar::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background-color: #c0c0c0;
+  border: 1px solid #000000;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.modal-scrollbar::-webkit-scrollbar-button {
+  background: #ffffff;
+  border: 1px solid #000000;
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.modal-scrollbar::-webkit-scrollbar-button:vertical:decrement {
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><polygon points="8,5 4,11 12,11" fill="black"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.modal-scrollbar::-webkit-scrollbar-button:vertical:increment {
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><polygon points="8,11 4,5 12,5" fill="black"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 ::-webkit-scrollbar-track {
