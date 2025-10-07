@@ -6,18 +6,20 @@ import { Plugin } from './types';
 import PluginCard from './components/PluginCard';
 import AboutModal from './components/AboutModal';
 import CartModal from './components/CartModal';
+import Modal from './components/Modal';
 import RetroButton from './components/RetroButton';
 
 export default function Home() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAddedToCartOpen, setIsAddedToCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<Plugin[]>([]);
 
   const handleAddToCart = (plugin: Plugin) => {
     if (!cartItems.find(item => item.id === plugin.id)) {
       setCartItems([...cartItems, plugin]);
     }
-    setIsCartOpen(true);
+    setIsAddedToCartOpen(true);
   };
 
   const handleRemoveFromCart = (pluginId: string) => {
@@ -76,6 +78,14 @@ export default function Home() {
         cartItems={cartItems}
         onRemoveFromCart={handleRemoveFromCart}
       />
+      <Modal
+        isOpen={isAddedToCartOpen}
+        onClose={() => setIsAddedToCartOpen(false)}
+        title="Added to Cart"
+        width="w-[400px]"
+      >
+        <p className="text-lg leading-loose">Item has been added to your cart!</p>
+      </Modal>
     </div>
   );
 }
