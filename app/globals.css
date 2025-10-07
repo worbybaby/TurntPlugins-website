@@ -1,26 +1,182 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* DOS/Windows 1.0 VGA Font - Perfect DOS VGA 437 */
+@font-face {
+  font-family: 'Perfect DOS VGA 437';
+  src: url('/fonts/Perfect DOS VGA 437.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: 'Perfect DOS VGA 437 Win';
+  src: url('/fonts/Perfect DOS VGA 437 Win.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    /* Simulate low resolution CRT display */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    font-size: 20px;
+    background-color: #0a0a0a;
+  }
+
+  body {
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+    letter-spacing: 0;
+    background-color: #0a0a0a;
+  }
+
+  * {
+    /* Apply pixelated rendering to all elements */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* CRT Monitor Effects - Scanlines over EVERYTHING */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  opacity: 0.6;
+}
+
+/* CRT blur and glow effect */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99998;
+  backdrop-filter: blur(0.8px);
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.15) 100%);
+}
+
+/* Add glow to all elements */
+* {
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+/* CRT screen blur and color characteristics */
+html {
+  filter: contrast(0.95) brightness(1.08) saturate(0.9) blur(0.35px);
+}
+
+/* Custom scrollbar styling for retro Windows look with CRT blur */
+::-webkit-scrollbar {
+  width: 32px;
+  height: 32px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #E74C3C;
+  background-image:
+    /* Hashmark pattern only */
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.2) 3px,
+      rgba(0, 0, 0, 0.2) 6px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.2) 3px,
+      rgba(0, 0, 0, 0.2) 6px
+    );
+  border: 2px solid #000000;
+  filter: blur(0.35px);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+  filter: blur(0.35px);
+}
+
+::-webkit-scrollbar-button {
+  background: #ffffff;
+  border: 2px solid #000000;
+  width: 32px;
+  height: 32px;
+  display: block;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+  filter: blur(0.35px);
+}
+
+::-webkit-scrollbar-button:vertical:decrement {
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="16,10 8,22 24,22" fill="black" stroke="black" stroke-width="2"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(0.35px);
+}
+
+::-webkit-scrollbar-button:vertical:increment {
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="16,22 8,10 24,10" fill="black" stroke="black" stroke-width="2"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(0.35px);
+}
+
+::-webkit-scrollbar-button:horizontal:decrement {
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="10,16 22,8 22,24" fill="black" stroke="black" stroke-width="2"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(0.35px);
+}
+
+::-webkit-scrollbar-button:horizontal:increment {
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="22,16 10,8 10,24" fill="black" stroke="black" stroke-width="2"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(0.35px);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* Hide Next.js development indicators */
+#__next-build-watcher,
+nextjs-portal {
+  display: none !important;
 }
