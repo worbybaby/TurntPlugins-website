@@ -8,6 +8,8 @@ import {
   Text,
   Section,
   Hr,
+  Link,
+  Button,
 } from '@react-email/components';
 import * as React from 'react';
 
@@ -16,6 +18,7 @@ interface PurchaseConfirmationEmailProps {
   plugins: Array<{ id: string; name: string }>;
   orderTotal: number;
   orderId: string;
+  downloadLinks?: Array<{ pluginName: string; downloadUrl: string }>;
 }
 
 export default function PurchaseConfirmationEmail({
@@ -23,6 +26,7 @@ export default function PurchaseConfirmationEmail({
   plugins,
   orderTotal,
   orderId,
+  downloadLinks = [],
 }: PurchaseConfirmationEmailProps) {
   return (
     <Html>
@@ -68,12 +72,42 @@ export default function PurchaseConfirmationEmail({
               ))}
             </Section>
 
+            {/* Download Links */}
+            {downloadLinks.length > 0 && (
+              <Section style={downloadsBox}>
+                <Text style={orderTitle}>Download Your Plugins:</Text>
+                <Hr style={hr} />
+                <Text style={text}>
+                  Your download links are ready! Click the buttons below to download your plugins.
+                  These links will expire in 3 days.
+                </Text>
+                {downloadLinks.map((link, index) => (
+                  <div key={index} style={downloadItem}>
+                    <Text style={downloadText}>{link.pluginName}</Text>
+                    <Button
+                      href={link.downloadUrl}
+                      style={downloadButton}
+                    >
+                      Download Now
+                    </Button>
+                  </div>
+                ))}
+                <Text style={text}>
+                  <strong>Lost your download links?</strong> Visit{' '}
+                  <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://yoursite.com'}/downloads`} style={link}>
+                    My Downloads
+                  </Link>{' '}
+                  and enter your email to access them again.
+                </Text>
+              </Section>
+            )}
+
             {/* Download Instructions */}
             <Section style={instructionsBox}>
-              <Text style={orderTitle}>Download Instructions:</Text>
+              <Text style={orderTitle}>Installation Instructions:</Text>
               <Hr style={hr} />
               <Text style={text}>
-                1. Download links will be sent in a separate email shortly
+                1. Download each plugin using the links above
               </Text>
               <Text style={text}>
                 2. Follow the installation guide included with each plugin
@@ -209,5 +243,45 @@ const footerText = {
   fontSize: '12px',
   textAlign: 'center' as const,
   margin: '0',
+  fontFamily: 'monospace',
+};
+
+const downloadsBox = {
+  backgroundColor: '#90EE90',
+  border: '3px solid #000000',
+  padding: '20px',
+  margin: '20px 0',
+};
+
+const downloadItem = {
+  backgroundColor: '#ffffff',
+  border: '2px solid #000000',
+  padding: '15px',
+  margin: '10px 0',
+};
+
+const downloadText = {
+  color: '#000000',
+  fontSize: '14px',
+  fontWeight: 'bold',
+  margin: '0 0 10px 0',
+  fontFamily: 'monospace',
+};
+
+const downloadButton = {
+  backgroundColor: '#000080',
+  color: '#ffffff',
+  padding: '12px 24px',
+  textDecoration: 'none',
+  border: '2px solid #000000',
+  fontFamily: 'monospace',
+  fontWeight: 'bold',
+  display: 'inline-block',
+  fontSize: '14px',
+};
+
+const link = {
+  color: '#000080',
+  textDecoration: 'underline',
   fontFamily: 'monospace',
 };

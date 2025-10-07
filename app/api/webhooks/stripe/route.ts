@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 import PurchaseConfirmationEmail from '@/emails/PurchaseConfirmation';
+import { saveOrder, saveDownloadLink } from '../../lib/db';
+import { generateSignedUrl } from '@/app/data/pluginFiles';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-12-18.acacia',
@@ -51,8 +53,41 @@ export async function POST(req: NextRequest) {
         ? JSON.parse(session.metadata.plugins)
         : [];
 
-      // Send confirmation email
+      // Save order to database
+      let orderId: number;
       try {
+        orderId = await saveOrder(
+          session.customer_email || '',
+          session.id,
+          session.amount_total || 0,
+          plugins
+        );
+
+        // Generate download links with 3-day expiration
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 3); // 3 days from now
+
+        // Create download links for each plugin
+        const downloadLinks: Array<{ pluginName: string; downloadUrl: string }> = [];
+
+        for (const plugin of plugins) {
+          const downloadUrl = generateSignedUrl(plugin.id, orderId.toString());
+
+          await saveDownloadLink(
+            orderId,
+            plugin.id,
+            plugin.name,
+            downloadUrl,
+            expiresAt
+          );
+
+          downloadLinks.push({
+            pluginName: plugin.name,
+            downloadUrl,
+          });
+        }
+
+        // Send confirmation email with download links
         await resend.emails.send({
           from: 'Turnt Plugins <onboarding@resend.dev>', // Update this with your verified domain
           to: session.customer_email || '',
@@ -62,19 +97,15 @@ export async function POST(req: NextRequest) {
             plugins: plugins,
             orderTotal: session.amount_total || 0,
             orderId: session.id,
+            downloadLinks,
           }),
         });
 
-        console.log('Confirmation email sent to:', session.customer_email);
+        console.log('Order saved and confirmation email sent to:', session.customer_email);
       } catch (error) {
-        console.error('Failed to send email:', error);
-        // Don't fail the webhook if email fails
+        console.error('Failed to process order:', error);
+        // Don't fail the webhook - order went through on Stripe
       }
-
-      // TODO: Additional tasks:
-      // 1. Store the order in your database
-      // 2. Send download links (separate email or include in confirmation)
-      // 3. Update customer mailing list if they opted in
 
       break;
     }
