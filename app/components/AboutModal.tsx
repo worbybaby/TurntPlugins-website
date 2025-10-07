@@ -17,7 +17,7 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           <strong>Welcome to Turnt Plugins!</strong>
         </p>
         <p>
-          I'm an audio plugin developer passionate about creating unique, creative tools for music producers and sound designers.
+          I&apos;m an audio plugin developer passionate about creating unique, creative tools for music producers and sound designers.
           Each plugin is crafted with care to bring you innovative sounds and vintage-inspired character.
         </p>
         <p>

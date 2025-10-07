@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Modal from './Modal';
-import { CartItem, Plugin } from '../types';
+import { Plugin } from '../types';
 import RetroButton from './RetroButton';
 
 interface CartModalProps {

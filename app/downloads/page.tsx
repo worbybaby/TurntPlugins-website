@@ -6,7 +6,19 @@ import RetroButton from '../components/RetroButton';
 
 export default function DownloadsPage() {
   const [email, setEmail] = useState('');
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Array<{
+    id: number;
+    stripe_session_id: string;
+    created_at: string;
+    amount_total: number;
+    downloads: Array<{
+      plugin_id: string;
+      plugin_name: string;
+      download_url: string;
+      expires_at: string;
+      download_count: number;
+    }>;
+  }>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -24,8 +36,9 @@ export default function DownloadsPage() {
       }
 
       setOrders(data.orders || []);
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
+    } catch (err) {
+      const error = err as Error;
+      setError(error.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -97,7 +110,7 @@ export default function DownloadsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    {order.downloads && order.downloads[0] && order.downloads[0].plugin_id && order.downloads.map((download: any, idx: number) => {
+                    {order.downloads && order.downloads[0] && order.downloads[0].plugin_id && order.downloads.map((download, idx: number) => {
                       const isExpired = new Date(download.expires_at) < new Date();
 
                       return (
