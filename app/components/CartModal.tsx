@@ -82,7 +82,14 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
           <p className="text-center py-8 text-gray-600">Your cart is empty</p>
         ) : (
           <>
-            <div className="space-y-3 max-h-[400px] overflow-y-auto">
+            <div
+              className="space-y-3 max-h-[400px] overflow-y-auto"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              } as React.CSSProperties & { msOverflowStyle?: string; WebkitOverflowScrolling?: string }}
+            >
               {cartItems.map((plugin) => (
                 <div
                   key={plugin.id}

@@ -99,9 +99,37 @@ html {
   height: 32px;
 }
 
-/* Hide scrollbar in modals */
-.modal-content ::-webkit-scrollbar {
-  display: none;
+/* Hide scrollbar in modals and modal overlays */
+.modal-content::-webkit-scrollbar,
+.modal-content *::-webkit-scrollbar,
+.fixed.inset-0 ::-webkit-scrollbar,
+.fixed.z-50 ::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.modal-content,
+.modal-content *,
+.fixed.inset-0 *,
+.fixed.z-50 * {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+/* Hide scrollbar on body/html when modal is open */
+body.modal-open::-webkit-scrollbar,
+html.modal-open::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+body.modal-open,
+html.modal-open {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+  overflow: hidden !important; /* Prevent scrolling entirely */
 }
 
 ::-webkit-scrollbar-track {

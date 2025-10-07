@@ -23,6 +23,20 @@ export default function Modal({ isOpen, onClose, title, children, width, height 
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      // Hide body scrollbar when modal is open
+      document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
+
+      return () => {
+        // Restore body scrollbar when modal is closed
+        document.body.classList.remove('modal-open');
+        document.documentElement.classList.remove('modal-open');
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
