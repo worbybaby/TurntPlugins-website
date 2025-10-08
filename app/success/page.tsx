@@ -34,11 +34,11 @@ function SuccessContent() {
         ) : (
           <div className="space-y-6">
             <div className="bg-[#FFE66D] border-4 border-black p-6">
-              <h1 className="text-2xl font-bold mb-4">Thank You for Your Purchase!</h1>
-              <p className="text-base leading-loose mb-4">
+              <h1 className="text-xl sm:text-2xl font-bold mb-4 break-words">Thank You for Your Purchase!</h1>
+              <p className="text-sm sm:text-base leading-loose mb-4 break-words">
                 Your payment has been processed successfully.
               </p>
-              <p className="text-base leading-loose">
+              <p className="text-sm sm:text-base leading-loose break-words">
                 You will receive an email shortly with download links for your plugins and further instructions.
               </p>
             </div>
