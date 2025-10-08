@@ -9,9 +9,9 @@ interface AboutModalProps {
 
 export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="About - Turnt Plugins" width="w-[500px]">
+    <Modal isOpen={isOpen} onClose={onClose} title="About - Turnt Plugins" width="w-[90vw] sm:w-[500px] max-w-[500px]">
       <div
-        className="space-y-4 text-sm max-h-[300px] overflow-y-auto modal-scrollbar"
+        className="space-y-3 sm:space-y-4 text-sm max-h-[50vh] sm:max-h-[300px] overflow-y-auto modal-scrollbar"
       >
         <p>
           <strong>Welcome to Turnt Plugins!</strong>

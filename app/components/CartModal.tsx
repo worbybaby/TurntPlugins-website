@@ -98,67 +98,67 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleCloseModal} title="Shopping Cart" width="w-[600px]">
-      <div className="space-y-4">
+    <Modal isOpen={isOpen} onClose={handleCloseModal} title="Shopping Cart" width="w-[95vw] sm:w-[600px] max-w-[600px]">
+      <div className="space-y-3 sm:space-y-4">
         {cartItems.length === 0 ? (
           <p className="text-center py-8 text-gray-600">Your cart is empty</p>
         ) : (
           <>
             <div
-              className="space-y-3 max-h-[300px] overflow-y-auto modal-scrollbar"
+              className="space-y-2 sm:space-y-3 max-h-[40vh] sm:max-h-[300px] overflow-y-auto modal-scrollbar"
             >
               {cartItems.map((plugin) => (
                 <div
                   key={plugin.id}
-                  className="bg-white border border-black p-2 flex justify-between items-start"
+                  className="bg-white border border-black p-2 sm:p-3 flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-between sm:items-start"
                 >
                   <div className="flex-1">
-                    <h4 className="font-bold text-sm mb-1">{plugin.name}</h4>
+                    <h4 className="font-bold text-xs sm:text-sm mb-1">{plugin.name}</h4>
                     <div className="flex items-center gap-2">
-                      <label className="text-xs">Pay what you want: $</label>
+                      <label className="text-xs whitespace-nowrap">Pay: $</label>
                       <input
                         type="number"
                         min="0"
                         step="1"
                         value={getPayAmount(plugin.id)}
                         onChange={(e) => handlePayAmountChange(plugin.id, parseFloat(e.target.value) || 0)}
-                        className="w-20 px-2 py-1 border border-black focus:outline-none"
+                        className="w-16 sm:w-20 px-2 py-1 border border-black focus:outline-none text-sm"
                       />
                     </div>
                   </div>
-                  <RetroButton onClick={() => onRemoveFromCart(plugin.id)} className="text-xs">
+                  <RetroButton onClick={() => onRemoveFromCart(plugin.id)} className="!text-xs !px-2 !py-1 sm:!px-3 sm:!py-2 w-full sm:w-auto">
                     Remove
                   </RetroButton>
                 </div>
               ))}
             </div>
 
-            <div className="border-t border-black pt-3">
-              <div className="flex justify-between items-center mb-3">
+            <div className="border-t border-black pt-2 sm:pt-3">
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <span className="font-bold text-sm">Total:</span>
-                <span className="font-bold text-base">${totalAmount.toFixed(2)}</span>
+                <span className="font-bold text-base sm:text-lg">${totalAmount.toFixed(2)}</span>
               </div>
 
-              <div className="mb-3">
+              <div className="mb-2 sm:mb-3">
                 <label className="block text-xs mb-1">Email Address:</label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full px-2 py-1 border border-black focus:outline-none"
+                  className="w-full px-2 py-1.5 sm:py-2 border border-black focus:outline-none text-sm"
                   placeholder="your@email.com"
                 />
               </div>
 
-              <div className="mb-3">
+              <div className="mb-3 sm:mb-4">
                 <label className="flex items-start gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={optInEmail}
                     onChange={(e) => setOptInEmail(e.target.checked)}
                     required
-                    className="mt-1"
+                    className="mt-0.5 sm:mt-1 flex-shrink-0"
                   />
                   <span className="text-xs">
                     I want to receive emails about future plugins and projects
@@ -169,7 +169,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
               <RetroButton
                 onClick={handleCheckout}
                 disabled={!email || !optInEmail || isLoading}
-                className="w-full"
+                className="w-full !px-4 !py-2.5 sm:!py-3 !text-sm sm:!text-base"
               >
                 {isLoading ? 'Processing...' : (totalAmount > 0 ? 'Proceed to Payment' : 'Download for Free')}
               </RetroButton>

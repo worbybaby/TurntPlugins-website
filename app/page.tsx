@@ -29,30 +29,32 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#5DADE2]">
       {/* Header Bar */}
-      <header className="bg-white border-b-4 border-black px-6 py-4">
+      <header className="bg-white border-b-4 border-black px-3 sm:px-6 py-3 sm:py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-3xl font-bold">TURNT PLUGINS</h1>
-          <div className="flex gap-6">
-            <RetroButton onClick={() => setIsAboutOpen(true)}>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">TURNT PLUGINS</h1>
+          <div className="flex gap-2 sm:gap-4 md:gap-6">
+            <RetroButton onClick={() => setIsAboutOpen(true)} className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
               About
             </RetroButton>
-            <RetroButton onClick={() => setIsCartOpen(true)}>
-              Cart {cartItems.length > 0 && `(${cartItems.length})`}
+            <RetroButton onClick={() => setIsCartOpen(true)} className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
+              <span className="hidden sm:inline">Cart </span>
+              <span className="sm:hidden">🛒 </span>
+              {cartItems.length > 0 && `(${cartItems.length})`}
             </RetroButton>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <div className="mb-8 bg-[#FFE66D] border-4 border-black p-8">
-          <h2 className="text-3xl font-bold mb-3">Welcome to Turnt Plugins</h2>
-          <p className="text-lg leading-loose">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+        <div className="mb-6 sm:mb-8 bg-[#FFE66D] border-4 border-black p-4 sm:p-6 md:p-8">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Welcome to Turnt Plugins</h2>
+          <p className="text-base sm:text-lg leading-relaxed sm:leading-loose">
             Explore our collection of creative audio plugins. All available on a pay-what-you-want basis!
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {plugins.map((plugin) => (
             <PluginCard
               key={plugin.id}
@@ -82,13 +84,13 @@ export default function Home() {
         isOpen={isAddedToCartOpen}
         onClose={() => setIsAddedToCartOpen(false)}
         title="Added to Cart"
-        width="w-[500px]"
+        width="w-[90vw] sm:w-[500px] max-w-[500px]"
       >
-        <p className="text-lg leading-loose mb-6">Item has been added to your cart!</p>
-        <div className="flex gap-3">
+        <p className="text-base sm:text-lg leading-relaxed sm:leading-loose mb-4 sm:mb-6">Item has been added to your cart!</p>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <RetroButton
             onClick={() => setIsAddedToCartOpen(false)}
-            className="flex-1 !px-4 !text-base"
+            className="flex-1 !px-3 sm:!px-4 !py-2 sm:!py-3 !text-sm sm:!text-base"
           >
             Continue Shopping
           </RetroButton>
@@ -97,7 +99,7 @@ export default function Home() {
               setIsAddedToCartOpen(false);
               setIsCartOpen(true);
             }}
-            className="flex-1 !px-4 !text-base"
+            className="flex-1 !px-3 sm:!px-4 !py-2 sm:!py-3 !text-sm sm:!text-base"
           >
             View Cart
           </RetroButton>
