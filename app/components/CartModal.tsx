@@ -53,8 +53,25 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
       }
 
       if (data.isFree) {
-        // Handle free download
-        alert('Thank you! Your plugins are ready to download.');
+        // Handle free download - call the free download API
+        const freeResponse = await fetch('/api/free-download', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cartItems: cartItemsWithAmounts,
+            email,
+          }),
+        });
+
+        const freeData = await freeResponse.json();
+
+        if (!freeResponse.ok) {
+          throw new Error(freeData.error || 'Failed to process free download');
+        }
+
+        alert(freeData.message || 'Thank you! Check your email for download links.');
         handleCloseModal();
       } else if (data.url) {
         // Redirect to Stripe Checkout
