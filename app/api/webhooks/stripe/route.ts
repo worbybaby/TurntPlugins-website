@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
         console.log('📧 Sending email to:', session.customer_email);
         const resend = new Resend(process.env.RESEND_API_KEY!);
         const emailResult = await resend.emails.send({
-          from: 'Turnt Plugins <onboarding@resend.dev>', // Update this with your verified domain
+          from: 'Turnt Plugins <downloads@turntplugins.com>',
           to: session.customer_email || '',
           subject: 'Your Turnt Plugins Purchase Confirmation',
           react: PurchaseConfirmationEmail({
