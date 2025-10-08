@@ -22,9 +22,9 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
   };
 
-  // Get pay amount with default of $5
+  // Get pay amount with default of $19
   const getPayAmount = (pluginId: string) => {
-    return payAmounts[pluginId] !== undefined ? payAmounts[pluginId] : 5;
+    return payAmounts[pluginId] !== undefined ? payAmounts[pluginId] : 19;
   };
 
   const totalAmount = cartItems.reduce((sum, item) => sum + getPayAmount(item.id), 0);
