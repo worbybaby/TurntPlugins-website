@@ -7,23 +7,23 @@ import { join } from 'path';
 
 const PLUGIN_FILES = [
   {
-    id: 'cassette-tape',
+    id: '1',
     localPath: '/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/Cassette Tapeworm_v1.0.2_macOS.pkg',
   },
   {
-    id: 'tape-bloom',
+    id: '4',
     localPath: '/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/TapeBloom_v1.0.7.pkg',
   },
   {
-    id: 'tapeworm',
+    id: '5',
     localPath: '/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/Tapeworm_v1.0.4_notarized_2025-10-03.pkg',
   },
   {
-    id: 'space-bass-butt',
+    id: '3',
     localPath: '/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/SpaceBassButt_v1.0.2.pkg',
   },
   {
-    id: 'pretty-princess-sparkle',
+    id: '2',
     localPath: '/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/PrettyPrettyPrincessSparkle_v1.0.1.pkg',
   },
 ];

@@ -9,30 +9,30 @@ export interface PluginFile {
 }
 
 export const pluginFiles: Record<string, PluginFile> = {
-  'cassette-tape': {
-    id: 'cassette-tape',
+  '1': {
+    id: '1',
     fileName: 'Cassette Tapeworm_v1.0.2_macOS.pkg',
     fileSize: '34MB',
   },
-  'tape-bloom': {
-    id: 'tape-bloom',
-    fileName: 'TapeBloom_v1.0.7.pkg',
-    fileSize: '42MB',
+  '2': {
+    id: '2',
+    fileName: 'PrettyPrettyPrincessSparkle_v1.0.1.pkg',
+    fileSize: '29MB',
   },
-  'tapeworm': {
-    id: 'tapeworm',
-    fileName: 'Tapeworm_v1.0.4_notarized_2025-10-03.pkg',
-    fileSize: '62MB',
-  },
-  'space-bass-butt': {
-    id: 'space-bass-butt',
+  '3': {
+    id: '3',
     fileName: 'SpaceBassButt_v1.0.2.pkg',
     fileSize: '34MB',
   },
-  'pretty-princess-sparkle': {
-    id: 'pretty-princess-sparkle',
-    fileName: 'PrettyPrettyPrincessSparkle_v1.0.1.pkg',
-    fileSize: '29MB',
+  '4': {
+    id: '4',
+    fileName: 'TapeBloom_v1.0.7.pkg',
+    fileSize: '42MB',
+  },
+  '5': {
+    id: '5',
+    fileName: 'Tapeworm_v1.0.4_notarized_2025-10-03.pkg',
+    fileSize: '62MB',
   },
 };
 
