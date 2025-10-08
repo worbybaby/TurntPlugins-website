@@ -22,7 +22,12 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
   };
 
-  const totalAmount = Object.values(payAmounts).reduce((sum, amount) => sum + amount, 0);
+  // Get pay amount with default of $5
+  const getPayAmount = (pluginId: string) => {
+    return payAmounts[pluginId] !== undefined ? payAmounts[pluginId] : 5;
+  };
+
+  const totalAmount = cartItems.reduce((sum, item) => sum + getPayAmount(item.id), 0);
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -31,7 +36,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
       // Prepare cart items with payment amounts
       const cartItemsWithAmounts = cartItems.map(plugin => ({
         plugin,
-        payAmount: payAmounts[plugin.id] || 0
+        payAmount: getPayAmount(plugin.id)
       }));
 
       // Call the API to create a checkout session
@@ -115,7 +120,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                         type="number"
                         min="0"
                         step="1"
-                        value={payAmounts[plugin.id] || 0}
+                        value={getPayAmount(plugin.id)}
                         onChange={(e) => handlePayAmountChange(plugin.id, parseFloat(e.target.value) || 0)}
                         className="w-20 px-2 py-1 border border-black focus:outline-none"
                       />
