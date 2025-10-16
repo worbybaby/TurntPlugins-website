@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import RetroButton from '../components/RetroButton';
+import OrdersChart from '../components/OrdersChart';
 
 interface Stats {
   totalOrders: number;
@@ -26,6 +27,14 @@ interface PluginStat {
   count: number;
 }
 
+interface ChartData {
+  date: string;
+  totalOrders: number;
+  paidOrders: number;
+  freeOrders: number;
+  revenue: number;
+}
+
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
@@ -35,6 +44,7 @@ export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [pluginStats, setPluginStats] = useState<PluginStat[]>([]);
+  const [chartData, setChartData] = useState<ChartData[]>([]);
 
   useEffect(() => {
     // Check if already authenticated (session storage)
@@ -73,12 +83,21 @@ export default function AdminPage() {
 
   const fetchAdminData = async () => {
     try {
-      const response = await fetch('/api/admin/stats');
-      if (response.ok) {
-        const data = await response.json();
+      const [statsResponse, chartResponse] = await Promise.all([
+        fetch('/api/admin/stats'),
+        fetch('/api/admin/chart-data'),
+      ]);
+
+      if (statsResponse.ok) {
+        const data = await statsResponse.json();
         setStats(data.stats);
         setRecentOrders(data.recentOrders);
         setPluginStats(data.pluginStats);
+      }
+
+      if (chartResponse.ok) {
+        const data = await chartResponse.json();
+        setChartData(data.chartData);
       }
     } catch (err) {
       console.error('Failed to fetch admin data:', err);
@@ -177,6 +196,9 @@ export default function AdminPage() {
             </div>
           </div>
         )}
+
+        {/* Orders Chart */}
+        <OrdersChart data={chartData} />
 
         {/* Plugin Stats */}
         <div className="bg-white border-4 border-black p-6 mb-8">
