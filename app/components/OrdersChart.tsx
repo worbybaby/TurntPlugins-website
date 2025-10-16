@@ -58,36 +58,40 @@ export default function OrdersChart({ data }: OrdersChartProps) {
       </div>
 
       {/* Chart */}
-      <div className="border-2 border-black p-4 bg-gray-50">
-        <div className="flex items-end justify-between h-64 gap-1">
+      <div className="border-2 border-black p-4 bg-gray-50 overflow-x-auto">
+        <div className="flex items-end h-64 min-w-full" style={{ width: `${data.length * 20}px` }}>
           {data.map((item, index) => {
             const value = viewMode === 'total' ? item.totalOrders : item.paidOrders;
             const heightPercent = maxValue > 0 ? (value / maxValue) * 100 : 0;
             const showLabel = index % 5 === 0; // Show date label every 5 days
 
             return (
-              <div key={item.date} className="flex-1 flex flex-col items-center justify-end h-full group relative">
-                {/* Bar */}
-                <div
-                  className="w-full bg-[#000080] hover:bg-[#0000CD] transition-colors border border-black relative"
-                  style={{ height: `${heightPercent}%`, minHeight: value > 0 ? '4px' : '0' }}
-                >
-                  {/* Tooltip on hover */}
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
-                    <div className="font-bold">{formatDate(item.date)}</div>
-                    <div>Total: {item.totalOrders}</div>
-                    <div>Paid: {item.paidOrders}</div>
-                    <div>Free: {item.freeOrders}</div>
-                    <div>Revenue: ${(item.revenue / 100).toFixed(2)}</div>
+              <div key={item.date} className="flex flex-col items-center group relative" style={{ width: '20px' }}>
+                {/* Bar container with fixed height */}
+                <div className="flex items-end" style={{ height: '240px', width: '100%' }}>
+                  <div
+                    className="w-full bg-[#000080] hover:bg-[#0000CD] transition-colors border border-black relative"
+                    style={{ height: `${heightPercent}%`, minHeight: value > 0 ? '4px' : '0' }}
+                  >
+                    {/* Tooltip on hover */}
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10">
+                      <div className="font-bold">{formatDate(item.date)}</div>
+                      <div>Total: {item.totalOrders}</div>
+                      <div>Paid: {item.paidOrders}</div>
+                      <div>Free: {item.freeOrders}</div>
+                      <div>Revenue: ${(item.revenue / 100).toFixed(2)}</div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Date label */}
-                {showLabel && (
-                  <div className="text-[8px] sm:text-[10px] mt-1 text-center whitespace-nowrap transform rotate-45 origin-top-left">
-                    {formatDate(item.date)}
-                  </div>
-                )}
+                {/* Date label - always at same baseline */}
+                <div className="text-[8px] sm:text-[10px] mt-1 text-center" style={{ height: '20px' }}>
+                  {showLabel && (
+                    <span className="whitespace-nowrap transform inline-block rotate-45 origin-center">
+                      {formatDate(item.date)}
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })}
