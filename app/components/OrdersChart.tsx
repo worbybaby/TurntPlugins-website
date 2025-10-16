@@ -85,7 +85,7 @@ export default function OrdersChart({ data }: OrdersChartProps) {
                 </div>
 
                 {/* Date label - always at same baseline with more spacing */}
-                <div className="text-[8px] sm:text-[10px] mt-2 text-center" style={{ height: '20px' }}>
+                <div className="text-[8px] sm:text-[10px] mt-2 pt-1 text-center" style={{ height: '20px' }}>
                   {showLabel && (
                     <span className="whitespace-nowrap transform inline-block rotate-45 origin-center">
                       {formatDate(item.date)}
