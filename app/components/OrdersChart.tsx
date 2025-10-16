@@ -58,7 +58,7 @@ export default function OrdersChart({ data }: OrdersChartProps) {
       </div>
 
       {/* Chart */}
-      <div className="border-2 border-black p-4 pb-12 bg-gray-50 overflow-x-auto">
+      <div className="border-2 border-black p-4 pb-8 bg-gray-50 overflow-x-auto">
         <div className="flex items-end h-64" style={{ width: '100%', minWidth: '100%' }}>
           {data.map((item, index) => {
             const value = viewMode === 'total' ? item.totalOrders : item.paidOrders;
@@ -85,7 +85,7 @@ export default function OrdersChart({ data }: OrdersChartProps) {
                 </div>
 
                 {/* Date label - always at same baseline with more spacing */}
-                <div className="text-[8px] sm:text-[10px] mt-3 text-center" style={{ height: '24px' }}>
+                <div className="text-[8px] sm:text-[10px] mt-2 text-center" style={{ height: '20px' }}>
                   {showLabel && (
                     <span className="whitespace-nowrap transform inline-block rotate-45 origin-center">
                       {formatDate(item.date)}
