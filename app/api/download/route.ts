@@ -59,15 +59,33 @@ export async function GET(req: NextRequest) {
 
     // Get plugin file info
     const pluginFile = getPluginFile(pluginId);
-    if (!pluginFile || !pluginFile.fileName) {
+    if (!pluginFile || !pluginFile.files || pluginFile.files.length === 0) {
       return NextResponse.json(
         { error: 'Plugin file not found' },
         { status: 404 }
       );
     }
 
+    // Check if platform is specified in query params
+    const platform = searchParams.get('platform') as 'macOS' | 'Windows' | null;
+
+    // If platform specified, find that specific file
+    let targetFile;
+    if (platform) {
+      targetFile = pluginFile.files.find(f => f.platform === platform);
+      if (!targetFile) {
+        return NextResponse.json(
+          { error: `Plugin file not found for ${platform}` },
+          { status: 404 }
+        );
+      }
+    } else {
+      // Default to first file (backwards compatibility)
+      targetFile = pluginFile.files[0];
+    }
+
     // Find file in Vercel Blob storage
-    const { blobs } = await list({ prefix: `plugins/${pluginFile.fileName}` });
+    const { blobs } = await list({ prefix: `plugins/${targetFile.fileName}` });
 
     if (blobs.length === 0) {
       return NextResponse.json(

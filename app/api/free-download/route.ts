@@ -76,22 +76,37 @@ export async function POST(req: NextRequest) {
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 3);
 
-    const downloadLinks: Array<{ pluginName: string; downloadUrl: string }> = [];
+    const downloadLinks: Array<{
+      pluginName: string;
+      macDownloadUrl: string;
+      windowsDownloadUrl: string;
+    }> = [];
 
     for (const plugin of plugins) {
-      const downloadUrl = generateSignedUrl(plugin.id, orderId.toString());
+      const macDownloadUrl = generateSignedUrl(plugin.id, orderId.toString(), 'macOS');
+      const windowsDownloadUrl = generateSignedUrl(plugin.id, orderId.toString(), 'Windows');
 
+      // Save both download links to database
       await saveDownloadLink(
         orderId,
         plugin.id,
         plugin.name,
-        downloadUrl,
+        macDownloadUrl,
+        expiresAt
+      );
+
+      await saveDownloadLink(
+        orderId,
+        plugin.id + '-windows',
+        plugin.name + ' (Windows)',
+        windowsDownloadUrl,
         expiresAt
       );
 
       downloadLinks.push({
         pluginName: plugin.name,
-        downloadUrl,
+        macDownloadUrl,
+        windowsDownloadUrl,
       });
     }
 

@@ -18,7 +18,11 @@ interface PurchaseConfirmationEmailProps {
   plugins: Array<{ id: string; name: string }>;
   orderTotal: number;
   orderId: string;
-  downloadLinks?: Array<{ pluginName: string; downloadUrl: string }>;
+  downloadLinks?: Array<{
+    pluginName: string;
+    macDownloadUrl: string;
+    windowsDownloadUrl: string;
+  }>;
 }
 
 export default function PurchaseConfirmationEmail({
@@ -84,12 +88,21 @@ export default function PurchaseConfirmationEmail({
                 {downloadLinks.map((link, index) => (
                   <div key={index} style={downloadItem}>
                     <Text style={downloadText}>{link.pluginName}</Text>
-                    <Button
-                      href={link.downloadUrl}
-                      style={downloadButton}
-                    >
-                      Download Now
-                    </Button>
+                    <div style={buttonContainer}>
+                      <Button
+                        href={link.macDownloadUrl}
+                        style={downloadButton}
+                      >
+                        Download for macOS
+                      </Button>
+                      <div style={{ width: '10px' }} />
+                      <Button
+                        href={link.windowsDownloadUrl}
+                        style={downloadButton}
+                      >
+                        Download for Windows
+                      </Button>
+                    </div>
                   </div>
                 ))}
                 <Text style={text}>
@@ -284,4 +297,11 @@ const link = {
   color: '#000080',
   textDecoration: 'underline',
   fontFamily: 'monospace',
+};
+
+const buttonContainer = {
+  display: 'flex',
+  flexDirection: 'row' as const,
+  gap: '10px',
+  marginTop: '10px',
 };
