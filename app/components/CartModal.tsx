@@ -18,6 +18,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   const [optInEmail, setOptInEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showOptInError, setShowOptInError] = useState(false);
+  const [emailError, setEmailError] = useState('');
 
   const handlePayAmountChange = (pluginId: string, amount: number) => {
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
@@ -30,7 +31,19 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
 
   const totalAmount = cartItems.reduce((sum, item) => sum + getPayAmount(item.id), 0);
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleCheckout = async () => {
+    // Validate email format
+    if (!email || !validateEmail(email)) {
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+
+    // Validate opt-in checkbox
     if (!optInEmail) {
       setShowOptInError(true);
       return;
@@ -38,6 +51,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
 
     setIsLoading(true);
     setShowOptInError(false);
+    setEmailError('');
 
     try {
       // Prepare cart items with payment amounts
@@ -102,6 +116,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setEmail('');
     setOptInEmail(false);
     setShowOptInError(false);
+    setEmailError('');
     onClose();
   };
 
@@ -152,11 +167,19 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (emailError) {
+                      setEmailError('');
+                    }
+                  }}
                   required
                   className="w-full px-2 py-1.5 sm:py-2 border border-black focus:outline-none text-sm"
                   placeholder="your@email.com"
                 />
+                {emailError && (
+                  <p className="text-red-600 text-xs font-bold mt-1">{emailError}</p>
+                )}
               </div>
 
               <div className="mb-3 sm:mb-4">
@@ -182,7 +205,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
 
               <RetroButton
                 onClick={handleCheckout}
-                disabled={!email || isLoading}
+                disabled={isLoading}
                 className="w-full !px-4 !py-2.5 sm:!py-3 !text-sm sm:!text-base"
               >
                 {isLoading ? 'Processing...' : (totalAmount > 0 ? 'Proceed to Payment' : 'Download for Free')}
