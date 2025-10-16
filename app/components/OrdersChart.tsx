@@ -58,7 +58,7 @@ export default function OrdersChart({ data }: OrdersChartProps) {
       </div>
 
       {/* Chart */}
-      <div className="border-2 border-black p-4 pb-8 bg-gray-50 overflow-x-auto">
+      <div className="border-2 border-black p-4 bg-gray-50 overflow-x-auto">
         <div className="flex items-end h-64" style={{ width: '100%', minWidth: '100%' }}>
           {data.map((item, index) => {
             const value = viewMode === 'total' ? item.totalOrders : item.paidOrders;
