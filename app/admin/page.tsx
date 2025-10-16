@@ -167,7 +167,7 @@ export default function AdminPage() {
             </div>
             <div className="bg-[#90EE90] border-4 border-black p-6">
               <h3 className="text-lg font-bold mb-2">Total Revenue</h3>
-              <p className="text-4xl font-bold">${(stats.totalRevenue / 100).toFixed(2)}</p>
+              <p className="text-4xl font-bold break-words">${(stats.totalRevenue / 100).toFixed(2)}</p>
               <p className="text-sm mt-2">From {stats.paidOrders} paid orders</p>
             </div>
             <div className="bg-[#FFB6C1] border-4 border-black p-6">
