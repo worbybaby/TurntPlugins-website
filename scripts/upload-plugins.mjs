@@ -17,14 +17,14 @@ const WINDOWS_DIR = '/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Curren
 
 const files = [
   // macOS installers
-  { path: `${MAC_DIR}/Cassette Tapeworm_v1.0.4_macOS.pkg`, name: 'Cassette Tapeworm_v1.0.4_macOS.pkg', platform: 'macOS' },
+  { path: `${MAC_DIR}/Cassette Tapeworm_v1.0.5_macOS.pkg`, name: 'Cassette Tapeworm_v1.0.5_macOS.pkg', platform: 'macOS' },
   { path: `${MAC_DIR}/PrettyPrettyPrincessSparkle_v1.0.2.pkg`, name: 'PrettyPrettyPrincessSparkle_v1.0.2.pkg', platform: 'macOS' },
   { path: `${MAC_DIR}/Space Bass Butt_v1.0.7.pkg`, name: 'Space Bass Butt_v1.0.7.pkg', platform: 'macOS' },
   { path: `${MAC_DIR}/TapeBloom_v1.0.9.pkg`, name: 'TapeBloom_v1.0.9.pkg', platform: 'macOS' },
   { path: `${MAC_DIR}/Tapeworm_v1.0.8.pkg`, name: 'Tapeworm_v1.0.8.pkg', platform: 'macOS' },
 
   // Windows installers
-  { path: `${WINDOWS_DIR}/CassetteTapeworm-v1.0.0-Windows-x64.exe`, name: 'CassetteTapeworm-v1.0.0-Windows-x64.exe', platform: 'Windows' },
+  { path: `${WINDOWS_DIR}/CassetteTapeworm-v1.0.5-Windows-x64.exe`, name: 'CassetteTapeworm-v1.0.5-Windows-x64.exe', platform: 'Windows' },
   { path: `${WINDOWS_DIR}/PrettyPrettyPrincessSparkle-v1.0.2-Windows-x64.exe`, name: 'PrettyPrettyPrincessSparkle-v1.0.2-Windows-x64.exe', platform: 'Windows' },
   { path: `${WINDOWS_DIR}/SpaceBassButt-v1.0.7-Windows-x64.exe`, name: 'SpaceBassButt-v1.0.7-Windows-x64.exe', platform: 'Windows' },
   { path: `${WINDOWS_DIR}/TapeBloom-v1.0.0-Windows-x64.exe`, name: 'TapeBloom-v1.0.0-Windows-x64.exe', platform: 'Windows' },

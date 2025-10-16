@@ -2,10 +2,10 @@ import { Plugin } from '../types';
 
 export const plugins: Plugin[] = [
   {
-    id: '1',
-    name: 'Cassette Tape',
-    description: 'A powerful audio plugin for creative sound design with vintage warmth and modern clarity.',
-    image: '/plugins/CassetteTape.png',
+    id: '4',
+    name: 'Tape Bloom',
+    description: 'Experimental synthesizer plugin with unique waveforms and modulation capabilities.',
+    image: '/plugins/TapeBloom.png',
     price: 0
   },
   {
@@ -23,10 +23,10 @@ export const plugins: Plugin[] = [
     price: 0
   },
   {
-    id: '4',
-    name: 'Tape Bloom',
-    description: 'Experimental synthesizer plugin with unique waveforms and modulation capabilities.',
-    image: '/plugins/TapeBloom.png',
+    id: '1',
+    name: 'Cassette Tape',
+    description: 'A powerful audio plugin for creative sound design with vintage warmth and modern clarity.',
+    image: '/plugins/CassetteTape.png',
     price: 0
   },
   {

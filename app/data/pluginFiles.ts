@@ -18,12 +18,12 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '1',
     files: [
       {
-        fileName: 'Cassette Tapeworm_v1.0.4_macOS.pkg',
+        fileName: 'Cassette Tapeworm_v1.0.5_macOS.pkg',
         fileSize: '62MB',
         platform: 'macOS',
       },
       {
-        fileName: 'CassetteTapeworm-v1.0.0-Windows-x64.exe',
+        fileName: 'CassetteTapeworm-v1.0.5-Windows-x64.exe',
         fileSize: '17MB',
         platform: 'Windows',
       },
