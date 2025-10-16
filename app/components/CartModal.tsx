@@ -17,6 +17,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   const [email, setEmail] = useState('');
   const [optInEmail, setOptInEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showOptInError, setShowOptInError] = useState(false);
 
   const handlePayAmountChange = (pluginId: string, amount: number) => {
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
@@ -30,7 +31,13 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   const totalAmount = cartItems.reduce((sum, item) => sum + getPayAmount(item.id), 0);
 
   const handleCheckout = async () => {
+    if (!optInEmail) {
+      setShowOptInError(true);
+      return;
+    }
+
     setIsLoading(true);
+    setShowOptInError(false);
 
     try {
       // Prepare cart items with payment amounts
@@ -94,6 +101,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setPayAmounts({});
     setEmail('');
     setOptInEmail(false);
+    setShowOptInError(false);
     onClose();
   };
 
@@ -151,29 +159,30 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 />
               </div>
 
-              <div className="mb-3 sm:mb-4 bg-[#FFE66D] border-2 border-black p-3">
+              <div className="mb-3 sm:mb-4">
                 <label className="flex items-start gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={optInEmail}
-                    onChange={(e) => setOptInEmail(e.target.checked)}
+                    onChange={(e) => {
+                      setOptInEmail(e.target.checked);
+                      if (e.target.checked) {
+                        setShowOptInError(false);
+                      }
+                    }}
                     required
-                    className="mt-0.5 sm:mt-1 flex-shrink-0 w-4 h-4"
+                    className="mt-0.5 sm:mt-1 flex-shrink-0"
                   />
-                  <span className="text-xs sm:text-sm font-bold">
-                    I want to receive emails about future plugins and projects <span className="text-red-600">*</span>
+                  <span className="text-xs">
+                    I want to receive emails about future plugins and projects
+                    {showOptInError && <span className="text-red-600 font-bold"> *required</span>}
                   </span>
                 </label>
-                {!optInEmail && (
-                  <p className="text-[10px] sm:text-xs text-gray-700 mt-2 ml-6">
-                    You must agree to receive emails to download plugins
-                  </p>
-                )}
               </div>
 
               <RetroButton
                 onClick={handleCheckout}
-                disabled={!email || !optInEmail || isLoading}
+                disabled={!email || isLoading}
                 className="w-full !px-4 !py-2.5 sm:!py-3 !text-sm sm:!text-base"
               >
                 {isLoading ? 'Processing...' : (totalAmount > 0 ? 'Proceed to Payment' : 'Download for Free')}
