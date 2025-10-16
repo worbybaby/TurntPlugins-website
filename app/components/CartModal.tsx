@@ -151,19 +151,24 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 />
               </div>
 
-              <div className="mb-3 sm:mb-4">
+              <div className="mb-3 sm:mb-4 bg-[#FFE66D] border-2 border-black p-3">
                 <label className="flex items-start gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={optInEmail}
                     onChange={(e) => setOptInEmail(e.target.checked)}
                     required
-                    className="mt-0.5 sm:mt-1 flex-shrink-0"
+                    className="mt-0.5 sm:mt-1 flex-shrink-0 w-4 h-4"
                   />
-                  <span className="text-xs">
-                    I want to receive emails about future plugins and projects
+                  <span className="text-xs sm:text-sm font-bold">
+                    I want to receive emails about future plugins and projects <span className="text-red-600">*</span>
                   </span>
                 </label>
+                {!optInEmail && (
+                  <p className="text-[10px] sm:text-xs text-gray-700 mt-2 ml-6">
+                    You must agree to receive emails to download plugins
+                  </p>
+                )}
               </div>
 
               <RetroButton
