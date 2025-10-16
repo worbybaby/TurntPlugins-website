@@ -58,19 +58,19 @@ export default function OrdersChart({ data }: OrdersChartProps) {
       </div>
 
       {/* Chart */}
-      <div className="border-2 border-black p-4 bg-gray-50 overflow-x-auto">
-        <div className="flex items-end h-64 min-w-full" style={{ width: `${data.length * 20}px` }}>
+      <div className="border-2 border-black p-4 pb-12 bg-gray-50 overflow-x-auto">
+        <div className="flex items-end h-64" style={{ width: '100%', minWidth: '100%' }}>
           {data.map((item, index) => {
             const value = viewMode === 'total' ? item.totalOrders : item.paidOrders;
             const heightPercent = maxValue > 0 ? (value / maxValue) * 100 : 0;
             const showLabel = index % 5 === 0; // Show date label every 5 days
 
             return (
-              <div key={item.date} className="flex flex-col items-center group relative" style={{ width: '20px' }}>
+              <div key={item.date} className="flex flex-col items-center group relative flex-1">
                 {/* Bar container with fixed height */}
-                <div className="flex items-end" style={{ height: '240px', width: '100%' }}>
+                <div className="flex items-end w-full" style={{ height: '240px' }}>
                   <div
-                    className="w-full bg-[#000080] hover:bg-[#0000CD] transition-colors border border-black relative"
+                    className="w-full bg-[#000080] hover:bg-[#0000CD] transition-colors border border-black relative mx-px"
                     style={{ height: `${heightPercent}%`, minHeight: value > 0 ? '4px' : '0' }}
                   >
                     {/* Tooltip on hover */}
@@ -84,8 +84,8 @@ export default function OrdersChart({ data }: OrdersChartProps) {
                   </div>
                 </div>
 
-                {/* Date label - always at same baseline */}
-                <div className="text-[8px] sm:text-[10px] mt-1 text-center" style={{ height: '20px' }}>
+                {/* Date label - always at same baseline with more spacing */}
+                <div className="text-[8px] sm:text-[10px] mt-3 text-center" style={{ height: '24px' }}>
                   {showLabel && (
                     <span className="whitespace-nowrap transform inline-block rotate-45 origin-center">
                       {formatDate(item.date)}
