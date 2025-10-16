@@ -175,7 +175,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                   />
                   <span className="text-xs">
                     I want to receive emails about future plugins and projects
-                    {showOptInError && <span className="text-red-600 font-bold"> *required</span>}
+                    {showOptInError && <span className="text-red-600 font-bold"> *Required</span>}
                   </span>
                 </label>
               </div>
