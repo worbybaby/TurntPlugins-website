@@ -10,9 +10,10 @@ interface CartModalProps {
   onClose: () => void;
   cartItems: Plugin[];
   onRemoveFromCart: (pluginId: string) => void;
+  onClearCart: () => void;
 }
 
-export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart }: CartModalProps) {
+export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart, onClearCart }: CartModalProps) {
   const [payAmounts, setPayAmounts] = useState<Record<string, number>>({});
   const [email, setEmail] = useState('');
   const [optInEmail, setOptInEmail] = useState(false);
@@ -98,6 +99,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
         }
 
         alert(freeData.message || 'Thank you! Check your email for download links.');
+        onClearCart();
         handleCloseModal();
       } else if (data.url) {
         // Redirect to Stripe Checkout

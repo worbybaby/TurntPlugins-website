@@ -26,6 +26,10 @@ export default function Home() {
     setCartItems(cartItems.filter(item => item.id !== pluginId));
   };
 
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
   return (
     <div className="min-h-screen bg-[#5DADE2]">
       {/* Header Bar */}
@@ -79,6 +83,7 @@ export default function Home() {
         onClose={() => setIsCartOpen(false)}
         cartItems={cartItems}
         onRemoveFromCart={handleRemoveFromCart}
+        onClearCart={handleClearCart}
       />
       <Modal
         isOpen={isAddedToCartOpen}
