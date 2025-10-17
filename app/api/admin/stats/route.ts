@@ -10,7 +10,8 @@ export async function GET(req: NextRequest) {
         COUNT(DISTINCT email) as unique_customers,
         SUM(amount_total) as total_revenue,
         SUM(CASE WHEN amount_total = 0 THEN 1 ELSE 0 END) as free_downloads,
-        SUM(CASE WHEN amount_total > 0 THEN 1 ELSE 0 END) as paid_orders
+        SUM(CASE WHEN amount_total > 0 THEN 1 ELSE 0 END) as paid_orders,
+        COUNT(DISTINCT CASE WHEN marketing_opt_in = true THEN email END) as marketing_subscribers
       FROM orders;
     `;
 
@@ -54,6 +55,7 @@ export async function GET(req: NextRequest) {
       freeDownloads: parseInt(statsResult.rows[0].free_downloads),
       paidOrders: parseInt(statsResult.rows[0].paid_orders),
       totalDownloads: parseInt(downloadResult.rows[0].total_downloads) || 0,
+      marketingSubscribers: parseInt(statsResult.rows[0].marketing_subscribers) || 0,
     };
 
     const pluginStats = pluginResult.rows.map(row => ({

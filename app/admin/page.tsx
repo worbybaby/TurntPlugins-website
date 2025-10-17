@@ -11,6 +11,7 @@ interface Stats {
   paidOrders: number;
   uniqueCustomers: number;
   totalDownloads: number;
+  marketingSubscribers: number;
 }
 
 interface Order {
@@ -128,6 +129,24 @@ export default function AdminPage() {
     }
   };
 
+  const exportSubscribers = async () => {
+    try {
+      const response = await fetch('/api/admin/export-subscribers');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `marketing-subscribers-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Failed to export subscribers:', err);
+      alert('Failed to export subscribers');
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-[#5DADE2] flex items-center justify-center p-4">
@@ -167,7 +186,8 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="text-3xl font-bold">TURNT PLUGINS ADMIN</h1>
           <div className="flex gap-4">
-            <RetroButton onClick={exportEmails}>Export Emails</RetroButton>
+            <RetroButton onClick={exportEmails}>Export All Emails</RetroButton>
+            <RetroButton onClick={exportSubscribers}>Export Subscribers</RetroButton>
             <RetroButton onClick={handleLogout}>Logout</RetroButton>
           </div>
         </div>
@@ -176,7 +196,7 @@ export default function AdminPage() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Stats Grid */}
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="bg-[#FFE66D] border-4 border-black p-6">
               <h3 className="text-lg font-bold mb-2">Total Orders</h3>
               <p className="text-4xl font-bold">{stats.totalOrders}</p>
@@ -193,6 +213,11 @@ export default function AdminPage() {
               <h3 className="text-lg font-bold mb-2">Unique Customers</h3>
               <p className="text-4xl font-bold">{stats.uniqueCustomers}</p>
               <p className="text-sm mt-2">{stats.totalDownloads} total downloads</p>
+            </div>
+            <div className="bg-[#87CEEB] border-4 border-black p-6">
+              <h3 className="text-lg font-bold mb-2">Marketing Subscribers</h3>
+              <p className="text-4xl font-bold">{stats.marketingSubscribers}</p>
+              <p className="text-sm mt-2">Opted in for updates</p>
             </div>
           </div>
         )}

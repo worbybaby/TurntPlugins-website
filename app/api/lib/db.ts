@@ -30,8 +30,15 @@ export async function initDatabase() {
         stripe_session_id VARCHAR(255) UNIQUE NOT NULL,
         amount_total INTEGER NOT NULL,
         plugins TEXT NOT NULL,
+        marketing_opt_in BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+    `;
+
+    // Add marketing_opt_in column if it doesn't exist (for existing databases)
+    await sql`
+      ALTER TABLE orders
+      ADD COLUMN IF NOT EXISTS marketing_opt_in BOOLEAN DEFAULT FALSE;
     `;
 
     // Create downloads table
@@ -70,12 +77,13 @@ export async function saveOrder(
   email: string,
   stripeSessionId: string,
   amountTotal: number,
-  plugins: Array<{ id: string; name: string }>
+  plugins: Array<{ id: string; name: string }>,
+  marketingOptIn: boolean = false
 ) {
   try {
     const result = await sql`
-      INSERT INTO orders (email, stripe_session_id, amount_total, plugins)
-      VALUES (${email}, ${stripeSessionId}, ${amountTotal}, ${JSON.stringify(plugins)})
+      INSERT INTO orders (email, stripe_session_id, amount_total, plugins, marketing_opt_in)
+      VALUES (${email}, ${stripeSessionId}, ${amountTotal}, ${JSON.stringify(plugins)}, ${marketingOptIn})
       RETURNING id;
     `;
     return result.rows[0].id;
@@ -147,6 +155,23 @@ export async function incrementDownloadCount(orderId: number, pluginId: string) 
     `;
   } catch (error) {
     console.error('Error incrementing download count:', error);
+    throw error;
+  }
+}
+
+// Get marketing subscribers (users who opted in)
+export async function getMarketingSubscribers() {
+  try {
+    const result = await sql`
+      SELECT DISTINCT email, MAX(created_at) as subscribed_at
+      FROM orders
+      WHERE marketing_opt_in = true
+      GROUP BY email
+      ORDER BY subscribed_at DESC;
+    `;
+    return result.rows;
+  } catch (error) {
+    console.error('Error getting marketing subscribers:', error);
     throw error;
   }
 }

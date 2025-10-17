@@ -56,6 +56,9 @@ export async function POST(req: NextRequest) {
         ? JSON.parse(session.metadata.plugins)
         : [];
 
+      // Parse marketing opt-in from metadata
+      const marketingOptIn = session.metadata?.marketingOptIn === 'true';
+
       // Save order to database
       let orderId: number;
       try {
@@ -67,7 +70,8 @@ export async function POST(req: NextRequest) {
           session.customer_email || '',
           session.id,
           session.amount_total || 0,
-          plugins
+          plugins,
+          marketingOptIn
         );
         console.log('💾 Order saved with ID:', orderId);
 

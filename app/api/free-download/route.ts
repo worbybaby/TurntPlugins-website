@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { cartItems, email } = await req.json();
+    const { cartItems, email, marketingOptIn } = await req.json();
 
     // Validate email format
     if (!email || typeof email !== 'string' || !EMAIL_REGEX.test(email)) {
@@ -69,7 +69,8 @@ export async function POST(req: NextRequest) {
       email,
       freeSessionId,
       0, // Free download
-      plugins
+      plugins,
+      marketingOptIn || false
     );
 
     // Generate download links with 3-day expiration

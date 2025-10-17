@@ -18,7 +18,6 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   const [email, setEmail] = useState('');
   const [optInEmail, setOptInEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showOptInError, setShowOptInError] = useState(false);
   const [emailError, setEmailError] = useState('');
 
   const handlePayAmountChange = (pluginId: string, amount: number) => {
@@ -44,14 +43,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
       return;
     }
 
-    // Validate opt-in checkbox
-    if (!optInEmail) {
-      setShowOptInError(true);
-      return;
-    }
-
     setIsLoading(true);
-    setShowOptInError(false);
     setEmailError('');
 
     try {
@@ -70,6 +62,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
         body: JSON.stringify({
           cartItems: cartItemsWithAmounts,
           email,
+          marketingOptIn: optInEmail,
         }),
       });
 
@@ -89,6 +82,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
           body: JSON.stringify({
             cartItems: cartItemsWithAmounts,
             email,
+            marketingOptIn: optInEmail,
           }),
         });
 
@@ -117,7 +111,6 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setPayAmounts({});
     setEmail('');
     setOptInEmail(false);
-    setShowOptInError(false);
     setEmailError('');
     onClose();
   };
@@ -189,18 +182,11 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                   <input
                     type="checkbox"
                     checked={optInEmail}
-                    onChange={(e) => {
-                      setOptInEmail(e.target.checked);
-                      if (e.target.checked) {
-                        setShowOptInError(false);
-                      }
-                    }}
-                    required
+                    onChange={(e) => setOptInEmail(e.target.checked)}
                     className="mt-0.5 sm:mt-1 flex-shrink-0"
                   />
                   <span className="text-xs">
-                    I want to receive emails about future plugins and projects
-                    {showOptInError && <span className="text-red-600 font-bold"> *Required</span>}
+                    I want to receive emails about future plugins and projects (optional)
                   </span>
                 </label>
               </div>

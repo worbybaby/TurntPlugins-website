@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { cartItems, email } = await req.json();
+    const { cartItems, email, marketingOptIn } = await req.json();
 
     // Validate email format
     if (!email || typeof email !== 'string' || !EMAIL_REGEX.test(email)) {
@@ -126,6 +126,7 @@ export async function POST(req: NextRequest) {
       cancel_url: `${req.headers.get('origin')}?canceled=true`,
       metadata: {
         customerEmail: email,
+        marketingOptIn: marketingOptIn ? 'true' : 'false',
         plugins: JSON.stringify(cartItems.map((item: { plugin: { id: string, name: string } }) => ({
           id: item.plugin.id,
           name: item.plugin.name,
