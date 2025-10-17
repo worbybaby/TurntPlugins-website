@@ -11,7 +11,7 @@ export const plugins: Plugin[] = [
   {
     id: '2',
     name: 'Pretty Pretty Princess Sparkle',
-    description: 'Transform your tracks with this innovative effects processor featuring retro-inspired algorithms.',
+    description: 'Brighten any track or master without adding harshness. "Oh, it\'s the make anything better knob"',
     image: '/plugins/PrettyPrettyPrincessSparkle.png',
     price: 0
   },
