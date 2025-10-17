@@ -4,7 +4,7 @@ export const plugins: Plugin[] = [
   {
     id: '4',
     name: 'Tape Bloom',
-    description: 'Vintage tape machine bloom that brings your drums to life.',
+    description: 'Vintage tape machine bloom that brings your drums to life. Emulates warm, harmonic characteristics of classic tape machines while emulating the bloom and stereo spacial efffect of vintage tape machines.',
     image: '/plugins/TapeBloom.png',
     price: 0
   },
