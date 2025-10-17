@@ -4,7 +4,7 @@ export const plugins: Plugin[] = [
   {
     id: '4',
     name: 'Tape Bloom',
-    description: 'Vintage tape machine bloom and stereo width enhancement. Emulates warm, harmonic characteristics of classic tape machines while adding intelligent spatial depth to your recordings.',
+    description: 'Vintage tape machine bloom that brings your drums to life.',
     image: '/plugins/TapeBloom.png',
     price: 0
   },
