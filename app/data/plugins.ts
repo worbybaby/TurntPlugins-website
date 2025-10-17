@@ -32,7 +32,7 @@ export const plugins: Plugin[] = [
   {
     id: '5',
     name: 'Tapeworm',
-    description: 'Bipolar Tape bias knob with authentic tape saturation. Positive tape bias to add a compression/smoothing effect to harsh vocals and other sources.',
+    description: 'Bipolar Tape bias knob with authentic tape saturation. Add positive tape bias to apply a compression/smoothing effect to vocals and other harsh sources. Works well in tandem with Pretty Pretty Princess Sparkle.',
     image: '/plugins/Tapeworm.png',
     price: 0
   }
