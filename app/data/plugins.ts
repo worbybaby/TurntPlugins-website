@@ -32,7 +32,7 @@ export const plugins: Plugin[] = [
   {
     id: '5',
     name: 'Tapeworm',
-    description: 'Professional tape saturation plugin with authentic tape characteristics. Warm, musical saturation modeling classic tape compression and harmonics with real-time performance.',
+    description: 'Bipolar Tape bias knob with authentic tape saturation. Positive tape bias to add a compression/smoothing effect to harsh vocals and other sources.',
     image: '/plugins/Tapeworm.png',
     price: 0
   }
