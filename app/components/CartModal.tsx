@@ -12,9 +12,10 @@ interface CartModalProps {
   onRemoveFromCart: (pluginId: string) => void;
   onClearCart: () => void;
   onAddToCart: (plugin: Plugin) => void;
+  onSwitchToBundle?: (bundle: Plugin) => void;
 }
 
-export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart, onClearCart, onAddToCart }: CartModalProps) {
+export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart, onClearCart, onAddToCart, onSwitchToBundle }: CartModalProps) {
   const [payAmounts, setPayAmounts] = useState<Record<string, number>>({});
   const [email, setEmail] = useState('');
   const [optInEmail, setOptInEmail] = useState(false);
@@ -37,14 +38,8 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   };
 
   const switchToBundle = () => {
-    // Remove all individual paid plugins
-    const paidPluginIds = ['1', '3', '4', '5'];
-    paidPluginIds.forEach(id => onRemoveFromCart(id));
-
-    // Find and add the bundle
-    const bundlePlugin = cartItems.find(item => item.id === 'bundle');
-    if (!bundlePlugin) {
-      // Bundle not in cart, we need to create it from the known data
+    if (onSwitchToBundle) {
+      // Create bundle plugin
       const bundle: Plugin = {
         id: 'bundle',
         name: 'Complete Bundle',
@@ -53,7 +48,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
         price: 49,
         minimumPrice: 10
       };
-      onAddToCart(bundle);
+      onSwitchToBundle(bundle);
     }
   };
 

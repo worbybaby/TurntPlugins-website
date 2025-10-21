@@ -30,6 +30,19 @@ export default function Home() {
     setCartItems([]);
   };
 
+  const handleSwitchToBundle = (bundle: Plugin) => {
+    // Remove all paid plugins and add bundle in one state update
+    const paidPluginIds = ['1', '3', '4', '5'];
+    const newCart = cartItems.filter(item => !paidPluginIds.includes(item.id));
+
+    // Add bundle if not already in cart
+    if (!newCart.find(item => item.id === 'bundle')) {
+      newCart.push(bundle);
+    }
+
+    setCartItems(newCart);
+  };
+
   return (
     <div className="min-h-screen bg-[#5DADE2]">
       {/* Header Bar */}
@@ -85,6 +98,7 @@ export default function Home() {
         onRemoveFromCart={handleRemoveFromCart}
         onClearCart={handleClearCart}
         onAddToCart={handleAddToCart}
+        onSwitchToBundle={handleSwitchToBundle}
       />
       <Modal
         isOpen={isAddedToCartOpen}
