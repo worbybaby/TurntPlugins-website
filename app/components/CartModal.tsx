@@ -182,13 +182,15 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
             </div>
 
             <div className="border-t border-black pt-2 sm:pt-3">
-              {/* Social Proof */}
-              <div className="bg-[#FFE66D] border border-black p-2 mb-3 text-xs">
-                <p className="font-bold mb-1">Pay What Feels Right</p>
-                <p>We believe great audio tools should be accessible to everyone. Choose what works for your budget.</p>
-                <p className="mt-1 text-xs text-gray-700">Suggested: $15-19 (supports ongoing development)</p>
-                <p className="text-xs text-gray-700">Starting at: The price of a coffee ($3)</p>
-                <p className="text-xs text-gray-700">Every contribution helps us keep creating tools you&apos;ll love.</p>
+              {/* Fair Pricing Message */}
+              <div className="bg-[#FFE66D] border border-black p-3 mb-3 text-xs sm:text-sm">
+                <p className="font-bold mb-2">Fair Pricing Model</p>
+                <p className="mb-2">We believe great audio tools should be accessible to everyone. Choose what works for your budget:</p>
+                <p className="font-bold">Suggested Price: $15-19</p>
+                <p className="text-gray-700 mb-2">(supports ongoing development)</p>
+                <p className="font-bold">Your Price: Starting at $3</p>
+                <p className="text-gray-700 mb-2">(students/hobbyists welcome)</p>
+                <p className="mt-2">Every contribution helps us keep creating tools you&apos;ll love.</p>
               </div>
 
               <div className="flex justify-between items-center mb-2 sm:mb-3">
