@@ -11,9 +11,10 @@ interface CartModalProps {
   cartItems: Plugin[];
   onRemoveFromCart: (pluginId: string) => void;
   onClearCart: () => void;
+  onAddToCart: (plugin: Plugin) => void;
 }
 
-export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart, onClearCart }: CartModalProps) {
+export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart, onClearCart, onAddToCart }: CartModalProps) {
   const [payAmounts, setPayAmounts] = useState<Record<string, number>>({});
   const [email, setEmail] = useState('');
   const [optInEmail, setOptInEmail] = useState(false);
@@ -22,6 +23,38 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
 
   const handlePayAmountChange = (pluginId: string, amount: number) => {
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
+  };
+
+  // Check if user has all 4 paid plugins (without the bundle)
+  const hasAllPaidPlugins = () => {
+    const paidPluginIds = ['1', '3', '4', '5']; // Cassette Vibe, Space Bass Butt, Tape Bloom, Tapeworm
+    const cartPluginIds = cartItems.map(item => item.id);
+    const hasBundle = cartPluginIds.includes('bundle');
+
+    if (hasBundle) return false; // Already has bundle
+
+    return paidPluginIds.every(id => cartPluginIds.includes(id));
+  };
+
+  const switchToBundle = () => {
+    // Remove all individual paid plugins
+    const paidPluginIds = ['1', '3', '4', '5'];
+    paidPluginIds.forEach(id => onRemoveFromCart(id));
+
+    // Find and add the bundle
+    const bundlePlugin = cartItems.find(item => item.id === 'bundle');
+    if (!bundlePlugin) {
+      // Bundle not in cart, we need to create it from the known data
+      const bundle: Plugin = {
+        id: 'bundle',
+        name: 'Complete Bundle',
+        description: 'Get all 5 plugins together! Includes Tape Bloom, Pretty Pretty Princess Sparkle (free!), Space Bass Butt, Cassette Vibe, and Tapeworm. Save $27 vs. individual suggested prices.',
+        image: '/plugins/TapeBloom.png',
+        price: 49,
+        minimumPrice: 10
+      };
+      onAddToCart(bundle);
+    }
   };
 
   // Get pay amount with default of plugin's suggested price
@@ -134,6 +167,22 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
           <p className="text-center py-8 text-gray-600">Your cart is empty</p>
         ) : (
           <>
+            {/* Bundle Suggestion Banner */}
+            {hasAllPaidPlugins() && (
+              <div className="bg-green-100 border-2 border-green-600 p-3 mb-3">
+                <div className="flex items-start gap-2">
+                  <span className="text-xl">💡</span>
+                  <div className="flex-1">
+                    <p className="font-bold text-sm mb-1">You have all our plugins!</p>
+                    <p className="text-xs mb-2">Get the Complete Bundle instead and save $19+ (suggested price)</p>
+                    <RetroButton onClick={switchToBundle} className="!text-xs !px-3 !py-1.5">
+                      Switch to Bundle
+                    </RetroButton>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div
               className="space-y-2 sm:space-y-3 max-h-[40vh] sm:max-h-[300px] overflow-y-auto modal-scrollbar"
             >

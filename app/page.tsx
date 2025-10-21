@@ -84,6 +84,7 @@ export default function Home() {
         cartItems={cartItems}
         onRemoveFromCart={handleRemoveFromCart}
         onClearCart={handleClearCart}
+        onAddToCart={handleAddToCart}
       />
       <Modal
         isOpen={isAddedToCartOpen}
