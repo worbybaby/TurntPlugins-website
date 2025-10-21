@@ -18,12 +18,12 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '1',
     files: [
       {
-        fileName: 'Cassette Tapeworm_v1.0.5_macOS.pkg',
+        fileName: 'CassetteVibe_v1.0.7_macOS.pkg',
         fileSize: '62MB',
         platform: 'macOS',
       },
       {
-        fileName: 'CassetteTapeworm-v1.0.5-Windows-x64.exe',
+        fileName: 'CassetteVibe-v1.0.7-Windows-x64.exe',
         fileSize: '17MB',
         platform: 'Windows',
       },
@@ -33,12 +33,12 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '2',
     files: [
       {
-        fileName: 'PrettyPrettyPrincessSparkle_v1.0.2.pkg',
+        fileName: 'PrettyPrettyPrincessSparkle_v1.0.3.pkg',
         fileSize: '56MB',
         platform: 'macOS',
       },
       {
-        fileName: 'PrettyPrettyPrincessSparkle-v1.0.2-Windows-x64.exe',
+        fileName: 'PPPS-v1.0.2-Win-x64.exe',
         fileSize: '16MB',
         platform: 'Windows',
       },
@@ -48,12 +48,12 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '3',
     files: [
       {
-        fileName: 'Space Bass Butt_v1.0.7.pkg',
+        fileName: 'Space Bass Butt_v1.0.8.pkg',
         fileSize: '58MB',
         platform: 'macOS',
       },
       {
-        fileName: 'SpaceBassButt-v1.0.7-Windows-x64.exe',
+        fileName: 'SpaceBassButt-v1.0.8-Windows-x64.exe',
         fileSize: '16MB',
         platform: 'Windows',
       },
@@ -78,7 +78,7 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '5',
     files: [
       {
-        fileName: 'Tapeworm_v1.0.8.pkg',
+        fileName: 'Tapeworm_v1.0.9.pkg',
         fileSize: '60MB',
         platform: 'macOS',
       },

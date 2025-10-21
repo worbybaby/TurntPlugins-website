@@ -24,7 +24,7 @@ export const plugins: Plugin[] = [
   },
   {
     id: '1',
-    name: 'Cassette Tape',
+    name: 'Cassette Vibe',
     description: 'Authentic cassette tape saturation and warmth. Controls tape saturation, wow and flutter, frequency response characteristics, and high-frequency rolloff with a single intensity knob.',
     image: '/plugins/CassetteTape.png',
     price: 0
