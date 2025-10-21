@@ -30,6 +30,21 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
           unoptimized
           className={imageClass}
         />
+        {/* Add "COMPLETE" stamp for bundle */}
+        {plugin.id === 'bundle' && (
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+            style={{ transform: 'translate(-50%, -50%) rotate(-15deg)' }}
+          >
+            <div className="relative">
+              <div className="bg-red-600 border-4 border-red-800 px-8 py-4 shadow-2xl">
+                <span className="text-white font-bold text-5xl tracking-widest" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
+                  COMPLETE
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <h3 className="font-bold text-2xl mb-2">{plugin.name}</h3>
       {plugin.price === 0 ? (
