@@ -154,7 +154,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                       ) : (
                         <div className="space-y-1">
                           <p className="text-xs text-gray-600">
-                            Suggested: ${plugin.price} {plugin.minimumPrice && `(min. $${plugin.minimumPrice})`}
+                            Suggested: ${plugin.price} {plugin.minimumPrice && `(starting at $${plugin.minimumPrice})`}
                           </p>
                           <div className="flex items-center gap-2">
                             <label className="text-xs whitespace-nowrap">Your Price: $</label>
@@ -168,7 +168,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                             />
                           </div>
                           {isInvalid && (
-                            <p className="text-xs text-red-600 font-bold">Min: ${minPrice}</p>
+                            <p className="text-xs text-red-600 font-bold">Starting at: ${minPrice}</p>
                           )}
                         </div>
                       )}
