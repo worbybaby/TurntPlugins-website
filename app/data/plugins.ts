@@ -2,19 +2,19 @@ import { Plugin } from '../types';
 
 export const plugins: Plugin[] = [
   {
+    id: '2',
+    name: 'Pretty Pretty Princess Sparkle',
+    description: 'Brighten any track or master without adding harshness. "Oh, it\'s the make anything better knob"',
+    image: '/plugins/PrettyPrettyPrincessSparkle.png',
+    price: 0
+  },
+  {
     id: '4',
     name: 'Tape Bloom',
     description: 'Vintage tape machine bloom that brings your drums to life. Emulates warm, harmonic characteristics of classic tape machines while creating the bloom and stereo spatial effect of vintage tape machines.',
     image: '/plugins/TapeBloom.png',
     price: 19,
     minimumPrice: 3
-  },
-  {
-    id: '2',
-    name: 'Pretty Pretty Princess Sparkle',
-    description: 'Brighten any track or master without adding harshness. "Oh, it\'s the make anything better knob"',
-    image: '/plugins/PrettyPrettyPrincessSparkle.png',
-    price: 0
   },
   {
     id: '3',
