@@ -33,15 +33,20 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
         {/* Add "COMPLETE" stamp for bundle */}
         {plugin.id === 'bundle' && (
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-            style={{ transform: 'translate(-50%, -50%) rotate(-15deg)' }}
+            className="absolute pointer-events-none"
+            style={{
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%) rotate(-15deg)'
+            }}
           >
-            <div className="relative">
-              <div className="bg-red-600 border-4 border-red-800 px-8 py-4 shadow-2xl">
-                <span className="text-white font-bold text-5xl tracking-widest" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
-                  COMPLETE
-                </span>
-              </div>
+            <div className="bg-red-600 border-4 border-red-800 px-6 py-3 shadow-2xl">
+              <span
+                className="text-white font-bold text-4xl sm:text-5xl tracking-widest whitespace-nowrap"
+                style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
+              >
+                COMPLETE
+              </span>
             </div>
           </div>
         )}
