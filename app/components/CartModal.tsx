@@ -24,12 +24,12 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
   };
 
-  // Get pay amount with default of $19
-  const getPayAmount = (pluginId: string) => {
-    return payAmounts[pluginId] !== undefined ? payAmounts[pluginId] : 19;
+  // Get pay amount with default of plugin's suggested price
+  const getPayAmount = (plugin: Plugin) => {
+    return payAmounts[plugin.id] !== undefined ? payAmounts[plugin.id] : plugin.price;
   };
 
-  const totalAmount = cartItems.reduce((sum, item) => sum + getPayAmount(item.id), 0);
+  const totalAmount = cartItems.reduce((sum, item) => sum + getPayAmount(item), 0);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,6 +43,18 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
       return;
     }
 
+    // Validate minimum prices
+    const invalidItems = cartItems.filter(plugin => {
+      const amount = getPayAmount(plugin);
+      const minPrice = plugin.minimumPrice || 0;
+      return amount < minPrice;
+    });
+
+    if (invalidItems.length > 0) {
+      alert(`Please ensure all prices meet the minimum amount. Check: ${invalidItems.map(p => p.name).join(', ')}`);
+      return;
+    }
+
     setIsLoading(true);
     setEmailError('');
 
@@ -50,7 +62,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
       // Prepare cart items with payment amounts
       const cartItemsWithAmounts = cartItems.map(plugin => ({
         plugin,
-        payAmount: getPayAmount(plugin.id)
+        payAmount: getPayAmount(plugin)
       }));
 
       // Call the API to create a checkout session
@@ -125,33 +137,60 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
             <div
               className="space-y-2 sm:space-y-3 max-h-[40vh] sm:max-h-[300px] overflow-y-auto modal-scrollbar"
             >
-              {cartItems.map((plugin) => (
-                <div
-                  key={plugin.id}
-                  className="bg-white border border-black p-2 sm:p-3 flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-between sm:items-start"
-                >
-                  <div className="flex-1">
-                    <h4 className="font-bold text-xs sm:text-sm mb-1">{plugin.name}</h4>
-                    <div className="flex items-center gap-2">
-                      <label className="text-xs whitespace-nowrap">Pay: $</label>
-                      <input
-                        type="number"
-                        min="0"
-                        step="1"
-                        value={getPayAmount(plugin.id)}
-                        onChange={(e) => handlePayAmountChange(plugin.id, parseFloat(e.target.value) || 0)}
-                        className="w-16 sm:w-20 px-2 py-1 border border-black focus:outline-none text-sm"
-                      />
+              {cartItems.map((plugin) => {
+                const currentAmount = getPayAmount(plugin);
+                const minPrice = plugin.minimumPrice || 0;
+                const isInvalid = currentAmount < minPrice;
+
+                return (
+                  <div
+                    key={plugin.id}
+                    className="bg-white border border-black p-2 sm:p-3 flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-between sm:items-start"
+                  >
+                    <div className="flex-1">
+                      <h4 className="font-bold text-xs sm:text-sm mb-1">{plugin.name}</h4>
+                      {plugin.price === 0 ? (
+                        <p className="text-xs font-bold text-green-700">FREE</p>
+                      ) : (
+                        <div className="space-y-1">
+                          <p className="text-xs text-gray-600">
+                            Suggested: ${plugin.price} {plugin.minimumPrice && `(min. $${plugin.minimumPrice})`}
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <label className="text-xs whitespace-nowrap">Your Price: $</label>
+                            <input
+                              type="number"
+                              min={minPrice}
+                              step="1"
+                              value={currentAmount}
+                              onChange={(e) => handlePayAmountChange(plugin.id, parseFloat(e.target.value) || 0)}
+                              className={`w-16 sm:w-20 px-2 py-1 border ${isInvalid ? 'border-red-600' : 'border-black'} focus:outline-none text-sm`}
+                            />
+                          </div>
+                          {isInvalid && (
+                            <p className="text-xs text-red-600 font-bold">Min: ${minPrice}</p>
+                          )}
+                        </div>
+                      )}
                     </div>
+                    <RetroButton onClick={() => onRemoveFromCart(plugin.id)} className="!text-xs !px-2 !py-1 sm:!px-3 sm:!py-2 w-full sm:w-auto">
+                      Remove
+                    </RetroButton>
                   </div>
-                  <RetroButton onClick={() => onRemoveFromCart(plugin.id)} className="!text-xs !px-2 !py-1 sm:!px-3 sm:!py-2 w-full sm:w-auto">
-                    Remove
-                  </RetroButton>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="border-t border-black pt-2 sm:pt-3">
+              {/* Social Proof */}
+              <div className="bg-[#FFE66D] border border-black p-2 mb-3 text-xs">
+                <p className="font-bold mb-1">Pay What Feels Right</p>
+                <p>We believe great audio tools should be accessible to everyone. Choose what works for your budget.</p>
+                <p className="mt-1 text-xs text-gray-700">Suggested: $15-19 (supports ongoing development)</p>
+                <p className="text-xs text-gray-700">Starting at: The price of a coffee ($3)</p>
+                <p className="text-xs text-gray-700">Every contribution helps us keep creating tools you&apos;ll love.</p>
+              </div>
+
               <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <span className="font-bold text-sm">Total:</span>
                 <span className="font-bold text-base sm:text-lg">${totalAmount.toFixed(2)}</span>

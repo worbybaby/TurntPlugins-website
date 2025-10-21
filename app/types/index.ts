@@ -3,7 +3,8 @@ export interface Plugin {
   name: string;
   description: string;
   image: string;
-  price: number;
+  price: number; // Suggested price (0 for free)
+  minimumPrice?: number; // Minimum price for pay-what-you-want (undefined for free plugins)
 }
 
 export interface CartItem {

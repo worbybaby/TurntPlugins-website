@@ -89,6 +89,15 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
       }
+
+      // Validate minimum price (if plugin has one)
+      const minimumPrice = item.plugin.minimumPrice || 0;
+      if (item.payAmount > 0 && item.payAmount < minimumPrice) {
+        return NextResponse.json(
+          { error: `${item.plugin.name} requires a minimum payment of $${minimumPrice}` },
+          { status: 400 }
+        );
+      }
     }
 
     // Create line items for Stripe

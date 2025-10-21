@@ -31,7 +31,17 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
           className={imageClass}
         />
       </div>
-      <h3 className="font-bold text-2xl mb-4">{plugin.name}</h3>
+      <h3 className="font-bold text-2xl mb-2">{plugin.name}</h3>
+      {plugin.price === 0 ? (
+        <p className="text-lg font-bold text-green-700 mb-3">FREE</p>
+      ) : (
+        <p className="text-base mb-3">
+          <span className="font-bold">${plugin.price}</span>
+          {plugin.minimumPrice && (
+            <span className="text-sm text-gray-600"> (starting at ${plugin.minimumPrice})</span>
+          )}
+        </p>
+      )}
       <p className="text-base mb-5 leading-loose">{plugin.description}</p>
       <RetroButton onClick={() => onAddToCart(plugin)} className="w-full">
         Add to Cart
