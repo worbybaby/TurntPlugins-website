@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import RetroButton from '../components/RetroButton';
 
@@ -43,6 +43,14 @@ export default function DownloadsPage() {
       setLoading(false);
     }
   };
+
+  // Memoize processed orders to prevent recalculating on every render
+  const processedOrders = useMemo(() => {
+    return orders.map(order => ({
+      ...order,
+      validDownloads: order.downloads ? order.downloads.filter((d: any) => d.plugin_id) : []
+    }));
+  }, [orders]);
 
   return (
     <div className="min-h-screen bg-[#5DADE2]">
@@ -90,10 +98,10 @@ export default function DownloadsPage() {
             )}
           </form>
 
-          {orders.length > 0 && (
+          {processedOrders.length > 0 && (
             <div className="space-y-6">
               <h2 className="text-xl font-bold mb-4">Your Orders</h2>
-              {orders.map((order) => (
+              {processedOrders.map((order) => (
                 <div key={order.id} className="border-2 border-black p-4 bg-[#FFE66D]">
                   <div className="flex justify-between items-start mb-4">
                     <div>
@@ -110,7 +118,7 @@ export default function DownloadsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    {order.downloads && order.downloads.filter((d: any) => d.plugin_id).map((download, idx: number) => {
+                    {order.validDownloads.map((download, idx: number) => {
                       const isExpired = new Date(download.expires_at) < new Date();
                       const isWindows = download.plugin_id.endsWith('-windows');
                       const platform = isWindows ? 'Windows' : 'macOS';
