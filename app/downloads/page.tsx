@@ -48,7 +48,7 @@ export default function DownloadsPage() {
   const processedOrders = useMemo(() => {
     return orders.map(order => ({
       ...order,
-      validDownloads: order.downloads ? order.downloads.filter((d: any) => d.plugin_id) : []
+      validDownloads: order.downloads ? order.downloads.filter((d) => d.plugin_id) : []
     }));
   }, [orders]);
 
