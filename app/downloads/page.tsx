@@ -21,11 +21,13 @@ export default function DownloadsPage() {
   }>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setHasSearched(true);
 
     try {
       const response = await fetch(`/api/orders?email=${encodeURIComponent(email)}`);
@@ -45,6 +47,7 @@ export default function DownloadsPage() {
   };
 
   // Memoize processed orders to prevent recalculating on every render
+  // This ensures filtering only happens when orders data changes, not on every keystroke
   const processedOrders = useMemo(() => {
     return orders.map(order => ({
       ...order,
@@ -158,7 +161,7 @@ export default function DownloadsPage() {
             </div>
           )}
 
-          {orders.length === 0 && email && !loading && !error && (
+          {hasSearched && orders.length === 0 && !loading && !error && (
             <p className="text-center text-gray-600 py-8">
               No orders found for this email address.
             </p>
