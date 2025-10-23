@@ -23,6 +23,7 @@ export default function DownloadsPage() {
   const [error, setError] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [regenerating, setRegenerating] = useState<number | null>(null);
 
   const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     startTransition(() => {
@@ -53,13 +54,45 @@ export default function DownloadsPage() {
     }
   };
 
+  const handleRegenerateLinks = async (orderId: number) => {
+    setRegenerating(orderId);
+    try {
+      const response = await fetch('/api/regenerate-links', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to regenerate links');
+      }
+
+      // Refresh the orders to show new links
+      const ordersResponse = await fetch(`/api/orders?email=${encodeURIComponent(email)}`);
+      const ordersData = await ordersResponse.json();
+      setOrders(ordersData.orders || []);
+    } catch (err) {
+      const error = err as Error;
+      alert(error.message || 'Failed to regenerate download links');
+    } finally {
+      setRegenerating(null);
+    }
+  };
+
   // Memoize processed orders to prevent recalculating on every render
   // This ensures filtering only happens when orders data changes, not on every keystroke
   const processedOrders = useMemo(() => {
-    return orders.map(order => ({
-      ...order,
-      validDownloads: order.downloads ? order.downloads.filter((d) => d.plugin_id) : []
-    }));
+    return orders.map(order => {
+      const validDownloads = order.downloads ? order.downloads.filter((d) => d.plugin_id) : [];
+      const hasExpiredLinks = validDownloads.some(d => new Date(d.expires_at) < new Date());
+      return {
+        ...order,
+        validDownloads,
+        hasExpiredLinks
+      };
+    });
   }, [orders]);
 
   return (
@@ -122,9 +155,20 @@ export default function DownloadsPage() {
                         {new Date(order.created_at).toLocaleDateString()}
                       </p>
                     </div>
-                    <p className="font-bold">
-                      ${(order.amount_total / 100).toFixed(2)}
-                    </p>
+                    <div className="flex gap-2 items-center">
+                      <p className="font-bold">
+                        ${(order.amount_total / 100).toFixed(2)}
+                      </p>
+                      {order.hasExpiredLinks && (
+                        <button
+                          onClick={() => handleRegenerateLinks(order.id)}
+                          disabled={regenerating === order.id}
+                          className="px-3 py-1 bg-white border-2 border-black hover:bg-gray-200 font-bold text-xs"
+                        >
+                          {regenerating === order.id ? 'Regenerating...' : 'Refresh Links'}
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   <div className="space-y-2">
