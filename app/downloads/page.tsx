@@ -110,8 +110,11 @@ export default function DownloadsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    {order.downloads && order.downloads[0] && order.downloads[0].plugin_id && order.downloads.map((download, idx: number) => {
+                    {order.downloads && order.downloads.filter((d: any) => d.plugin_id).map((download, idx: number) => {
                       const isExpired = new Date(download.expires_at) < new Date();
+                      const isWindows = download.plugin_id.endsWith('-windows');
+                      const platform = isWindows ? 'Windows' : 'macOS';
+                      const cleanName = download.plugin_name.replace(' (Windows)', '');
 
                       return (
                         <div
@@ -119,7 +122,8 @@ export default function DownloadsPage() {
                           className="bg-white border border-black p-3 flex justify-between items-center"
                         >
                           <div>
-                            <p className="font-bold text-sm">{download.plugin_name}</p>
+                            <p className="font-bold text-sm">{cleanName}</p>
+                            <p className="text-xs text-gray-600">Platform: {platform}</p>
                             <p className="text-xs text-gray-600">
                               {isExpired
                                 ? 'Link expired - contact support'
@@ -134,7 +138,7 @@ export default function DownloadsPage() {
                               href={download.download_url}
                               className="px-4 py-2 bg-white border-2 border-black hover:bg-gray-200 font-bold text-sm"
                             >
-                              Download
+                              Download for {platform}
                             </a>
                           )}
                         </div>
