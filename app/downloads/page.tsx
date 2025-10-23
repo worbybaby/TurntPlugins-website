@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useTransition } from 'react';
 import Link from 'next/link';
 import RetroButton from '../components/RetroButton';
 
@@ -22,6 +22,13 @@ export default function DownloadsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    startTransition(() => {
+      setEmail(e.target.value);
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,7 +94,7 @@ export default function DownloadsPage() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 placeholder="your@email.com"
                 required
                 className="flex-1 px-4 py-2 border-2 border-black focus:outline-none text-base"
