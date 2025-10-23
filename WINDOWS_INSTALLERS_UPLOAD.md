@@ -12,7 +12,7 @@ The website has been updated to support both macOS and Windows installers. When 
   - **Cassette Tape**: `Cassette Tapeworm_v1.0.4_macOS.pkg` + `CassetteTapeworm-v1.0.0-Windows-x64.exe`
   - **Pretty Pretty Princess Sparkle**: `PrettyPrettyPrincessSparkle_v1.0.2.pkg` + `PrettyPrettyPrincessSparkle-v1.0.2-Windows-x64.exe`
   - **Space Bass Butt**: `Space Bass Butt_v1.0.7.pkg` + `SpaceBassButt-v1.0.7-Windows-x64.exe`
-  - **Tape Bloom**: `TapeBloom_v1.0.9.pkg` + `TapeBloom-v1.0.0-Windows-x64.exe`
+  - **Tape Bloom**: `TapeBloom_v1.0.9.pkg` + `TapeBloom-v1.0.1-Windows-x64.exe`
   - **Tapeworm**: `Tapeworm_v1.0.8.pkg` + `Tapeworm-v1.0.8-Windows-x64.exe`
 
 ### 2. Download Route (`app/api/download/route.ts`)
@@ -68,7 +68,7 @@ The website has been updated to support both macOS and Windows installers. When 
 
    npx @vercel/blob upload "/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/Windows/SpaceBassButt-v1.0.7-Windows-x64.exe" --token $BLOB_READ_WRITE_TOKEN --pathname "plugins/SpaceBassButt-v1.0.7-Windows-x64.exe"
 
-   npx @vercel/blob upload "/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/Windows/TapeBloom-v1.0.0-Windows-x64.exe" --token $BLOB_READ_WRITE_TOKEN --pathname "plugins/TapeBloom-v1.0.0-Windows-x64.exe"
+   npx @vercel/blob upload "/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/Windows/TapeBloom-v1.0.1-Windows-x64.exe" --token $BLOB_READ_WRITE_TOKEN --pathname "plugins/TapeBloom-v1.0.1-Windows-x64.exe"
 
    npx @vercel/blob upload "/Volumes/Samsung_T5/plugin_dev/tests/new-plugin-time/Current Installers/Windows/Tapeworm-v1.0.8-Windows-x64.exe" --token $BLOB_READ_WRITE_TOKEN --pathname "plugins/Tapeworm-v1.0.8-Windows-x64.exe"
    ```
@@ -82,7 +82,7 @@ The website has been updated to support both macOS and Windows installers. When 
    - `CassetteTapeworm-v1.0.0-Windows-x64.exe`
    - `PrettyPrettyPrincessSparkle-v1.0.2-Windows-x64.exe`
    - `SpaceBassButt-v1.0.7-Windows-x64.exe`
-   - `TapeBloom-v1.0.0-Windows-x64.exe`
+   - `TapeBloom-v1.0.1-Windows-x64.exe`
    - `Tapeworm-v1.0.8-Windows-x64.exe`
 
 ## Verification

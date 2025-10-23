@@ -68,7 +68,7 @@ export const pluginFiles: Record<string, PluginFile> = {
         platform: 'macOS',
       },
       {
-        fileName: 'TapeBloom-v1.0.0-Windows-x64.exe',
+        fileName: 'TapeBloom-v1.0.1-Windows-x64.exe',
         fileSize: '15MB',
         platform: 'Windows',
       },
