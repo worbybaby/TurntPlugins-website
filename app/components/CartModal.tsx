@@ -21,9 +21,36 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   const [optInEmail, setOptInEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percentage: number } | null>(null);
+  const [discountError, setDiscountError] = useState('');
 
   const handlePayAmountChange = (pluginId: string, amount: number) => {
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
+  };
+
+  const handleApplyDiscount = () => {
+    const code = discountCode.trim().toUpperCase();
+
+    if (!code) {
+      setDiscountError('Please enter a discount code');
+      return;
+    }
+
+    // Validate discount code
+    if (code === 'ALLMYFRIENDSAREPLUGINS') {
+      setAppliedDiscount({ code, percentage: 100 });
+      setDiscountError('');
+    } else {
+      setDiscountError('Invalid discount code');
+      setAppliedDiscount(null);
+    }
+  };
+
+  const handleRemoveDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountCode('');
+    setDiscountError('');
   };
 
   // Check if user has all 4 paid plugins (without the bundle)
@@ -57,7 +84,9 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     return payAmounts[plugin.id] !== undefined ? payAmounts[plugin.id] : plugin.price;
   };
 
-  const totalAmount = cartItems.reduce((sum, item) => sum + getPayAmount(item), 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + getPayAmount(item), 0);
+  const discountAmount = appliedDiscount ? (subtotal * appliedDiscount.percentage) / 100 : 0;
+  const totalAmount = Math.max(0, subtotal - discountAmount);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -103,6 +132,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
           cartItems: cartItemsWithAmounts,
           email,
           marketingOptIn: optInEmail,
+          discountCode: appliedDiscount?.code || null,
         }),
       });
 
@@ -123,6 +153,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
             cartItems: cartItemsWithAmounts,
             email,
             marketingOptIn: optInEmail,
+            discountCode: appliedDiscount?.code || null,
           }),
         });
 
@@ -152,6 +183,9 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setEmail('');
     setOptInEmail(false);
     setEmailError('');
+    setDiscountCode('');
+    setAppliedDiscount(null);
+    setDiscountError('');
     onClose();
   };
 
@@ -235,9 +269,21 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 <p className="mt-2">Every contribution helps us keep creating tools you&apos;ll love.</p>
               </div>
 
-              <div className="flex justify-between items-center mb-2 sm:mb-3">
-                <span className="font-bold text-sm">Total:</span>
-                <span className="font-bold text-base sm:text-lg">${totalAmount.toFixed(2)}</span>
+              <div className="space-y-1 mb-2 sm:mb-3">
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-sm">Subtotal:</span>
+                  <span className="font-bold text-base sm:text-lg">${subtotal.toFixed(2)}</span>
+                </div>
+                {appliedDiscount && (
+                  <div className="flex justify-between items-center text-green-700">
+                    <span className="text-xs">Discount ({appliedDiscount.code}):</span>
+                    <span className="text-sm font-bold">-${discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center border-t border-black pt-1">
+                  <span className="font-bold text-sm">Total:</span>
+                  <span className="font-bold text-base sm:text-lg">${totalAmount.toFixed(2)}</span>
+                </div>
               </div>
 
               <div className="mb-2 sm:mb-3">
@@ -257,6 +303,42 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 />
                 {emailError && (
                   <p className="text-red-600 text-xs font-bold mt-1">{emailError}</p>
+                )}
+              </div>
+
+              <div className="mb-2 sm:mb-3">
+                <label className="block text-xs mb-1">Discount Code (optional):</label>
+                {appliedDiscount ? (
+                  <div className="bg-green-100 border-2 border-green-600 p-2 flex justify-between items-center">
+                    <div>
+                      <p className="text-xs font-bold text-green-800">{appliedDiscount.code} applied!</p>
+                      <p className="text-xs text-green-700">{appliedDiscount.percentage}% off</p>
+                    </div>
+                    <RetroButton onClick={handleRemoveDiscount} className="!text-xs !px-2 !py-1">
+                      Remove
+                    </RetroButton>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={discountCode}
+                      onChange={(e) => {
+                        setDiscountCode(e.target.value);
+                        if (discountError) {
+                          setDiscountError('');
+                        }
+                      }}
+                      className="flex-1 px-2 py-1.5 sm:py-2 border border-black focus:outline-none text-sm uppercase"
+                      placeholder="Enter code"
+                    />
+                    <RetroButton onClick={handleApplyDiscount} className="!text-xs !px-3 !py-1.5 sm:!py-2">
+                      Apply
+                    </RetroButton>
+                  </div>
+                )}
+                {discountError && (
+                  <p className="text-red-600 text-xs font-bold mt-1">{discountError}</p>
                 )}
               </div>
 

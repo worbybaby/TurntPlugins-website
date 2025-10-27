@@ -63,12 +63,12 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '4',
     files: [
       {
-        fileName: 'TapeBloom_v1.0.9.pkg',
+        fileName: 'TapeBloom_v1.1.0.pkg',
         fileSize: '66MB',
         platform: 'macOS',
       },
       {
-        fileName: 'TapeBloom-v1.0.1-Windows-x64.exe',
+        fileName: 'TapeBloom-v1.1.0-Windows-x64.exe',
         fileSize: '15MB',
         platform: 'Windows',
       },

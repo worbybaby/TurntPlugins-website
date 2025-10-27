@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { cartItems, email, marketingOptIn } = await req.json();
+    const { cartItems, email, marketingOptIn, discountCode } = await req.json();
 
     // Validate email format
     if (!email || typeof email !== 'string' || !EMAIL_REGEX.test(email)) {
@@ -64,10 +64,13 @@ export async function POST(req: NextRequest) {
     // Generate a unique session ID for free downloads
     const freeSessionId = `free_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
+    // Add discount code info to session ID if used
+    const sessionIdWithDiscount = discountCode ? `${freeSessionId}_${discountCode}` : freeSessionId;
+
     // Save order to database (amount = 0 for free)
     const orderId = await saveOrder(
       email,
-      freeSessionId,
+      sessionIdWithDiscount,
       0, // Free download
       plugins,
       marketingOptIn || false
@@ -116,12 +119,12 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: 'Turnt Plugins <downloads@turntplugins.com>',
       to: email,
-      subject: 'Your Free Turnt Plugins Download',
+      subject: discountCode ? 'Your Turnt Plugins Download (Discount Applied!)' : 'Your Free Turnt Plugins Download',
       react: PurchaseConfirmationEmail({
         customerEmail: email,
         plugins: plugins,
         orderTotal: 0,
-        orderId: freeSessionId,
+        orderId: sessionIdWithDiscount,
         downloadLinks,
       }),
     });

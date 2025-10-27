@@ -20,14 +20,14 @@ const files = [
   { path: `${MAC_DIR}/CassetteVibe_v1.0.7_macOS.pkg`, name: 'CassetteVibe_v1.0.7_macOS.pkg', platform: 'macOS' },
   { path: `${MAC_DIR}/PrettyPrettyPrincessSparkle_v1.0.3.pkg`, name: 'PrettyPrettyPrincessSparkle_v1.0.3.pkg', platform: 'macOS' },
   { path: `${MAC_DIR}/Space Bass Butt_v1.0.8.pkg`, name: 'Space Bass Butt_v1.0.8.pkg', platform: 'macOS' },
-  { path: `${MAC_DIR}/TapeBloom_v1.0.9.pkg`, name: 'TapeBloom_v1.0.9.pkg', platform: 'macOS' },
+  { path: `${MAC_DIR}/TapeBloom_v1.1.0.pkg`, name: 'TapeBloom_v1.1.0.pkg', platform: 'macOS' },
   { path: `${MAC_DIR}/Tapeworm_v1.0.9.pkg`, name: 'Tapeworm_v1.0.9.pkg', platform: 'macOS' },
 
   // Windows installers
   { path: `${WINDOWS_DIR}/CassetteVibe-v1.0.7-Windows-x64.exe`, name: 'CassetteVibe-v1.0.7-Windows-x64.exe', platform: 'Windows' },
   { path: `${WINDOWS_DIR}/PPPS-v1.0.2-Win-x64.exe`, name: 'PPPS-v1.0.2-Win-x64.exe', platform: 'Windows' },
   { path: `${WINDOWS_DIR}/SpaceBassButt-v1.0.8-Windows-x64.exe`, name: 'SpaceBassButt-v1.0.8-Windows-x64.exe', platform: 'Windows' },
-  { path: `${WINDOWS_DIR}/TapeBloom-v1.0.0-Windows-x64.exe`, name: 'TapeBloom-v1.0.0-Windows-x64.exe', platform: 'Windows' },
+  { path: `${WINDOWS_DIR}/TapeBloom-v1.1.0-Windows-x64.exe`, name: 'TapeBloom-v1.1.0-Windows-x64.exe', platform: 'Windows' },
   { path: `${WINDOWS_DIR}/Tapeworm-v1.0.8-Windows-x64.exe`, name: 'Tapeworm-v1.0.8-Windows-x64.exe', platform: 'Windows' },
 ];
 
