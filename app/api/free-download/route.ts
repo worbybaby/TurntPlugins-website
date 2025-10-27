@@ -55,11 +55,20 @@ export async function POST(req: NextRequest) {
     // Initialize database tables if needed
     await initDatabase();
 
-    // Extract plugins from cart items
-    const plugins = cartItems.map((item: { plugin: { id: string; name: string } }) => ({
-      id: item.plugin.id,
-      name: item.plugin.name,
-    }));
+    // Extract plugins from cart items (expand bundle to all 5 plugins)
+    const plugins = cartItems.flatMap((item: { plugin: { id: string; name: string } }) => {
+      // If bundle, expand to all 5 individual plugins
+      if (item.plugin.id === 'bundle') {
+        return [
+          { id: '1', name: 'Cassette Vibe' },
+          { id: '2', name: 'Pretty Pretty Princess Sparkle' },
+          { id: '3', name: 'Space Bass Butt' },
+          { id: '4', name: 'Tape Bloom' },
+          { id: '5', name: 'Tapeworm' },
+        ];
+      }
+      return [{ id: item.plugin.id, name: item.plugin.name }];
+    });
 
     // Generate a unique session ID for free downloads
     const freeSessionId = `free_${Date.now()}_${Math.random().toString(36).substring(7)}`;

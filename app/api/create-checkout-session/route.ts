@@ -171,10 +171,21 @@ export async function POST(req: NextRequest) {
         customerEmail: email,
         marketingOptIn: marketingOptIn ? 'true' : 'false',
         discountCode: discountCode || '',
-        plugins: JSON.stringify(cartItems.map((item: { plugin: { id: string, name: string } }) => ({
-          id: item.plugin.id,
-          name: item.plugin.name,
-        }))),
+        plugins: JSON.stringify(
+          cartItems.flatMap((item: { plugin: { id: string, name: string } }) => {
+            // If bundle, expand to all 5 individual plugins
+            if (item.plugin.id === 'bundle') {
+              return [
+                { id: '1', name: 'Cassette Vibe' },
+                { id: '2', name: 'Pretty Pretty Princess Sparkle' },
+                { id: '3', name: 'Space Bass Butt' },
+                { id: '4', name: 'Tape Bloom' },
+                { id: '5', name: 'Tapeworm' },
+              ];
+            }
+            return [{ id: item.plugin.id, name: item.plugin.name }];
+          })
+        ),
       },
     });
 
