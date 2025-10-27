@@ -262,11 +262,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
             <div className="border-t border-black pt-2 sm:pt-3">
               {/* Fair Pricing Message */}
               <div className="bg-[#FFE66D] border border-black p-3 mb-3 text-xs sm:text-sm">
-                <p className="font-bold mb-2">Fair Pricing Model</p>
-                <p className="mb-2">We believe great audio tools should be accessible to everyone. Choose what works for your budget:</p>
-                <p className="font-bold">Suggested Price: $15-19</p>
-                <p className="text-gray-700 mb-2">(supports ongoing development)</p>
-                <p className="mt-2">Every contribution helps us keep creating tools you&apos;ll love.</p>
+                <p className="mb-2">Suggested prices help support ongoing development. Every contribution helps us keep creating tools you&apos;ll love.</p>
               </div>
 
               <div className="space-y-1 mb-2 sm:mb-3">
