@@ -262,7 +262,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
             <div className="border-t border-black pt-2 sm:pt-3">
               {/* Fair Pricing Message */}
               <div className="bg-[#FFE66D] border border-black p-3 mb-3 text-xs sm:text-sm">
-                <p>Complex DSP with an extremely simple interface for all budgets. Suggested prices help support ongoing development. Every contribution helps us keep creating tools you&apos;ll love.</p>
+                <p>Complex DSP with an extremely simple interface for all budgets. Suggested prices help us keep creating tools you&apos;ll love.</p>
               </div>
 
               <div className="space-y-1 mb-2 sm:mb-3">
