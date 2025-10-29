@@ -31,7 +31,7 @@ async function createFavicon() {
     .clone()
     .resize(32, 32, {
       fit: 'contain',
-      background: { r: 93, g: 173, b: 226, alpha: 1 } // Sky blue background
+      background: { r: 0, g: 0, b: 0, alpha: 0 } // Transparent background
     })
     .png()
     .toBuffer();
@@ -44,7 +44,7 @@ async function createFavicon() {
     .clone()
     .resize(16, 16, {
       fit: 'contain',
-      background: { r: 93, g: 173, b: 226, alpha: 1 }
+      background: { r: 0, g: 0, b: 0, alpha: 0 } // Transparent background
     })
     .png()
     .toBuffer();
@@ -57,7 +57,7 @@ async function createFavicon() {
     .clone()
     .resize(180, 180, {
       fit: 'contain',
-      background: { r: 93, g: 173, b: 226, alpha: 1 }
+      background: { r: 0, g: 0, b: 0, alpha: 0 } // Transparent background
     })
     .png()
     .toBuffer();
