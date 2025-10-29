@@ -344,7 +344,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                     type="checkbox"
                     checked={optInEmail}
                     onChange={(e) => setOptInEmail(e.target.checked)}
-                    className="mt-0.5 sm:mt-1 flex-shrink-0 accent-red-600"
+                    className="mt-0.5 sm:mt-1 flex-shrink-0 checkbox-red-outline"
                   />
                   <span className="text-xs">
                     I want to receive emails about future plugins and projects (optional)

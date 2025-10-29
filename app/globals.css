@@ -252,3 +252,14 @@ input[type="number"]::-webkit-outer-spin-button {
 nextjs-portal {
   display: none !important;
 }
+
+/* Red outline for unchecked checkbox, blue when checked */
+.checkbox-red-outline {
+  outline: 2px solid #dc2626;
+  outline-offset: 1px;
+}
+
+.checkbox-red-outline:checked {
+  outline: none;
+  accent-color: #3b82f6;
+}
