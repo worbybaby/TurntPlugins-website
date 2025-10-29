@@ -16,25 +16,25 @@ async function useBrandFavicon() {
   const metadata = await image.metadata();
   console.log(`📐 Source size: ${metadata.width}x${metadata.height}`);
 
-  // Create 32x32 favicon
+  // Create 32x32 favicon (maximize size by using cover fit)
   const favicon32 = await sharp(sourcePath)
-    .resize(32, 32, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(32, 32, { fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
   await writeFile('public/favicon-32x32.png', favicon32);
-  console.log('✅ Created: public/favicon-32x32.png');
+  console.log('✅ Created: public/favicon-32x32.png (maximized size)');
 
-  // Create 16x16 favicon
+  // Create 16x16 favicon (maximize size)
   const favicon16 = await sharp(sourcePath)
-    .resize(16, 16, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(16, 16, { fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
   await writeFile('public/favicon-16x16.png', favicon16);
-  console.log('✅ Created: public/favicon-16x16.png');
+  console.log('✅ Created: public/favicon-16x16.png (maximized size)');
 
-  // Create apple-touch-icon (180x180)
+  // Create apple-touch-icon (180x180, maximize size)
   const appleTouchIcon = await sharp(sourcePath)
-    .resize(180, 180, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(180, 180, { fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
   await writeFile('public/apple-touch-icon.png', appleTouchIcon);
