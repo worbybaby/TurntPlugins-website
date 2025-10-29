@@ -16,24 +16,41 @@ async function useBrandFavicon() {
   const metadata = await image.metadata();
   console.log(`📐 Source size: ${metadata.width}x${metadata.height}`);
 
-  // Create 32x32 favicon (maximize size by using cover fit)
-  const favicon32 = await sharp(sourcePath)
+  // Crop to the knob area only (center ~280x280 of the 400x400 image)
+  // This removes the transparent padding around the knob
+  const knobSize = 280;
+  const offset = Math.floor((metadata.width - knobSize) / 2);
+
+  console.log(`✂️  Cropping to knob area: ${knobSize}x${knobSize} (removing ${offset}px padding)`);
+
+  const croppedKnob = sharp(sourcePath).extract({
+    left: offset,
+    top: offset,
+    width: knobSize,
+    height: knobSize
+  });
+
+  // Create 32x32 favicon (crop to knob, then resize to fill entire space)
+  const favicon32 = await croppedKnob
+    .clone()
     .resize(32, 32, { fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
   await writeFile('public/favicon-32x32.png', favicon32);
-  console.log('✅ Created: public/favicon-32x32.png (maximized size)');
+  console.log('✅ Created: public/favicon-32x32.png (knob fills entire space)');
 
-  // Create 16x16 favicon (maximize size)
-  const favicon16 = await sharp(sourcePath)
+  // Create 16x16 favicon (crop to knob, then maximize)
+  const favicon16 = await croppedKnob
+    .clone()
     .resize(16, 16, { fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
   await writeFile('public/favicon-16x16.png', favicon16);
-  console.log('✅ Created: public/favicon-16x16.png (maximized size)');
+  console.log('✅ Created: public/favicon-16x16.png (knob fills entire space)');
 
-  // Create apple-touch-icon (180x180, maximize size)
-  const appleTouchIcon = await sharp(sourcePath)
+  // Create apple-touch-icon (180x180, crop and maximize)
+  const appleTouchIcon = await croppedKnob
+    .clone()
     .resize(180, 180, { fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
