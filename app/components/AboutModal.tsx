@@ -14,21 +14,16 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
         className="space-y-3 sm:space-y-4 text-sm max-h-[50vh] sm:max-h-[300px] overflow-y-auto modal-scrollbar"
       >
         <p>
-          <strong>Welcome to Turnt Plugins!</strong>
-        </p>
-        <p className="text-sm">
-          Premium audio plugins for creative producers.
+          I made Turnt Plugins for a few reasons:
         </p>
         <p>
-          I&apos;m an audio plugin developer passionate about creating unique, creative tools for music producers and sound designers.
-          Each plugin is crafted with care to bring you innovative sounds and vintage-inspired character.
+          <strong>1)</strong> Most professional plugins are prohibitively expensive for students, hobbyists, and people just starting out, and I wanted to give back and make the tools and techniques I use daily accessible to more people.
         </p>
         <p>
-          All plugins are available on a pay-what-you-want basis because I believe great tools should be accessible to everyone.
-          Your support helps me continue developing new and exciting audio tools!
+          <strong>2)</strong> I noticed that myself as well as other professional mixers grab massive plugins for a specific color or a single feature, and I thought, If I&apos;m adding the most CPU-hungry plugin just to add a little tape bias, why not make a simple plugin that does only what I want it to?
         </p>
-        <p className="text-xs text-gray-600">
-          © 2025 Turnt Plugins. All rights reserved.
+        <p>
+          I&apos;ve fine-tuned the effects in each of these plugins to exactly how I use them in my everyday work, and I hope you find them as useful as I do.
         </p>
       </div>
     </Modal>

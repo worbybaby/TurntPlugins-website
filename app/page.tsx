@@ -48,7 +48,7 @@ export default function Home() {
       {/* Header Bar */}
       <header className="bg-white border-b-4 border-black px-3 sm:px-6 py-3 sm:py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">TURNT PLUGINS</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">TURNT PLUG-INS</h1>
           <div className="flex gap-2 sm:gap-4 md:gap-6">
             <RetroButton onClick={() => setIsAboutOpen(true)} className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
               About
@@ -67,7 +67,7 @@ export default function Home() {
         <div className="mb-6 sm:mb-8 bg-[#FFE66D] border-4 border-black p-4 sm:p-6 md:p-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3">Welcome to Turnt Plugins</h2>
           <p className="text-base sm:text-lg leading-relaxed sm:leading-loose">
-            Explore our collection of creative audio plugins. All available on a pay-what-you-want basis!
+            A collection of boutique plugins that cut the fat and do one thing really well.
           </p>
         </div>
 
