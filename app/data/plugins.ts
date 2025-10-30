@@ -27,7 +27,7 @@ export const plugins: Plugin[] = [
   {
     id: '1',
     name: 'Cassette Vibe',
-    description: 'This is a simple color plugin that emulates retro cassette tapes. A lot is going on under the hood but just stick it on stuff or automate it as a cool filter effect before a drop or something.',
+    description: 'This is a simple color plugin that emulates retro cassette tapes. A lot is going on under the hood but just stick it on things or automate it as an interesting filter effect before a drop.',
     image: '/plugins/CassetteTape.png',
     price: 15,
     minimumPrice: 3
@@ -43,7 +43,7 @@ export const plugins: Plugin[] = [
   {
     id: 'bundle',
     name: 'Complete Bundle',
-    description: 'Get all five plugins for less $$ (you\'ll save 19 big ones). Includes Pretty Pretty Princess Sparkle, Tape Bloom, Space Bass Butt, Cassette Vibe, and Tapeworm.',
+    description: 'Get all five plugins for less $$$ (you\'ll save 19 big ones). Includes Pretty Pretty Princess Sparkle, Tape Bloom, Space Bass Butt, Cassette Vibe, and Tapeworm.',
     image: '/plugins/TapeBloom.png', // Using TapeBloom as placeholder - you may want to create a bundle image
     price: 49,
     minimumPrice: 10
