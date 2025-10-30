@@ -27,7 +27,7 @@ export const plugins: Plugin[] = [
   {
     id: '1',
     name: 'Cassette Vibe',
-    description: 'This is a simple color plugin that emulates retro cassette tapes. A lot is going on under the hood but just stick it on things or automate it as an interesting filter effect before a drop.',
+    description: 'This is a simple color plugin that emulates retro cassette tapes. A lot is going on under the hood but just stick it on things or automate it as an interesting filter effect before a drop or something.',
     image: '/plugins/CassetteTape.png',
     price: 15,
     minimumPrice: 3
