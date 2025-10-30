@@ -4,7 +4,7 @@ export const plugins: Plugin[] = [
   {
     id: '2',
     name: 'Pretty Pretty Princess Sparkle',
-    description: 'Make it sparkle, babies! A fine-tuned algorithm to brighten any track or master without harshness. It\'s also level-matched—so, you know, use your ears.',
+    description: 'Make it sparkle, babies! A fine-tuned algorithm to brighten any track or master without harshness. It\'s also level-matched, so, you know, use your ears.',
     image: '/plugins/PrettyPrettyPrincessSparkle.png',
     price: 0
   },
