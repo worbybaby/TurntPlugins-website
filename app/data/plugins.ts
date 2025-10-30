@@ -19,7 +19,7 @@ export const plugins: Plugin[] = [
   {
     id: '3',
     name: 'Space Bass Butt',
-    description: 'A bass harmonic enhancer that creates the perception of extended bass response. Good for enhancing bass on small speakers or adding warmth to bass-light recordings. Pretty chunky.',
+    description: 'A bass harmonic enhancer that creates the perception of extended bass response. Good for enhancing bass on small speakers or adding warmth to thin recordings. Pretty chunky.',
     image: '/plugins/SpaceBassButt.png',
     price: 15,
     minimumPrice: 3
