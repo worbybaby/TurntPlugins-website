@@ -99,6 +99,11 @@ html {
   height: 32px;
 }
 
+/* Enable smooth scrolling for modal content on mobile */
+.modal-content {
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Hide scrollbar in modals and modal overlays (except .modal-scrollbar) */
 .modal-content::-webkit-scrollbar,
 .modal-content *:not(.modal-scrollbar)::-webkit-scrollbar,
