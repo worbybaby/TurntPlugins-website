@@ -196,6 +196,15 @@ html {
 /* Enable smooth scrolling for modal content on mobile */
 .modal-content {
   -webkit-overflow-scrolling: touch;
+  /* Prevent horizontal scrolling in modals */
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.modal-content * {
+  /* Ensure all children respect the container width */
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Hide scrollbar in modals and modal overlays (except .modal-scrollbar) */

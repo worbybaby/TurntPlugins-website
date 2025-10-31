@@ -315,7 +315,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                     </RetroButton>
                   </div>
                 ) : (
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       value={discountCode}
@@ -328,7 +328,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                       className="flex-1 px-2 py-1.5 sm:py-2 border border-black focus:outline-none text-sm uppercase"
                       placeholder="Enter code"
                     />
-                    <RetroButton onClick={handleApplyDiscount} className="!text-xs !px-3 !py-1.5 sm:!py-2">
+                    <RetroButton onClick={handleApplyDiscount} className="!text-xs !px-3 !py-1.5 sm:!py-2 w-full sm:w-auto">
                       Apply
                     </RetroButton>
                   </div>

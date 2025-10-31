@@ -18,16 +18,16 @@ export default function RetroWindow({
   height = 'h-auto'
 }: RetroWindowProps) {
   return (
-    <div className={`${width} ${height} max-w-full max-h-[90vh] bg-white border-4 border-black flex flex-col`}>
+    <div className={`${width} ${height} max-w-full max-h-[90vh] bg-white border-4 border-black flex flex-col overflow-x-hidden`}>
       {/* Title Bar */}
-      <div className="bg-[#000080] px-4 py-3 flex items-center justify-between border-b-4 border-black flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <span className="text-white font-bold text-lg">{title}</span>
+      <div className="bg-[#000080] px-4 py-3 flex items-center justify-between border-b-4 border-black flex-shrink-0 overflow-x-hidden">
+        <div className="flex items-center gap-2 overflow-hidden">
+          <span className="text-white font-bold text-lg truncate">{title}</span>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="w-9 h-9 bg-white border-3 border-black flex items-center justify-center hover:bg-gray-200"
+            className="w-9 h-9 bg-white border-3 border-black flex items-center justify-center hover:bg-gray-200 flex-shrink-0"
           >
             <span className="text-lg font-bold leading-none">×</span>
           </button>
@@ -35,7 +35,7 @@ export default function RetroWindow({
       </div>
 
       {/* Window Content */}
-      <div className="p-6 modal-content overflow-y-auto flex-1 min-h-0">
+      <div className="p-6 modal-content overflow-y-auto overflow-x-hidden flex-1 min-h-0">
         {children}
       </div>
     </div>
