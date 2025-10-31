@@ -85,7 +85,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-white border-t-4 border-black mt-16 px-6 py-4">
         <div className="max-w-7xl mx-auto text-center text-sm text-gray-700">
-          © 2024 Turnt Plugins. All rights reserved.
+          © 2025 Turnt Plugins. All rights reserved.
         </div>
       </footer>
 
