@@ -56,10 +56,8 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
         <p className="text-lg font-bold text-green-700 mb-3">FREE</p>
       ) : (
         <p className="text-base mb-3">
+          <span className="text-sm text-gray-600">Suggested Price: </span>
           <span className="font-bold">${plugin.price}</span>
-          {plugin.minimumPrice && (
-            <span className="text-sm text-gray-600"> (starting at ${plugin.minimumPrice})</span>
-          )}
         </p>
       )}
       <p className="text-base mb-5 leading-loose">{plugin.description}</p>
