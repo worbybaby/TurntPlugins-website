@@ -2,6 +2,14 @@ import { Plugin } from '../types';
 
 export const plugins: Plugin[] = [
   {
+    id: '6',
+    name: 'Rubber.PRE',
+    description: 'Circuit-accurate Tascam 424 Mk I preamp emulation for guitar. Delivers authentic vintage warmth and grainy crunch with unified op-amp modeling, Baxandall EQ, and true analog saturation characteristics. Perfect for tracking guitars with that indie cassette vibe.',
+    image: ['/plugins/RubberPRE-1.png', '/plugins/RubberPRE-2.png'],
+    price: 29,
+    minimumPrice: 15
+  },
+  {
     id: '2',
     name: 'Pretty Pretty Princess Sparkle',
     description: 'Make it sparkle, babies! A fine-tuned algorithm to brighten any track or master without harshness. It\'s also level-matched, so, you know, use your ears.',
@@ -43,7 +51,7 @@ export const plugins: Plugin[] = [
   {
     id: 'bundle',
     name: 'Complete Bundle',
-    description: 'Get all five plugins for less $$$ (you\'ll save 19 big ones). Includes Pretty Pretty Princess Sparkle, Tape Bloom, Space Bass Butt, Cassette Vibe, and Tapeworm.',
+    description: 'Get all five plugins for less $$$ (you\'ll save 19 big ones). Includes Pretty Pretty Princess Sparkle, Tape Bloom, Space Bass Butt, Cassette Vibe, and Tapeworm. Does not include Rubber.PRE.',
     image: '/plugins/TapeBloom.png', // Using TapeBloom as placeholder - you may want to create a bundle image
     price: 49,
     minimumPrice: 10

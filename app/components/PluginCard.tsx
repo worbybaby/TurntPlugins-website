@@ -3,6 +3,7 @@
 import { Plugin } from '../types';
 import RetroButton from './RetroButton';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 interface PluginCardProps {
   plugin: Plugin;
@@ -10,6 +11,31 @@ interface PluginCardProps {
 }
 
 export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
+  const images = Array.isArray(plugin.image) ? plugin.image : [plugin.image];
+  const hasCarousel = images.length > 1;
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Auto-advance carousel every 3 seconds
+  useEffect(() => {
+    if (!hasCarousel) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [hasCarousel, images.length]);
+
+  const handlePrevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
   // Custom adjustments per plugin
   let imageClass = 'object-cover brightness-125';
   if (plugin.id === '3') {
@@ -22,14 +48,52 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
 
   return (
     <div className="p-4">
-      <div className="aspect-square bg-black border-[5px] border-black relative overflow-hidden mb-4">
+      <div className="aspect-square bg-black border-[5px] border-black relative overflow-hidden mb-4 group">
         <Image
-          src={plugin.image}
+          src={images[currentImageIndex]}
           alt={plugin.name}
           fill
           unoptimized
           className={imageClass}
         />
+
+        {/* Carousel navigation arrows */}
+        {hasCarousel && (
+          <>
+            <button
+              onClick={handlePrevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 text-white px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity border-2 border-white hover:bg-black/90"
+              aria-label="Previous image"
+            >
+              ←
+            </button>
+            <button
+              onClick={handleNextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 text-white px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity border-2 border-white hover:bg-black/90"
+              aria-label="Next image"
+            >
+              →
+            </button>
+
+            {/* Image indicators */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentImageIndex(index);
+                  }}
+                  className={`w-2 h-2 border border-white transition-colors ${
+                    index === currentImageIndex ? 'bg-white' : 'bg-transparent'
+                  }`}
+                  aria-label={`Go to image ${index + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Add "COMPLETE" stamp for bundle */}
         {plugin.id === 'bundle' && (
           <div

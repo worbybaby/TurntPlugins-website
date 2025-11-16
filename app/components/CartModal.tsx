@@ -232,7 +232,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                       ) : (
                         <div className="space-y-1">
                           <p className="text-xs text-gray-600">
-                            Suggested: ${plugin.price} {plugin.minimumPrice && `(starting at $${plugin.minimumPrice})`}
+                            Suggested: ${plugin.price}
                           </p>
                           <div className="flex items-center gap-2">
                             <label className="text-xs whitespace-nowrap">Your Price: $</label>
