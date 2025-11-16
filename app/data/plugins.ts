@@ -4,7 +4,7 @@ export const plugins: Plugin[] = [
   {
     id: '6',
     name: 'Rubber.PRE',
-    description: 'Circuit-accurate 4-track tape preamp emulation that delivers authentic grainy crunch and rubbery lofi 90s guitar tones for even the saddest of indie long boys. Engage the rubber button for extra gritty distortion and output level matching so you can hear the tone not the gain.',
+    description: 'Circuit-accurate 4-track tape preamp emulation that delivers authentic grainy crunch and rubbery lofi 90s guitar tones for even the saddest of indie long boys. engage the rubber button for more grit and level matching',
     image: ['/plugins/RubberPRE-1.png', '/plugins/RubberPRE-2.png'],
     price: 35,
     minimumPrice: 15
