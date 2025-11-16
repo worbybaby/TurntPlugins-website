@@ -3,7 +3,7 @@
 import { Plugin } from '../types';
 import RetroButton from './RetroButton';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface PluginCardProps {
   plugin: Plugin;
@@ -14,26 +14,35 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
   const images = Array.isArray(plugin.image) ? plugin.image : [plugin.image];
   const hasCarousel = images.length > 1;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
-  // Auto-advance carousel every 3 seconds
-  useEffect(() => {
-    if (!hasCarousel) return;
+  // Minimum swipe distance (in px) to trigger navigation
+  const minSwipeDistance = 50;
 
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [hasCarousel, images.length]);
-
-  const handlePrevImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0); // Reset
+    setTouchStart(e.targetTouches[0].clientX);
   };
 
-  const handleNextImage = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      // Swipe left = next image
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    } else if (isRightSwipe) {
+      // Swipe right = previous image
+      setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    }
   };
 
   // Custom adjustments per plugin
@@ -48,7 +57,12 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
 
   return (
     <div className="p-4">
-      <div className="aspect-square bg-black border-[5px] border-black relative overflow-hidden mb-4 group">
+      <div
+        className="aspect-square bg-black border-[5px] border-black relative overflow-hidden mb-4 touch-pan-y"
+        onTouchStart={hasCarousel ? handleTouchStart : undefined}
+        onTouchMove={hasCarousel ? handleTouchMove : undefined}
+        onTouchEnd={hasCarousel ? handleTouchEnd : undefined}
+      >
         <Image
           src={images[currentImageIndex]}
           alt={plugin.name}
@@ -57,41 +71,23 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
           className={imageClass}
         />
 
-        {/* Carousel navigation arrows */}
+        {/* Image indicators */}
         {hasCarousel && (
-          <>
-            <button
-              onClick={handlePrevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 text-white px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity border-2 border-white hover:bg-black/90"
-              aria-label="Previous image"
-            >
-              ←
-            </button>
-            <button
-              onClick={handleNextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 text-white px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity border-2 border-white hover:bg-black/90"
-              aria-label="Next image"
-            >
-              →
-            </button>
-
-            {/* Image indicators */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentImageIndex(index);
-                  }}
-                  className={`w-2 h-2 border border-white transition-colors ${
-                    index === currentImageIndex ? 'bg-white' : 'bg-transparent'
-                  }`}
-                  aria-label={`Go to image ${index + 1}`}
-                />
-              ))}
-            </div>
-          </>
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentImageIndex(index);
+                }}
+                className={`w-2 h-2 border border-white transition-colors ${
+                  index === currentImageIndex ? 'bg-white' : 'bg-transparent'
+                }`}
+                aria-label={`Go to image ${index + 1}`}
+              />
+            ))}
+          </div>
         )}
 
         {/* Add "COMPLETE" stamp for bundle */}
