@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import MetaPixel from "./components/MetaPixel";
 
 const pressStart = Press_Start_2P({
   weight: '400',
@@ -52,6 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased ${pressStart.className}`}>
+        <MetaPixel />
         {children}
       </body>
     </html>

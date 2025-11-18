@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Modal from './Modal';
 import { Plugin } from '../types';
 import RetroButton from './RetroButton';
+import { trackMetaEvent } from './MetaPixel';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -162,6 +163,14 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
         if (!freeResponse.ok) {
           throw new Error(freeData.error || 'Failed to process free download');
         }
+
+        // Track Meta Pixel Lead event for free downloads
+        trackMetaEvent('Lead', {
+          content_name: cartItemsWithAmounts.map(item => item.plugin.name).join(', '),
+          content_category: 'Free Download',
+          value: 0,
+          currency: 'USD',
+        });
 
         alert(freeData.message || 'Thank you! Check your email for download links.');
         onClearCart();

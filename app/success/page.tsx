@@ -4,19 +4,43 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import RetroButton from '../components/RetroButton';
+import { trackMetaEvent } from '../components/MetaPixel';
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const [loading, setLoading] = useState(true);
+  const [orderValue, setOrderValue] = useState<number | null>(null);
 
   useEffect(() => {
-    // Simulate checking session
-    if (sessionId) {
-      setTimeout(() => setLoading(false), 1000);
-    } else {
-      setLoading(false);
-    }
+    // Fetch session details and track conversion
+    const fetchSessionAndTrack = async () => {
+      if (sessionId) {
+        try {
+          // Fetch the Stripe session to get the order amount
+          const response = await fetch(`/api/get-session?session_id=${sessionId}`);
+          if (response.ok) {
+            const data = await response.json();
+            const value = data.amount_total ? data.amount_total / 100 : 0; // Convert cents to dollars
+            setOrderValue(value);
+
+            // Track Meta Pixel Purchase event with value
+            trackMetaEvent('Purchase', {
+              value: value,
+              currency: 'USD',
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching session:', error);
+        }
+
+        setTimeout(() => setLoading(false), 1000);
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchSessionAndTrack();
   }, [sessionId]);
 
   return (
