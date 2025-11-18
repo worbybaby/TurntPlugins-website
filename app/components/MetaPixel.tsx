@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Script from 'next/script';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
   interface Window {
     fbq: any;
@@ -51,6 +52,7 @@ export default function MetaPixel() {
         }}
       />
       <noscript>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           height="1"
           width="1"
@@ -66,6 +68,7 @@ export default function MetaPixel() {
 // Helper function to track events from other components
 export const trackMetaEvent = (
   eventName: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parameters?: Record<string, any>
 ) => {
   if (typeof window !== 'undefined' && window.fbq) {
