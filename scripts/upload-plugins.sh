@@ -57,6 +57,7 @@ upload_file "$MAC_DIR/PrettyPrettyPrincessSparkle_v1.0.2.pkg" "PrettyPrettyPrinc
 upload_file "$MAC_DIR/Space Bass Butt_v1.0.7.pkg" "Space Bass Butt_v1.0.7.pkg"
 upload_file "$MAC_DIR/TapeBloom_v1.0.9.pkg" "TapeBloom_v1.0.9.pkg"
 upload_file "$MAC_DIR/Tapeworm_v1.0.8.pkg" "Tapeworm_v1.0.8.pkg"
+upload_file "$MAC_DIR/RubberPRE_v1.0.3.pkg" "RubberPRE_v1.0.3.pkg"
 
 # Upload Windows installers
 echo "🪟 Uploading Windows installers..."
@@ -65,5 +66,6 @@ upload_file "$WINDOWS_DIR/PrettyPrettyPrincessSparkle-v1.0.2-Windows-x64.exe" "P
 upload_file "$WINDOWS_DIR/SpaceBassButt-v1.0.7-Windows-x64.exe" "SpaceBassButt-v1.0.7-Windows-x64.exe"
 upload_file "$WINDOWS_DIR/TapeBloom-v1.0.0-Windows-x64.exe" "TapeBloom-v1.0.0-Windows-x64.exe"
 upload_file "$WINDOWS_DIR/Tapeworm-v1.0.8-Windows-x64.exe" "Tapeworm-v1.0.8-Windows-x64.exe"
+upload_file "$WINDOWS_DIR/RubberPRE-v1.0.3-Windows-x64.exe" "RubberPRE-v1.0.3-Windows-x64.exe"
 
 echo "🎉 All plugin installers uploaded successfully!"

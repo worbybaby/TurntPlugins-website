@@ -89,6 +89,21 @@ export const pluginFiles: Record<string, PluginFile> = {
       },
     ],
   },
+  '6': {
+    id: '6',
+    files: [
+      {
+        fileName: 'RubberPRE_v1.0.3.pkg',
+        fileSize: '38MB',
+        platform: 'macOS',
+      },
+      {
+        fileName: 'RubberPRE-v1.0.3-Windows-x64.exe',
+        fileSize: '11MB',
+        platform: 'Windows',
+      },
+    ],
+  },
 };
 
 // Helper function to get plugin file info

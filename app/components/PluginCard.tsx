@@ -122,11 +122,10 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
       )}
       <p className="text-base mb-5 leading-loose">{plugin.description}</p>
       <RetroButton
-        onClick={plugin.id === '6' ? undefined : () => onAddToCart(plugin)}
+        onClick={() => onAddToCart(plugin)}
         className="w-full"
-        disabled={plugin.id === '6'}
       >
-        {plugin.id === '6' ? 'Coming Soon' : 'Add to Cart'}
+        Add to Cart
       </RetroButton>
     </div>
   );
