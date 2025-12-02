@@ -22,7 +22,8 @@ export const plugins: Plugin[] = [
     description: 'I made this to emulate the non-linear stereo bloom and cross talk found in analog tape machines. I\'m particularly fond of it on the drum bus, reverbs, and sometimes my instrument aux. AU/VST3 Mac & Windows',
     image: '/plugins/TapeBloom.png',
     price: 19,
-    minimumPrice: 3
+    minimumPrice: 3,
+    videoUrl: 'https://youtu.be/pkPvLBkCqag'
   },
   {
     id: '3',
@@ -30,7 +31,8 @@ export const plugins: Plugin[] = [
     description: 'A bass harmonic enhancer that creates the perception of extended bass response. Good for enhancing bass on small speakers or adding warmth to thin recordings. Pretty chunky. AU/VST3 Mac & Windows',
     image: '/plugins/SpaceBassButt.png',
     price: 15,
-    minimumPrice: 3
+    minimumPrice: 3,
+    videoUrl: 'https://youtu.be/1z7nhnLBzMA'
   },
   {
     id: '1',

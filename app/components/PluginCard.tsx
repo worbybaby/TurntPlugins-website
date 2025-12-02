@@ -121,6 +121,18 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
         </p>
       )}
       <p className="text-base mb-5 leading-loose">{plugin.description}</p>
+      {plugin.videoUrl && (
+        <p className="mb-4">
+          <a
+            href={plugin.videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 underline font-bold"
+          >
+            Video
+          </a>
+        </p>
+      )}
       <RetroButton
         onClick={() => onAddToCart(plugin)}
         className="w-full"
