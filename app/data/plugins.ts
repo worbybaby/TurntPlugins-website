@@ -48,7 +48,8 @@ export const plugins: Plugin[] = [
     description: 'Bipolar tape-bias knob with authentic tape saturation. Add positive tape bias to apply a compression/smoothing effect to vocals and other harsh sources. Works well in tandem with Pretty Pretty Princess Sparkle. AU/VST3 Mac & Windows',
     image: '/plugins/Tapeworm.png',
     price: 19,
-    minimumPrice: 3
+    minimumPrice: 3,
+    videoUrl: 'https://youtu.be/iEneZtYfqo8'
   },
   {
     id: 'bundle',
