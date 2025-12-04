@@ -18,12 +18,12 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '1',
     files: [
       {
-        fileName: 'CassetteVibe_v1.0.7_macOS.pkg',
+        fileName: 'CassetteVibe_v2.0.0_macOS.pkg',
         fileSize: '62MB',
         platform: 'macOS',
       },
       {
-        fileName: 'CassetteVibe-v1.0.7-Windows-x64.exe',
+        fileName: 'CassetteVibe-v2.0.0-Windows-x64.exe',
         fileSize: '17MB',
         platform: 'Windows',
       },
