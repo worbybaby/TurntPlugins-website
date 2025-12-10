@@ -14,7 +14,7 @@
     "@stripe/stripe-js": "^8.0.0",
     "@vercel/postgres": "^0.10.0",
     "dotenv": "^17.2.3",
-    "next": "15.5.4",
+    "next": "^16.0.8",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-email": "^4.3.0",
@@ -29,7 +29,7 @@
     "@types/react-dom": "^19",
     "@vercel/blob": "^2.0.0",
     "eslint": "^9",
-    "eslint-config-next": "15.5.4",
+    "eslint-config-next": "^16.0.8",
     "tailwindcss": "^4",
     "to-ico": "^1.1.5",
     "typescript": "^5"
