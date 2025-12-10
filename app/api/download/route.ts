@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { list } from '@vercel/blob';
 import { incrementDownloadCount } from '../lib/db';
 import { getPluginFile } from '@/app/data/pluginFiles';
 
@@ -84,19 +83,9 @@ export async function GET(req: NextRequest) {
       targetFile = pluginFile.files[0];
     }
 
-    // Find file in Vercel Blob storage
-    const { blobs } = await list({ prefix: `plugins/${targetFile.fileName}` });
-
-    if (blobs.length === 0) {
-      return NextResponse.json(
-        { error: 'Plugin file not available. Please contact support.' },
-        { status: 404 }
-      );
-    }
-
-    // Redirect to Vercel Blob download URL
-    // Vercel Blob URLs are automatically signed and secure
-    return NextResponse.redirect(blobs[0].url);
+    // Redirect to GitHub Releases download URL
+    // GitHub URLs are public and permanent
+    return NextResponse.redirect(targetFile.downloadUrl);
   } catch (error) {
     console.error('Download error:', error);
     return NextResponse.json(
