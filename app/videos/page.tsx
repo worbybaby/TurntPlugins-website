@@ -59,7 +59,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                Robert Willes creator of Turnt Plugins reviews how he uses Tapeworm and Pretty Pretty Princess Sparkle
+                A discussion of how to use Tapeworm and Pretty Pretty Princess Sparkle.
               </p>
             </div>
 
@@ -75,7 +75,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                Robert Willes creator of Turnt Plugins reviews how he uses Tape Bloom and discusses the stereo imaging effects of vintage tape machines.
+                A discussion of how to use Tape Bloom and the stereo imaging effects of vintage tape machines.
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                Robert Willes creator of Turnt Plugins reviews how he uses Space Bass Butt
+                A discussion of how to use Space Bass Butt.
               </p>
             </div>
           </div>
