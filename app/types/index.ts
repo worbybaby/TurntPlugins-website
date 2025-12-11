@@ -6,6 +6,7 @@ export interface Plugin {
   price: number; // Suggested price (0 for free)
   minimumPrice?: number; // Minimum price for pay-what-you-want (undefined for free plugins)
   videoUrl?: string; // Optional YouTube video link
+  comingSoon?: boolean; // Plugin not yet available for purchase
 }
 
 export interface CartItem {

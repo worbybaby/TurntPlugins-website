@@ -112,13 +112,15 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
         )}
       </div>
       <h3 className="font-bold text-2xl mb-2">{plugin.name}</h3>
-      {plugin.price === 0 ? (
-        <p className="text-lg font-bold text-green-700 mb-3">FREE</p>
-      ) : (
-        <p className="text-base mb-3">
-          <span className="text-sm text-gray-600">Suggested Price: </span>
-          <span className="font-bold">${plugin.price}</span>
-        </p>
+      {!plugin.comingSoon && (
+        plugin.price === 0 ? (
+          <p className="text-lg font-bold text-green-700 mb-3">FREE</p>
+        ) : (
+          <p className="text-base mb-3">
+            <span className="text-sm text-gray-600">Suggested Price: </span>
+            <span className="font-bold">${plugin.price}</span>
+          </p>
+        )
       )}
       <p className="text-base mb-5 leading-loose">{plugin.description}</p>
       {plugin.videoUrl && (
@@ -133,12 +135,21 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
           </a>
         </p>
       )}
-      <RetroButton
-        onClick={() => onAddToCart(plugin)}
-        className="w-full"
-      >
-        Add to Cart
-      </RetroButton>
+      {plugin.comingSoon ? (
+        <button
+          disabled
+          className="w-full bg-gray-400 text-gray-600 border-4 border-gray-500 px-6 py-3 text-lg font-bold cursor-not-allowed opacity-60"
+        >
+          Coming Soon
+        </button>
+      ) : (
+        <RetroButton
+          onClick={() => onAddToCart(plugin)}
+          className="w-full"
+        >
+          Add to Cart
+        </RetroButton>
+      )}
     </div>
   );
 }
