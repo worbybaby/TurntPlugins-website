@@ -53,11 +53,14 @@ export default function VideosPage() {
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
                   src="https://www.youtube.com/embed/iEneZtYfqo8"
-                  title="Turnt Plugins Video"
+                  title="Robert Willes reviews Tapeworm and Pretty Pretty Princess Sparkle"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
+              <p className="text-base sm:text-lg leading-relaxed">
+                Robert Willes creator of Turnt Plugins reviews how he uses Tapeworm and Pretty Pretty Princess Sparkle
+              </p>
             </div>
 
             {/* Video 3 */}
@@ -66,11 +69,14 @@ export default function VideosPage() {
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
                   src="https://www.youtube.com/embed/pkPvLBkCqag"
-                  title="Turnt Plugins Video"
+                  title="Robert Willes reviews Tape Bloom"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
+              <p className="text-base sm:text-lg leading-relaxed">
+                Robert Willes creator of Turnt Plugins reviews how he uses Tape Bloom and discusses the stereo imaging effects of vintage tape machines.
+              </p>
             </div>
 
             {/* Video 4 */}
@@ -79,11 +85,14 @@ export default function VideosPage() {
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
                   src="https://www.youtube.com/embed/1z7nhnLBzMA"
-                  title="Turnt Plugins Video"
+                  title="Robert Willes reviews Space Bass Butt"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
+              <p className="text-base sm:text-lg leading-relaxed">
+                Robert Willes creator of Turnt Plugins reviews how he uses Space Bass Butt
+              </p>
             </div>
           </div>
         </div>
