@@ -3,7 +3,7 @@ import { Plugin } from '../types';
 export const plugins: Plugin[] = [
   {
     id: '7',
-    name: 'Focal Felt',
+    name: 'Vocal Felt',
     description: 'CLEEEAN vocal compression inspired by your favorite blue optical tube compressor. I wanted the depth and dimension of analog compressors dialed in on a simple UI for instant use on pop, hiphop, etc.',
     image: '/plugins/FocalFelt.png',
     price: 0,
