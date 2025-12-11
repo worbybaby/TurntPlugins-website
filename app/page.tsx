@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { plugins } from './data/plugins';
 import { Plugin } from './types';
 import PluginCard from './components/PluginCard';
@@ -53,6 +54,11 @@ export default function Home() {
             <RetroButton onClick={() => setIsAboutOpen(true)} className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
               About
             </RetroButton>
+            <Link href="/videos">
+              <RetroButton className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
+                Videos
+              </RetroButton>
+            </Link>
             <RetroButton onClick={() => setIsCartOpen(true)} className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
               <span className="hidden sm:inline">Cart </span>
               <span className="sm:hidden">🛒 </span>
