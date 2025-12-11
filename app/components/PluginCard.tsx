@@ -113,7 +113,7 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
       </div>
       <h3 className="font-bold text-2xl mb-2">{plugin.name}</h3>
       {plugin.comingSoon ? (
-        <div className="mb-3">&nbsp;</div>
+        <p className="text-sm text-gray-600 mb-3">COMING SOON</p>
       ) : (
         plugin.price === 0 ? (
           <p className="text-lg font-bold text-green-700 mb-3">FREE</p>
