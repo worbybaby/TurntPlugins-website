@@ -59,7 +59,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                A demonstration of Tapeworm and Pretty Pretty Princess Sparkle on the Master.
+                A demonstration of Tapeworm and Pretty Pretty Princess Sparkle on the master bus.
               </p>
             </div>
 
