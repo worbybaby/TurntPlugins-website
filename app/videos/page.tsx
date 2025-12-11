@@ -29,23 +29,62 @@ export default function VideosPage() {
         <div className="mb-6 sm:mb-8 bg-[#FFE66D] border-4 border-black p-4 sm:p-6 md:p-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">Videos</h2>
 
-          {/* Video Container */}
-          <div className="bg-white border-4 border-black p-4 sm:p-6">
-            {/* YouTube Embed */}
-            <div className="relative w-full mb-4" style={{ paddingBottom: '56.25%' }}>
-              <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/EDyaL8LBdf4?start=6"
-                title="Bly Wallentine features Turnt Plugins"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+          {/* Video Grid */}
+          <div className="space-y-6">
+            {/* Video 1 - Bly Wallentine */}
+            <div className="bg-white border-4 border-black p-4 sm:p-6">
+              <div className="relative w-full mb-4" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/EDyaL8LBdf4?start=6"
+                  title="Bly Wallentine features Turnt Plugins"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <p className="text-base sm:text-lg leading-relaxed">
+                Multi-instrumentalist, producer, artist, mixing and mastering engineer Bly Wallentine features Turnt Plugins on "The Sweet Spot"
+              </p>
             </div>
 
-            {/* Description */}
-            <p className="text-base sm:text-lg leading-relaxed">
-              Multi-instrumentalist, producer, artist, mixing and mastering engineer Bly Wallentine features Turnt Plugins on "The Sweet Spot"
-            </p>
+            {/* Video 2 */}
+            <div className="bg-white border-4 border-black p-4 sm:p-6">
+              <div className="relative w-full mb-4" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/iEneZtYfqo8"
+                  title="Turnt Plugins Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+
+            {/* Video 3 */}
+            <div className="bg-white border-4 border-black p-4 sm:p-6">
+              <div className="relative w-full mb-4" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/pkPvLBkCqag"
+                  title="Turnt Plugins Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+
+            {/* Video 4 */}
+            <div className="bg-white border-4 border-black p-4 sm:p-6">
+              <div className="relative w-full mb-4" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/1z7nhnLBzMA"
+                  title="Turnt Plugins Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
           </div>
         </div>
       </main>
