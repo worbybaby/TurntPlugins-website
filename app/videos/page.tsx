@@ -43,7 +43,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                Multi-instrumentalist, producer, artist, mixing and mastering engineer Bly Wallentine features Turnt Plugins on "The Sweet Spot"
+                Multi-instrumentalist, producer, artist, and mixing/mastering engineer Bly Wallentine features Turnt Plugins on "The Sweet Spot".
               </p>
             </div>
 
