@@ -30,7 +30,7 @@ export default function VideosPage() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-6">Videos</h2>
 
           {/* Video Grid */}
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {/* Video 1 - Bly Wallentine */}
             <div className="bg-white border-4 border-black p-4 sm:p-6">
               <div className="relative w-full mb-4" style={{ paddingBottom: '56.25%' }}>
