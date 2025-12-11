@@ -59,7 +59,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                A discussion of how to use Tapeworm and Pretty Pretty Princess Sparkle.
+                A demonstration of Tapeworm and Pretty Pretty Princess Sparkle on the Master.
               </p>
             </div>
 
@@ -75,7 +75,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                A discussion of how to use Tape Bloom and the stereo imaging effects of vintage tape machines.
+                Robert Willes, creator of Turnt Plugins demonstrates Tape Bloom and discusses the stereo imaging effects of vintage tape machines.
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function VideosPage() {
                 ></iframe>
               </div>
               <p className="text-base sm:text-lg leading-relaxed">
-                A discussion of how to use Space Bass Butt.
+                A demonstration of Space Bass Butt on the 808.
               </p>
             </div>
           </div>
