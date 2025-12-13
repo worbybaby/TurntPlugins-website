@@ -50,19 +50,21 @@ export default function Home() {
       <header className="bg-white border-b-4 border-black px-3 sm:px-6 py-3 sm:py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">TURNT PLUG-INS</h1>
-          <div className="flex gap-2 sm:gap-4 md:gap-6">
-            <RetroButton onClick={() => setIsAboutOpen(true)} className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
-              About
+          <div className="flex gap-1.5 sm:gap-4 md:gap-6">
+            <RetroButton onClick={() => setIsAboutOpen(true)} className="!px-2.5 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
+              <span className="hidden sm:inline">About</span>
+              <span className="sm:hidden">?</span>
             </RetroButton>
             <Link href="/videos">
-              <RetroButton className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
-                Videos
+              <RetroButton className="!px-2.5 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
+                <span className="hidden sm:inline">Videos</span>
+                <span className="sm:hidden">▶</span>
               </RetroButton>
             </Link>
-            <RetroButton onClick={() => setIsCartOpen(true)} className="!px-3 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
-              <span className="hidden sm:inline">Cart </span>
-              <span className="sm:hidden">🛒 </span>
-              {cartItems.length > 0 && `(${cartItems.length})`}
+            <RetroButton onClick={() => setIsCartOpen(true)} className="!px-2.5 sm:!px-6 md:!px-8 !py-2 sm:!py-3 !text-sm sm:!text-base md:!text-lg">
+              <span className="hidden sm:inline">Cart</span>
+              <span className="sm:hidden">CART</span>
+              {cartItems.length > 0 && ` (${cartItems.length})`}
             </RetroButton>
           </div>
         </div>
