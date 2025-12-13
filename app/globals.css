@@ -62,6 +62,8 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height for iOS */
+  min-height: 100vh;
   pointer-events: none;
   z-index: 99999;
   background:
@@ -83,6 +85,8 @@ body::after {
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height for iOS */
+  min-height: 100vh;
   pointer-events: none;
   z-index: 99998;
   backdrop-filter: blur(0.8px);
