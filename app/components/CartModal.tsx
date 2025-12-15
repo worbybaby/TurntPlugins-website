@@ -39,7 +39,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     }
 
     // Validate discount code
-    if (code === 'ALLMYFRIENDSAREPLUGINS' || code === 'JUSTINSHERIFF') {
+    if (code === 'ALLMYFRIENDSAREPLUGINS' || code === 'JUSTINSHERIFF' || code === 'TODAYSFUTURESOUND2026') {
       setAppliedDiscount({ code, percentage: 100 });
       setDiscountError('');
     } else {

@@ -15,6 +15,7 @@ const MAX_CART_ITEMS = 50;
 const VALID_DISCOUNT_CODES: Record<string, number> = {
   'ALLMYFRIENDSAREPLUGINS': 100, // 100% off
   'JUSTINSHERIFF': 100, // 100% off
+  'TODAYSFUTURESOUND2026': 100, // 100% off
 };
 
 function validateDiscountCode(code: string | null): number {
