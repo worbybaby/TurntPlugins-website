@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     // Check if expired
     if (new Date(download.expires_at) < new Date()) {
       return NextResponse.json(
-        { error: 'Download link has expired. Please contact support.' },
+        { error: 'Download link has expired. Please reach out to us on Instagram @turntplugins for assistance.' },
         { status: 410 }
       );
     }

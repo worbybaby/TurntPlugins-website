@@ -22,7 +22,7 @@ export default function CanceledPage() {
 
           <div className="bg-white border-2 border-black p-4">
             <p className="text-base leading-loose mb-4">
-              If you experienced any issues during checkout, please try again or contact us for assistance.
+              If you experienced any issues during checkout, please try again or reach out to us on Instagram @turntplugins for assistance.
             </p>
             <p className="text-sm text-gray-600">
               Your cart items are still saved and ready when you&apos;re ready to complete your purchase.

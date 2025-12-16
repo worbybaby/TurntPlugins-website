@@ -126,7 +126,7 @@ export default function PurchaseConfirmationEmail({
                 2. Follow the installation guide included with each plugin
               </Text>
               <Text style={text}>
-                3. If you have any issues, reply to this email for support
+                3. If you have any issues, reach out to us on Instagram @turntplugins
               </Text>
             </Section>
 

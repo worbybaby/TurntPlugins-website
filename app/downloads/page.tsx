@@ -188,7 +188,7 @@ export default function DownloadsPage() {
                             <p className="text-xs text-gray-600">Platform: {platform}</p>
                             <p className="text-xs text-gray-600">
                               {isExpired
-                                ? 'Link expired - contact support'
+                                ? 'Link expired - reach out on Instagram @turntplugins'
                                 : `Expires: ${new Date(download.expires_at).toLocaleDateString()}`}
                             </p>
                             <p className="text-xs text-gray-600">
