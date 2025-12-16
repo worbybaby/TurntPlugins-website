@@ -54,8 +54,8 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '3',
     files: [
       {
-        fileName: 'Space Bass Butt_v1.0.8.pkg',
-        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/Space%20Bass%20Butt_v1.0.8.pkg`,
+        fileName: 'Space.Bass.Butt_v1.0.8.pkg',
+        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/Space.Bass.Butt_v1.0.8.pkg`,
         fileSize: '58MB',
         platform: 'macOS',
       },
