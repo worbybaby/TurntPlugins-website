@@ -361,6 +361,8 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 </label>
               </div>
 
+              <p className="text-xs text-gray-600 mb-3 text-center">All sales are final.</p>
+
               <RetroButton
                 onClick={handleCheckout}
                 disabled={isLoading}
