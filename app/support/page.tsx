@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useTransition } from 'react';
 import Link from 'next/link';
 import RetroButton from '../components/RetroButton';
 
@@ -13,6 +13,7 @@ export default function SupportPage() {
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,12 +42,15 @@ export default function SupportPage() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    startTransition(() => {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
     });
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#5DADE2]">
