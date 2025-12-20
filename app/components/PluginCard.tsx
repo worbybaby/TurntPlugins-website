@@ -125,7 +125,22 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
         )
       )}
       <p className="text-base mb-5 leading-loose">{plugin.description}</p>
-      {plugin.videoUrl && (
+      {plugin.videos && plugin.videos.length > 0 ? (
+        <div className="mb-4 space-y-2">
+          {plugin.videos.map((video, index) => (
+            <p key={index}>
+              <a
+                href={video.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 underline font-bold"
+              >
+                {video.label}
+              </a>
+            </p>
+          ))}
+        </div>
+      ) : plugin.videoUrl ? (
         <p className="mb-4">
           <a
             href={plugin.videoUrl}
@@ -136,7 +151,7 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
             Video
           </a>
         </p>
-      )}
+      ) : null}
       {plugin.comingSoon ? (
         <button
           disabled

@@ -15,7 +15,11 @@ export const plugins: Plugin[] = [
     description: 'Circuit-accurate 4-track tape preamp emulation that delivers authentic grainy crunch and rubbery lofi 90s guitar tones for even the saddest of indie long boys. Engage the rubber button for more grit and level matching. AU/VST3 Mac & Windows',
     image: ['/plugins/RubberPRE-1.png', '/plugins/RubberPRE-2.png'],
     price: 35,
-    minimumPrice: 15
+    minimumPrice: 15,
+    videos: [
+      { url: 'https://youtu.be/EDyaL8LBdf4?si=ovi0jgO9WsKG905s&t=239', label: 'On drums' },
+      { url: 'https://www.instagram.com/p/DSDmsl1E7Wk/', label: 'On guitar, drums, and mix bus' }
+    ]
   },
   {
     id: '2',
