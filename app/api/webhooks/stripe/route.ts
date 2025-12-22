@@ -51,7 +51,60 @@ export async function POST(req: NextRequest) {
         metadata: session.metadata,
       });
 
-      // Parse plugins from metadata
+      // Check if this is a donation
+      if (session.metadata?.type === 'donation') {
+        console.log('💝 Processing donation');
+
+        // Send simple thank you email for donation
+        try {
+          const resend = new Resend(process.env.RESEND_API_KEY!);
+          await resend.emails.send({
+            from: 'Turnt Plugins <downloads@turntplugins.com>',
+            to: session.customer_email || '',
+            subject: 'Thank You for Your Donation!',
+            html: `
+              <div style="font-family: monospace; max-width: 600px; margin: 0 auto;">
+                <div style="background: #000080; color: white; padding: 15px; border: 4px solid black;">
+                  <h1 style="margin: 0; font-size: 24px;">Thank You for Your Support!</h1>
+                </div>
+
+                <div style="border: 4px solid black; border-top: none; padding: 30px; background: #FFE66D;">
+                  <p style="font-size: 16px; line-height: 1.8; margin: 0 0 20px 0;">
+                    Your generous donation of $${((session.amount_total || 0) / 100).toFixed(2)} has been received. Thank you for supporting the development and maintenance of Turnt Plugins!
+                  </p>
+
+                  <p style="font-size: 16px; line-height: 1.8; margin: 0;">
+                    Your contribution helps keep the plugins updated and new features coming. We truly appreciate your support!
+                  </p>
+                </div>
+
+                <div style="border: 4px solid black; border-top: none; padding: 20px; background: white;">
+                  <p style="font-size: 14px; color: #666; margin: 0;">
+                    Transaction ID: ${session.id}
+                  </p>
+                  <p style="font-size: 14px; color: #666; margin: 10px 0 0 0;">
+                    This email serves as your receipt for tax purposes.
+                  </p>
+                </div>
+
+                <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
+                  <p>© 2025 Turnt Plugins. All rights reserved.</p>
+                  <p style="margin-top: 10px;">
+                    <a href="https://turntplugins.com" style="color: #0000FF;">Visit our website</a>
+                  </p>
+                </div>
+              </div>
+            `,
+          });
+          console.log('✅ Donation thank you email sent!');
+        } catch (error) {
+          console.error('❌ Failed to send donation email:', error);
+        }
+
+        break; // Exit early for donations
+      }
+
+      // Parse plugins from metadata (for purchases)
       const plugins = session.metadata?.plugins
         ? JSON.parse(session.metadata.plugins)
         : [];
