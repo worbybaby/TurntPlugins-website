@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useTransition } from 'react';
 import Link from 'next/link';
 import RetroButton from '../components/RetroButton';
 
@@ -10,25 +10,33 @@ export default function DonatePage() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isPending, startTransition] = useTransition();
 
   const presetAmounts = [5, 10, 20, 50];
 
   const handleAmountSelect = (amount: number) => {
-    setSelectedAmount(amount);
-    setCustomAmount('');
-    setError('');
+    startTransition(() => {
+      setSelectedAmount(amount);
+      setCustomAmount('');
+      setError('');
+    });
   };
 
   const handleCustomAmountChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCustomAmount(value);
-    setSelectedAmount(null);
-    setError('');
+    startTransition(() => {
+      setCustomAmount(value);
+      setSelectedAmount(null);
+      setError('');
+    });
   }, []);
 
   const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setError('');
+    const value = e.target.value;
+    startTransition(() => {
+      setEmail(value);
+      setError('');
+    });
   }, []);
 
   const getDonationAmount = (): number => {
