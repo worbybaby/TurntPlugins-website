@@ -192,6 +192,14 @@ export default function SupportPage() {
       {/* Footer */}
       <footer className="bg-white border-t-4 border-black mt-16 px-6 py-4">
         <div className="max-w-7xl mx-auto text-center text-sm text-gray-700">
+          <div className="mb-2 space-x-4">
+            <Link href="/support" className="text-blue-600 hover:text-blue-800 underline font-bold">
+              Support
+            </Link>
+            <Link href="/donate" className="text-blue-600 hover:text-blue-800 underline font-bold">
+              Support Development
+            </Link>
+          </div>
           © 2025 Turnt Plugins. All rights reserved.
         </div>
       </footer>
