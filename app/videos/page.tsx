@@ -106,7 +106,7 @@ export default function VideosPage() {
               Support
             </Link>
             <Link href="/donate" className="text-blue-600 hover:text-blue-800 underline font-bold">
-              Support Development
+              Donate
             </Link>
           </div>
           © 2025 Turnt Plugins. All rights reserved.

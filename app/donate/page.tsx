@@ -206,6 +206,9 @@ export default function DonatePage() {
             <Link href="/support" className="text-blue-600 hover:text-blue-800 underline font-bold">
               Support
             </Link>
+            <Link href="/donate" className="text-blue-600 hover:text-blue-800 underline font-bold">
+              Donate
+            </Link>
           </div>
           © 2025 Turnt Plugins. All rights reserved.
         </div>
