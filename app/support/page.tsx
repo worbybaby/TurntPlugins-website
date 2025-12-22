@@ -194,7 +194,7 @@ export default function SupportPage() {
         <div className="max-w-7xl mx-auto text-center text-sm text-gray-700">
           <div className="mb-2 space-x-4">
             <Link href="/support" className="text-blue-600 hover:text-blue-800 underline font-bold">
-              Support
+              Contact
             </Link>
             <Link href="/donate" className="text-blue-600 hover:text-blue-800 underline font-bold">
               Donate
