@@ -6,6 +6,7 @@ export interface Order {
   stripe_session_id: string;
   amount_total: number;
   plugins: string; // JSON string of plugin IDs
+  license_key?: string; // VocalFelt license key (if order includes VocalFelt)
   created_at: Date;
 }
 
@@ -39,6 +40,12 @@ export async function initDatabase() {
     await sql`
       ALTER TABLE orders
       ADD COLUMN IF NOT EXISTS marketing_opt_in BOOLEAN DEFAULT FALSE;
+    `;
+
+    // Add license_key column for VocalFelt licenses
+    await sql`
+      ALTER TABLE orders
+      ADD COLUMN IF NOT EXISTS license_key VARCHAR(50);
     `;
 
     // Create downloads table
@@ -78,12 +85,13 @@ export async function saveOrder(
   stripeSessionId: string,
   amountTotal: number,
   plugins: Array<{ id: string; name: string }>,
-  marketingOptIn: boolean = false
+  marketingOptIn: boolean = false,
+  licenseKey?: string
 ) {
   try {
     const result = await sql`
-      INSERT INTO orders (email, stripe_session_id, amount_total, plugins, marketing_opt_in)
-      VALUES (${email}, ${stripeSessionId}, ${amountTotal}, ${JSON.stringify(plugins)}, ${marketingOptIn})
+      INSERT INTO orders (email, stripe_session_id, amount_total, plugins, marketing_opt_in, license_key)
+      VALUES (${email}, ${stripeSessionId}, ${amountTotal}, ${JSON.stringify(plugins)}, ${marketingOptIn}, ${licenseKey || null})
       RETURNING id;
     `;
     return result.rows[0].id;
@@ -122,6 +130,7 @@ export async function getOrdersByEmail(email: string) {
         o.stripe_session_id,
         o.amount_total,
         o.plugins,
+        o.license_key,
         o.created_at,
         json_agg(
           json_build_object(

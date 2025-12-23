@@ -4,6 +4,7 @@ import { Resend } from 'resend';
 import PurchaseConfirmationEmail from '@/emails/PurchaseConfirmation';
 import { saveOrder, saveDownloadLink, initDatabase } from '../../lib/db';
 import { generateSignedUrl } from '@/app/data/pluginFiles';
+import { generateVocalFeltLicense } from '../../lib/licenseGenerator';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover',
@@ -112,6 +113,15 @@ export async function POST(req: NextRequest) {
       // Parse marketing opt-in from metadata
       const marketingOptIn = session.metadata?.marketingOptIn === 'true';
 
+      // Check if VocalFelt (id: '7') is in the order
+      const hasVocalFelt = plugins.some((plugin: { id: string }) => plugin.id === '7');
+      let licenseKey: string | undefined;
+
+      if (hasVocalFelt) {
+        licenseKey = generateVocalFeltLicense();
+        console.log('🎫 Generated VocalFelt license:', licenseKey);
+      }
+
       // Save order to database
       let orderId: number;
       try {
@@ -124,7 +134,8 @@ export async function POST(req: NextRequest) {
           session.id,
           session.amount_total || 0,
           plugins,
-          marketingOptIn
+          marketingOptIn,
+          licenseKey
         );
         console.log('💾 Order saved with ID:', orderId);
 
@@ -180,6 +191,7 @@ export async function POST(req: NextRequest) {
             orderTotal: session.amount_total || 0,
             orderId: session.id,
             downloadLinks,
+            licenseKey,
           }),
         });
 

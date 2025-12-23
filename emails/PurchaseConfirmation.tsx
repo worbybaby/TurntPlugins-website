@@ -23,6 +23,7 @@ interface PurchaseConfirmationEmailProps {
     macDownloadUrl: string;
     windowsDownloadUrl: string;
   }>;
+  licenseKey?: string;
 }
 
 export default function PurchaseConfirmationEmail({
@@ -31,6 +32,7 @@ export default function PurchaseConfirmationEmail({
   orderTotal,
   orderId,
   downloadLinks = [],
+  licenseKey,
 }: PurchaseConfirmationEmailProps) {
   return (
     <Html>
@@ -75,6 +77,36 @@ export default function PurchaseConfirmationEmail({
                 </Text>
               ))}
             </Section>
+
+            {/* License Key Section (for VocalFelt) */}
+            {licenseKey && (
+              <Section style={licenseBox}>
+                <Text style={orderTitle}>🎫 VocalFelt License Key:</Text>
+                <Hr style={hr} />
+                <Text style={licenseKeyText}>{licenseKey}</Text>
+                <Text style={text}>
+                  <strong>Installation:</strong>
+                </Text>
+                <Text style={text}>
+                  1. Download and install VocalFelt from the links below
+                </Text>
+                <Text style={text}>
+                  2. Create this folder: <code style={codeStyle}>~/Library/Application Support/TurntPlugins/</code>
+                </Text>
+                <Text style={text}>
+                  3. Create a file named <code style={codeStyle}>VocalFelt.lic</code> in that folder
+                </Text>
+                <Text style={text}>
+                  4. Paste your license key above into the file and save
+                </Text>
+                <Text style={text}>
+                  5. Restart your DAW and load VocalFelt
+                </Text>
+                <Text style={text}>
+                  <strong>Note:</strong> Keep this license key safe! You can always access it from your downloads page.
+                </Text>
+              </Section>
+            )}
 
             {/* Download Links */}
             {downloadLinks.length > 0 && (
@@ -304,4 +336,32 @@ const buttonContainer = {
   flexDirection: 'row' as const,
   gap: '10px',
   marginTop: '10px',
+};
+
+const licenseBox = {
+  backgroundColor: '#FFD700',
+  border: '4px solid #000000',
+  padding: '20px',
+  margin: '20px 0',
+};
+
+const licenseKeyText = {
+  backgroundColor: '#ffffff',
+  border: '2px solid #000000',
+  padding: '15px',
+  fontSize: '18px',
+  fontWeight: 'bold' as const,
+  fontFamily: 'monospace',
+  textAlign: 'center' as const,
+  letterSpacing: '2px',
+  margin: '15px 0',
+  color: '#000000',
+};
+
+const codeStyle = {
+  backgroundColor: '#f0f0f0',
+  padding: '2px 6px',
+  border: '1px solid #000000',
+  fontFamily: 'monospace',
+  fontSize: '12px',
 };

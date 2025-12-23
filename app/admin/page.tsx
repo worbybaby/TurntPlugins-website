@@ -21,6 +21,7 @@ interface Order {
   plugins: string;
   created_at: string;
   download_count: number;
+  license_key?: string;
 }
 
 interface PluginStat {
@@ -46,6 +47,9 @@ export default function AdminPage() {
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [pluginStats, setPluginStats] = useState<PluginStat[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [generatingLicense, setGeneratingLicense] = useState(false);
+  const [newLicenseEmail, setNewLicenseEmail] = useState('');
+  const [generatedLicense, setGeneratedLicense] = useState('');
 
   useEffect(() => {
     // Check if already authenticated (session storage)
@@ -144,6 +148,38 @@ export default function AdminPage() {
     } catch (err) {
       console.error('Failed to export subscribers:', err);
       alert('Failed to export subscribers');
+    }
+  };
+
+  const generateManualLicense = async () => {
+    if (!newLicenseEmail || !newLicenseEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    setGeneratingLicense(true);
+    try {
+      const response = await fetch('/api/admin/generate-license', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newLicenseEmail }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGeneratedLicense(data.licenseKey);
+        alert(`License generated and emailed to ${newLicenseEmail}!`);
+        setNewLicenseEmail('');
+        fetchAdminData(); // Refresh data
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to generate license: ${errorData.error}`);
+      }
+    } catch (err) {
+      console.error('Failed to generate license:', err);
+      alert('Failed to generate license');
+    } finally {
+      setGeneratingLicense(false);
     }
   };
 
@@ -248,6 +284,68 @@ export default function AdminPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* VocalFelt License Management */}
+        <div className="bg-white border-4 border-black p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-4">🎫 VocalFelt License Management</h2>
+
+          <div className="bg-[#FFD700] border-2 border-black p-4 mb-4">
+            <h3 className="font-bold mb-2">Manual License Generation</h3>
+            <p className="text-sm mb-3">
+              Generate a new license for a customer who lost their original code.
+            </p>
+            <div className="flex gap-3">
+              <input
+                type="email"
+                value={newLicenseEmail}
+                onChange={(e) => setNewLicenseEmail(e.target.value)}
+                placeholder="customer@email.com"
+                className="flex-1 px-3 py-2 border-2 border-black focus:outline-none"
+              />
+              <RetroButton onClick={generateManualLicense} disabled={generatingLicense}>
+                {generatingLicense ? 'Generating...' : 'Generate & Email License'}
+              </RetroButton>
+            </div>
+            {generatedLicense && (
+              <div className="mt-3 p-3 bg-white border-2 border-black">
+                <p className="text-xs font-bold mb-1">Generated License:</p>
+                <p className="font-mono text-sm font-bold">{generatedLicense}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="font-bold mb-2">Recent VocalFelt Licenses</h3>
+            {recentOrders
+              .filter(order => order.license_key)
+              .slice(0, 5)
+              .map((order) => (
+                <div key={order.id} className="bg-gray-100 border border-black p-3 flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-sm">{order.email}</p>
+                    <p className="text-xs text-gray-600">{new Date(order.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <code className="font-mono text-xs bg-white border border-black px-2 py-1">
+                      {order.license_key}
+                    </code>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(order.license_key!);
+                        alert('License copied!');
+                      }}
+                      className="px-2 py-1 bg-white border-2 border-black hover:bg-gray-200 text-xs font-bold"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+              ))}
+            {recentOrders.filter(order => order.license_key).length === 0 && (
+              <p className="text-sm text-gray-600">No VocalFelt licenses issued yet.</p>
+            )}
           </div>
         </div>
 
