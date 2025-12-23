@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import PurchaseConfirmationEmail from '@/emails/PurchaseConfirmation';
 import { saveOrder, saveDownloadLink, initDatabase } from '../../lib/db';
 import { generateSignedUrl } from '@/app/data/pluginFiles';
-import { generateVocalFeltLicense } from '../../lib/licenseGenerator';
+import { generateVocalFeltLicense } from '../../../lib/licenseGenerator';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover',
