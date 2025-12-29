@@ -184,3 +184,36 @@ export async function getMarketingSubscribers() {
     throw error;
   }
 }
+
+// Manually add a subscriber to marketing list
+export async function addManualSubscriber(email: string) {
+  try {
+    // Check if email already exists with opt-in
+    const existing = await sql`
+      SELECT id FROM orders
+      WHERE email = ${email} AND marketing_opt_in = true
+      LIMIT 1;
+    `;
+
+    if (existing.rows.length > 0) {
+      return { success: false, message: 'Email already subscribed' };
+    }
+
+    // Create a minimal order record for manual subscriber
+    await sql`
+      INSERT INTO orders (email, stripe_session_id, amount_total, plugins, marketing_opt_in)
+      VALUES (
+        ${email},
+        ${'manual_subscriber_' + Date.now()},
+        0,
+        ${JSON.stringify([])},
+        true
+      );
+    `;
+
+    return { success: true, message: 'Subscriber added successfully' };
+  } catch (error) {
+    console.error('Error adding manual subscriber:', error);
+    throw error;
+  }
+}

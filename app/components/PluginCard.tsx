@@ -160,12 +160,25 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
           Coming Soon
         </button>
       ) : (
-        <RetroButton
-          onClick={() => onAddToCart(plugin)}
-          className="w-full"
-        >
-          Add to Cart
-        </RetroButton>
+        <>
+          {plugin.trialDownloadUrl && (
+            <a
+              href={plugin.trialDownloadUrl}
+              className="block w-full mb-3"
+              download
+            >
+              <button className="w-full bg-[#90EE90] border-4 border-black px-6 py-3 text-lg font-bold hover:bg-[#7CDB7C] active:translate-y-1">
+                Download Free Trial (7 days)
+              </button>
+            </a>
+          )}
+          <RetroButton
+            onClick={() => onAddToCart(plugin)}
+            className="w-full"
+          >
+            {plugin.price === 0 ? 'Get License Key' : 'Purchase License'}
+          </RetroButton>
+        </>
       )}
     </div>
   );

@@ -50,6 +50,8 @@ export default function AdminPage() {
   const [generatingLicense, setGeneratingLicense] = useState(false);
   const [newLicenseEmail, setNewLicenseEmail] = useState('');
   const [generatedLicense, setGeneratedLicense] = useState('');
+  const [addingSubscriber, setAddingSubscriber] = useState(false);
+  const [newSubscriberEmail, setNewSubscriberEmail] = useState('');
 
   useEffect(() => {
     // Check if already authenticated (session storage)
@@ -180,6 +182,37 @@ export default function AdminPage() {
       alert('Failed to generate license');
     } finally {
       setGeneratingLicense(false);
+    }
+  };
+
+  const addManualSubscriber = async () => {
+    if (!newSubscriberEmail || !newSubscriberEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    setAddingSubscriber(true);
+    try {
+      const response = await fetch('/api/admin/add-subscriber', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newSubscriberEmail }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`${newSubscriberEmail} added to marketing list!`);
+        setNewSubscriberEmail('');
+        fetchAdminData(); // Refresh data
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to add subscriber: ${errorData.error}`);
+      }
+    } catch (err) {
+      console.error('Failed to add subscriber:', err);
+      alert('Failed to add subscriber');
+    } finally {
+      setAddingSubscriber(false);
     }
   };
 
@@ -346,6 +379,30 @@ export default function AdminPage() {
             {recentOrders.filter(order => order.license_key).length === 0 && (
               <p className="text-sm text-gray-600">No VocalFelt licenses issued yet.</p>
             )}
+          </div>
+        </div>
+
+        {/* Marketing Subscriber Management */}
+        <div className="bg-white border-4 border-black p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-4">📧 Marketing Subscriber Management</h2>
+
+          <div className="bg-[#87CEEB] border-2 border-black p-4 mb-4">
+            <h3 className="font-bold mb-2">Add Manual Subscriber</h3>
+            <p className="text-sm mb-3">
+              Manually add someone to the marketing opt-in list.
+            </p>
+            <div className="flex gap-3">
+              <input
+                type="email"
+                value={newSubscriberEmail}
+                onChange={(e) => setNewSubscriberEmail(e.target.value)}
+                placeholder="subscriber@email.com"
+                className="flex-1 px-3 py-2 border-2 border-black focus:outline-none"
+              />
+              <RetroButton onClick={addManualSubscriber} disabled={addingSubscriber}>
+                {addingSubscriber ? 'Adding...' : 'Add Subscriber'}
+              </RetroButton>
+            </div>
           </div>
         </div>
 

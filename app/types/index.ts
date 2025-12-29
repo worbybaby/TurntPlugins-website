@@ -7,6 +7,7 @@ export interface Plugin {
   minimumPrice?: number; // Minimum price for pay-what-you-want (undefined for free plugins)
   videoUrl?: string; // Optional single video link (deprecated, use videos array)
   videos?: { url: string; label: string }[]; // Optional array of labeled videos
+  trialDownloadUrl?: string; // Direct download link for trial version (for VocalFelt)
   comingSoon?: boolean; // Plugin not yet available for purchase
 }
 
