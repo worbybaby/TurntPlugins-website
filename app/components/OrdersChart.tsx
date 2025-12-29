@@ -16,7 +16,7 @@ interface OrdersChartProps {
 }
 
 export default function OrdersChart({ data }: OrdersChartProps) {
-  const [viewMode, setViewMode] = useState<'total' | 'paid'>('total');
+  const [viewMode, setViewMode] = useState<'total' | 'paid' | 'revenue'>('total');
 
   if (!data || data.length === 0) {
     return (
@@ -28,7 +28,10 @@ export default function OrdersChart({ data }: OrdersChartProps) {
   }
 
   // Get the data to display based on view mode
-  const chartValues = data.map(d => viewMode === 'total' ? d.totalOrders : d.paidOrders);
+  const chartValues = data.map(d => {
+    if (viewMode === 'revenue') return d.revenue / 100; // Convert cents to dollars
+    return viewMode === 'total' ? d.totalOrders : d.paidOrders;
+  });
   const maxValue = Math.max(...chartValues, 1); // At least 1 to avoid division by zero
 
   // Format date for display (show MM/DD)
@@ -54,6 +57,12 @@ export default function OrdersChart({ data }: OrdersChartProps) {
           >
             Paid Only
           </RetroButton>
+          <RetroButton
+            onClick={() => setViewMode('revenue')}
+            className={`!px-4 !py-2 !text-sm ${viewMode === 'revenue' ? '!bg-[#000080] !text-white' : ''}`}
+          >
+            Revenue
+          </RetroButton>
         </div>
       </div>
 
@@ -61,7 +70,9 @@ export default function OrdersChart({ data }: OrdersChartProps) {
       <div className="border-2 border-black p-4 bg-gray-50 overflow-x-auto">
         <div className="flex items-end h-64" style={{ width: '100%', minWidth: '100%' }}>
           {data.map((item, index) => {
-            const value = viewMode === 'total' ? item.totalOrders : item.paidOrders;
+            const value = viewMode === 'revenue'
+              ? item.revenue / 100
+              : viewMode === 'total' ? item.totalOrders : item.paidOrders;
             const heightPercent = maxValue > 0 ? (value / maxValue) * 100 : 0;
             const showLabel = index % 5 === 0; // Show date label every 5 days
 
@@ -103,11 +114,13 @@ export default function OrdersChart({ data }: OrdersChartProps) {
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-[#000080] border border-black"></div>
           <span>
-            {viewMode === 'total' ? 'Total Orders' : 'Paid Orders'}
+            {viewMode === 'revenue' ? 'Revenue' : viewMode === 'total' ? 'Total Orders' : 'Paid Orders'}
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-bold">Max: {maxValue} orders</span>
+          <span className="font-bold">
+            Max: {viewMode === 'revenue' ? `$${maxValue.toFixed(2)}` : `${maxValue} orders`}
+          </span>
         </div>
       </div>
 
