@@ -118,6 +118,23 @@ export const pluginFiles: Record<string, PluginFile> = {
       },
     ],
   },
+  '7': {
+    id: '7',
+    files: [
+      {
+        fileName: 'VocalFelt_v1.0.4.pkg',
+        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/VocalFelt_v1.0.4.pkg`,
+        fileSize: '72MB',
+        platform: 'macOS',
+      },
+      {
+        fileName: 'VocalFelt-v1.0.4-Windows-x64.exe',
+        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/VocalFelt-v1.0.4-Windows-x64.exe`,
+        fileSize: '19MB',
+        platform: 'Windows',
+      },
+    ],
+  },
 };
 
 // Helper function to get plugin file info
