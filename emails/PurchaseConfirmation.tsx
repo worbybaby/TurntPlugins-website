@@ -158,7 +158,14 @@ export default function PurchaseConfirmationEmail({
                 2. Follow the installation guide included with each plugin
               </Text>
               <Text style={text}>
-                3. If you have any issues, reach out to us on Instagram @turntplugins
+                3. If you have any issues, reach out to us on{' '}
+                <Link href="https://instagram.com/turntplugins" style={link}>
+                  Instagram @turntplugins
+                </Link>{' '}
+                or visit our{' '}
+                <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://yoursite.com'}/support`} style={link}>
+                  Contact Portal
+                </Link>
               </Text>
             </Section>
 
@@ -171,6 +178,19 @@ export default function PurchaseConfirmationEmail({
           <Section style={footerSection}>
             <Text style={footerText}>
               © 2024 Turnt Plugins. All rights reserved.
+            </Text>
+            <Text style={footerText}>
+              <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://yoursite.com'}/downloads`} style={footerLink}>
+                My Downloads
+              </Link>
+              {' • '}
+              <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://yoursite.com'}/support`} style={footerLink}>
+                Contact
+              </Link>
+              {' • '}
+              <Link href="https://instagram.com/turntplugins" style={footerLink}>
+                Instagram
+              </Link>
             </Text>
           </Section>
         </Container>
@@ -364,4 +384,10 @@ const codeStyle = {
   border: '1px solid #000000',
   fontFamily: 'monospace',
   fontSize: '12px',
+};
+
+const footerLink = {
+  color: '#ffffff',
+  textDecoration: 'underline',
+  fontFamily: 'monospace',
 };
