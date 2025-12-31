@@ -5,9 +5,10 @@ export const plugins: Plugin[] = [
     id: '7',
     name: 'Vocal Felt',
     description: 'CLEEEAN vocal compression inspired by your favorite optical tube compressor. I wanted the depth and dimension of analog compressors dialed in on a simple UI for instant use on pop, hiphop, etc.',
-    image: '/plugins/FocalFelt.png',
-    price: 0,
-    // trialDownloadUrl: 'https://github.com/worbybaby/TurntPlugins-website/releases/download/installers-v1.0.0/VocalFelt_v1.0.0_macOS.pkg', // Uncomment when ready to activate trial downloads
+    image: '/plugins/VocalFelt.png',
+    price: 39,
+    minimumPrice: 7,
+    trialDownloadUrl: 'https://github.com/worbybaby/TurntPlugins-website/releases/download/installers-v1.0.0/VocalFelt_v1.0.4.pkg',
     comingSoon: true
   },
   {

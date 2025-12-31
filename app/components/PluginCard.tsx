@@ -16,9 +16,25 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [showTrialModal, setShowTrialModal] = useState(false);
 
   // Minimum swipe distance (in px) to trigger navigation
   const minSwipeDistance = 50;
+
+  const handleTrialDownload = (platform: 'mac' | 'windows') => {
+    const link = document.createElement('a');
+    // Get the appropriate download URL based on platform
+    // trialDownloadUrl contains the Mac version, we derive Windows from it
+    const macUrl = plugin.trialDownloadUrl!;
+    const windowsUrl = macUrl.replace('VocalFelt_v1.0.4.pkg', 'VocalFelt-v1.0.4-Windows-x64.exe');
+
+    link.href = platform === 'mac' ? macUrl : windowsUrl;
+    link.download = '';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setShowTrialModal(false);
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(0); // Reset
@@ -162,23 +178,66 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
       ) : (
         <>
           {plugin.trialDownloadUrl && (
-            <a
-              href={plugin.trialDownloadUrl}
-              className="block w-full mb-3"
-              download
+            <button
+              onClick={() => setShowTrialModal(true)}
+              className="w-full bg-[#90EE90] border-4 border-black px-6 py-3 text-lg font-bold hover:bg-[#7CDB7C] active:translate-y-1 mb-3"
             >
-              <button className="w-full bg-[#90EE90] border-4 border-black px-6 py-3 text-lg font-bold hover:bg-[#7CDB7C] active:translate-y-1">
-                Download Free Trial (7 days)
-              </button>
-            </a>
+              Download Free Trial (7 days)
+            </button>
           )}
           <RetroButton
             onClick={() => onAddToCart(plugin)}
             className="w-full"
           >
-            {plugin.price === 0 ? 'Get License Key' : 'Purchase License'}
+            Add to Cart
           </RetroButton>
         </>
+      )}
+
+      {/* Trial Download Modal */}
+      {showTrialModal && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+          onClick={() => setShowTrialModal(false)}
+        >
+          <div
+            className="bg-white border-4 border-black p-8 max-w-md w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              Download {plugin.name} Trial
+            </h2>
+            <p className="text-sm mb-6 text-center text-gray-700">
+              Choose your platform to download the 7-day trial version
+            </p>
+
+            <div className="space-y-3">
+              <button
+                onClick={() => handleTrialDownload('mac')}
+                className="w-full bg-[#000080] text-white border-4 border-black px-6 py-3 text-lg font-bold hover:bg-[#0000CD] active:translate-y-1"
+              >
+                Download for macOS
+              </button>
+
+              <button
+                onClick={() => handleTrialDownload('windows')}
+                className="w-full bg-[#000080] text-white border-4 border-black px-6 py-3 text-lg font-bold hover:bg-[#0000CD] active:translate-y-1"
+              >
+                Download for Windows
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowTrialModal(false);
+                  window.location.href = '/';
+                }}
+                className="w-full bg-gray-400 text-black border-4 border-black px-6 py-3 text-lg font-bold hover:bg-gray-500 active:translate-y-1"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
