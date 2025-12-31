@@ -81,29 +81,14 @@ export default function PurchaseConfirmationEmail({
             {/* License Key Section (for VocalFelt) */}
             {licenseKey && (
               <Section style={licenseBox}>
-                <Text style={orderTitle}>🎫 VocalFelt License Key:</Text>
+                <Text style={orderTitle}>🎫 VocalFelt Activation Code:</Text>
                 <Hr style={hr} />
                 <Text style={licenseKeyText}>{licenseKey}</Text>
                 <Text style={text}>
-                  <strong>Installation:</strong>
+                  Download and install VocalFelt from the links below, then enter this activation code into the splash screen when you first load the plugin.
                 </Text>
                 <Text style={text}>
-                  1. Download and install VocalFelt from the links below
-                </Text>
-                <Text style={text}>
-                  2. Create this folder: <code style={codeStyle}>~/Library/Application Support/TurntPlugins/</code>
-                </Text>
-                <Text style={text}>
-                  3. Create a file named <code style={codeStyle}>VocalFelt.lic</code> in that folder
-                </Text>
-                <Text style={text}>
-                  4. Paste your license key above into the file and save
-                </Text>
-                <Text style={text}>
-                  5. Restart your DAW and load VocalFelt
-                </Text>
-                <Text style={text}>
-                  <strong>Note:</strong> Keep this license key safe! You can always access it from your downloads page.
+                  <strong>Note:</strong> Keep this code safe! You can always access it from your downloads page.
                 </Text>
               </Section>
             )}
