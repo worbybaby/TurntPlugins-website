@@ -9,7 +9,7 @@ export const plugins: Plugin[] = [
     price: 39,
     minimumPrice: 7,
     trialDownloadUrl: 'https://github.com/worbybaby/TurntPlugins-website/releases/download/installers-v1.0.0/VocalFelt_v1.0.4.pkg',
-    comingSoon: false
+    comingSoon: true
   },
   {
     id: '6',
