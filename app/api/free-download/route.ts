@@ -4,6 +4,7 @@ import PurchaseConfirmationEmail from '@/emails/PurchaseConfirmation';
 import { saveOrder, saveDownloadLink, initDatabase } from '../lib/db';
 import { generateSignedUrl } from '@/app/data/pluginFiles';
 import { checkRateLimit } from '../lib/rateLimiter';
+import { generateVocalFeltLicense } from '@/app/lib/licenseGenerator';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -76,13 +77,23 @@ export async function POST(req: NextRequest) {
     // Add discount code info to session ID if used
     const sessionIdWithDiscount = discountCode ? `${freeSessionId}_${discountCode}` : freeSessionId;
 
+    // Check if VocalFelt (id: '7') is in the order and generate license key
+    const hasVocalFelt = plugins.some((plugin: { id: string }) => plugin.id === '7');
+    let licenseKey: string | undefined;
+
+    if (hasVocalFelt) {
+      licenseKey = generateVocalFeltLicense();
+      console.log('🎫 Generated VocalFelt license for free download:', licenseKey);
+    }
+
     // Save order to database (amount = 0 for free)
     const orderId = await saveOrder(
       email,
       sessionIdWithDiscount,
       0, // Free download
       plugins,
-      marketingOptIn || false
+      marketingOptIn || false,
+      licenseKey
     );
 
     // Generate download links with 3-day expiration
@@ -135,6 +146,7 @@ export async function POST(req: NextRequest) {
         orderTotal: 0,
         orderId: sessionIdWithDiscount,
         downloadLinks,
+        licenseKey,
       }),
     });
 
