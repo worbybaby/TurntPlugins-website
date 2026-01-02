@@ -67,8 +67,8 @@ export const plugins: Plugin[] = [
   },
   {
     id: 'bundle',
-    name: 'Complete Bundle',
-    description: 'Get all five plugins for less $$$ (you\'ll save 19 big ones). Includes Pretty Pretty Princess Sparkle, Tape Bloom, Space Bass Butt, Cassette Vibe, and Tapeworm. Does not include Rubber.PRE. AU/VST3 Mac & Windows',
+    name: '5 Plugin Bundle',
+    description: 'Get all 5 original plugins for less $$$ (you\'ll save 19 big ones). Includes Pretty Pretty Princess Sparkle, Tape Bloom, Space Bass Butt, Cassette Vibe, and Tapeworm. Does not include Rubber.PRE or Vocal Felt. AU/VST3 Mac & Windows',
     image: '/plugins/TapeBloom.png', // Using TapeBloom as placeholder - you may want to create a bundle image
     price: 49,
     minimumPrice: 10
