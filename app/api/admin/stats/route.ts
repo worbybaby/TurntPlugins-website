@@ -40,10 +40,11 @@ export async function GET(req: NextRequest) {
         o.amount_total,
         o.plugins,
         o.created_at,
+        o.license_key,
         COALESCE(SUM(d.download_count), 0) as download_count
       FROM orders o
       LEFT JOIN downloads d ON o.id = d.order_id
-      GROUP BY o.id, o.email, o.amount_total, o.plugins, o.created_at
+      GROUP BY o.id, o.email, o.amount_total, o.plugins, o.created_at, o.license_key
       ORDER BY o.created_at DESC
       LIMIT 50;
     `;
@@ -70,6 +71,7 @@ export async function GET(req: NextRequest) {
       plugins: row.plugins,
       created_at: row.created_at,
       download_count: parseInt(row.download_count) || 0,
+      license_key: row.license_key || undefined,
     }));
 
     return NextResponse.json({
