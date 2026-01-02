@@ -106,7 +106,7 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
           </div>
         )}
 
-        {/* Add "5 PLUGINS" stamp for bundle */}
+        {/* Add "ALL 5" stamp for bundle */}
         {plugin.id === 'bundle' && (
           <div
             className="absolute pointer-events-none"
@@ -121,7 +121,7 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
                 className="text-white font-bold text-4xl sm:text-5xl tracking-widest whitespace-nowrap"
                 style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
               >
-                5 PLUGINS
+                ALL 5
               </span>
             </div>
           </div>
