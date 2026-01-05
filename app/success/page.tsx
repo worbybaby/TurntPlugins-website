@@ -8,18 +8,22 @@ import { trackMetaEvent } from '../components/MetaPixel';
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
+  const sessionId = searchParams.get('session_id'); // Stripe
+  const orderId = searchParams.get('order_id'); // PayPal
+  const provider = searchParams.get('provider') || 'stripe';
   const isDonation = searchParams.get('donation') === 'true';
   const [loading, setLoading] = useState(true);
   const [orderValue, setOrderValue] = useState<number | null>(null);
 
+  const transactionId = sessionId || orderId;
+
   useEffect(() => {
-    // Fetch session details and track conversion
-    const fetchSessionAndTrack = async () => {
-      if (sessionId) {
+    // Fetch order details and track conversion
+    const fetchOrderAndTrack = async () => {
+      if (transactionId) {
         try {
-          // Fetch the Stripe session to get the order amount
-          const response = await fetch(`/api/get-session?session_id=${sessionId}`);
+          // Fetch order details from unified endpoint
+          const response = await fetch(`/api/get-order-details?transaction_id=${transactionId}&provider=${provider}`);
           if (response.ok) {
             const data = await response.json();
             const value = data.amount_total ? data.amount_total / 100 : 0; // Convert cents to dollars
@@ -34,7 +38,7 @@ function SuccessContent() {
             }
           }
         } catch (error) {
-          console.error('Error fetching session:', error);
+          console.error('Error fetching order details:', error);
         }
 
         setTimeout(() => setLoading(false), 1000);
@@ -43,8 +47,8 @@ function SuccessContent() {
       }
     };
 
-    fetchSessionAndTrack();
-  }, [sessionId, isDonation]);
+    fetchOrderAndTrack();
+  }, [transactionId, provider, isDonation]);
 
   return (
     <div className="min-h-screen bg-[#5DADE2] flex items-center justify-center p-4">
@@ -91,9 +95,9 @@ function SuccessContent() {
               </div>
             )}
 
-            {sessionId && (
+            {transactionId && (
               <div className="text-xs text-gray-600 border-t border-black pt-4 break-all">
-                Order ID: {sessionId}
+                Order ID: {transactionId}
               </div>
             )}
 

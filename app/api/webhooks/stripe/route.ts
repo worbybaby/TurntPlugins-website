@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
-import PurchaseConfirmationEmail from '@/emails/PurchaseConfirmation';
-import { saveOrder, saveDownloadLink, initDatabase } from '../../lib/db';
-import { generateSignedUrl } from '@/app/data/pluginFiles';
-import { generateVocalFeltLicense } from '../../../lib/licenseGenerator';
+import { processOrder } from '../../lib/orderProcessor';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover',
@@ -113,90 +110,21 @@ export async function POST(req: NextRequest) {
       // Parse marketing opt-in from metadata
       const marketingOptIn = session.metadata?.marketingOptIn === 'true';
 
-      // Check if VocalFelt (id: '7') is in the order
-      const hasVocalFelt = plugins.some((plugin: { id: string }) => plugin.id === '7');
-      let licenseKey: string | undefined;
+      // Parse discount code from metadata
+      const discountCode = session.metadata?.discountCode || undefined;
 
-      if (hasVocalFelt) {
-        licenseKey = generateVocalFeltLicense();
-        console.log('🎫 Generated VocalFelt license:', licenseKey);
-      }
-
-      // Save order to database
-      let orderId: number;
+      // Process order using shared processor
       try {
-        // Initialize database tables if needed
-        await initDatabase();
-        console.log('📦 Database initialized');
-
-        orderId = await saveOrder(
-          session.customer_email || '',
-          session.id,
-          session.amount_total || 0,
+        await processOrder({
+          email: session.customer_email || '',
+          paymentProvider: 'stripe',
+          transactionId: session.id,
+          amountTotal: session.amount_total || 0,
           plugins,
           marketingOptIn,
-          licenseKey
-        );
-        console.log('💾 Order saved with ID:', orderId);
-
-        // Generate download links with 3-day expiration
-        const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + 3); // 3 days from now
-
-        // Create download links for each plugin (Mac and Windows)
-        const downloadLinks: Array<{
-          pluginName: string;
-          macDownloadUrl: string;
-          windowsDownloadUrl: string;
-        }> = [];
-
-        for (const plugin of plugins) {
-          const macDownloadUrl = generateSignedUrl(plugin.id, orderId.toString(), 'macOS');
-          const windowsDownloadUrl = generateSignedUrl(plugin.id, orderId.toString(), 'Windows');
-
-          // Save both download links to database
-          await saveDownloadLink(
-            orderId,
-            plugin.id,
-            plugin.name,
-            macDownloadUrl,
-            expiresAt
-          );
-
-          await saveDownloadLink(
-            orderId,
-            plugin.id + '-windows',
-            plugin.name + ' (Windows)',
-            windowsDownloadUrl,
-            expiresAt
-          );
-
-          downloadLinks.push({
-            pluginName: plugin.name,
-            macDownloadUrl,
-            windowsDownloadUrl,
-          });
-        }
-
-        // Send confirmation email with download links
-        console.log('📧 Sending email to:', session.customer_email);
-        const resend = new Resend(process.env.RESEND_API_KEY!);
-        const emailResult = await resend.emails.send({
-          from: 'Turnt Plugins <downloads@turntplugins.com>',
-          to: session.customer_email || '',
-          subject: 'Your Turnt Plugins Purchase Confirmation',
-          react: PurchaseConfirmationEmail({
-            customerEmail: session.customer_email || '',
-            plugins: plugins,
-            orderTotal: session.amount_total || 0,
-            orderId: session.id,
-            downloadLinks,
-            licenseKey,
-          }),
+          discountCode,
         });
-
-        console.log('✅ Email sent successfully!', emailResult);
-        console.log('🎉 Order saved and confirmation email sent to:', session.customer_email);
+        console.log('🎉 Order processed successfully for:', session.customer_email);
       } catch (error) {
         console.error('❌ Failed to process order:', error);
         console.error('Error details:', JSON.stringify(error, null, 2));

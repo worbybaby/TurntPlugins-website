@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Script from 'next/script';
 import Modal from './Modal';
 import { Plugin } from '../types';
 import RetroButton from './RetroButton';
@@ -25,6 +26,9 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState<{ code: string; percentage: number } | null>(null);
   const [discountError, setDiscountError] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'paypal'>('stripe');
+  const [paypalLoaded, setPaypalLoaded] = useState(false);
+  const paypalButtonRef = useRef<HTMLDivElement>(null);
 
   const handlePayAmountChange = (pluginId: string, amount: number) => {
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
@@ -195,12 +199,144 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setDiscountCode('');
     setAppliedDiscount(null);
     setDiscountError('');
+    setPaymentMethod('stripe');
     onClose();
   };
 
+  // Initialize PayPal button when PayPal SDK is loaded and PayPal is selected
+  useEffect(() => {
+    if (!paypalLoaded || !paypalButtonRef.current || paymentMethod !== 'paypal' || !isOpen) {
+      return;
+    }
+
+    // Clear any existing PayPal buttons
+    paypalButtonRef.current.innerHTML = '';
+
+    // Validate email before showing PayPal button
+    if (!email || !validateEmail(email)) {
+      return;
+    }
+
+    // Validate minimum prices
+    const invalidItems = cartItems.filter(plugin => {
+      const amount = getPayAmount(plugin);
+      const minPrice = plugin.minimumPrice || 0;
+      return amount < minPrice;
+    });
+
+    if (invalidItems.length > 0) {
+      return;
+    }
+
+    // Initialize PayPal buttons
+    if (window.paypal) {
+      window.paypal.Buttons({
+        createOrder: async () => {
+          try {
+            const cartItemsWithAmounts = cartItems.map(plugin => ({
+              plugin,
+              payAmount: getPayAmount(plugin)
+            }));
+
+            const response = await fetch('/api/paypal/create-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                cartItems: cartItemsWithAmounts,
+                email,
+                marketingOptIn: optInEmail,
+                discountCode: appliedDiscount?.code || null,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.error || 'Failed to create PayPal order');
+            }
+
+            if (data.isFree) {
+              // Handle free download
+              const freeResponse = await fetch('/api/free-download', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  cartItems: cartItemsWithAmounts,
+                  email,
+                  marketingOptIn: optInEmail,
+                  discountCode: appliedDiscount?.code || null,
+                }),
+              });
+
+              const freeData = await freeResponse.json();
+              if (freeResponse.ok) {
+                trackMetaEvent('Lead', {
+                  content_name: cartItemsWithAmounts.map(item => item.plugin.name).join(', '),
+                  content_category: 'Free Download',
+                  value: 0,
+                  currency: 'USD',
+                });
+                alert(freeData.message || 'Thank you! Check your email for download links.');
+                onClearCart();
+                handleCloseModal();
+              }
+              return null;
+            }
+
+            return data.orderID;
+          } catch (error) {
+            console.error('PayPal order creation error:', error);
+            alert('Failed to create PayPal order. Please try again.');
+            return null;
+          }
+        },
+        onApprove: async (data: any) => {
+          try {
+            const response = await fetch('/api/paypal/capture-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orderID: data.orderID }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+              throw new Error(result.error || 'Failed to capture payment');
+            }
+
+            // Track Meta Pixel Purchase event
+            trackMetaEvent('Purchase', {
+              content_name: cartItems.map(item => item.name).join(', '),
+              value: totalAmount,
+              currency: 'USD',
+            });
+
+            // Redirect to success page
+            window.location.href = `/success?order_id=${data.orderID}&provider=paypal`;
+          } catch (error) {
+            console.error('PayPal capture error:', error);
+            alert('Payment capture failed. Please contact support.');
+          }
+        },
+        onError: (err: any) => {
+          console.error('PayPal error:', err);
+          alert('An error occurred with PayPal. Please try again or use a different payment method.');
+        },
+      }).render(paypalButtonRef.current);
+    }
+  }, [paypalLoaded, paymentMethod, email, cartItems, payAmounts, optInEmail, appliedDiscount, isOpen]);
+
   return (
-    <Modal isOpen={isOpen} onClose={handleCloseModal} title="Shopping Cart" width="w-[95vw] sm:w-[600px] max-w-[600px]">
-      <div className="space-y-3 sm:space-y-4">
+    <>
+      {/* Load PayPal SDK */}
+      <Script
+        src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ''}&currency=USD&intent=capture&components=buttons`}
+        strategy="lazyOnload"
+        onLoad={() => setPaypalLoaded(true)}
+      />
+
+      <Modal isOpen={isOpen} onClose={handleCloseModal} title="Shopping Cart" width="w-[95vw] sm:w-[600px] max-w-[600px]">
+        <div className="space-y-3 sm:space-y-4">
         {cartItems.length === 0 ? (
           <p className="text-center py-8 text-gray-600">Your cart is empty</p>
         ) : (
@@ -361,19 +497,75 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 </label>
               </div>
 
+              {/* Payment Method Selector */}
+              <div className="mb-3 sm:mb-4">
+                <label className="block text-xs font-bold mb-2">Payment Method:</label>
+                <div className="space-y-2">
+                  <label className="flex items-start gap-2 cursor-pointer border-2 border-black p-2 bg-white hover:bg-gray-50">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="stripe"
+                      checked={paymentMethod === 'stripe'}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'stripe')}
+                      className="mt-0.5 flex-shrink-0"
+                    />
+                    <div className="flex-1">
+                      <span className="text-xs font-bold block">Credit/Debit Card (via Stripe)</span>
+                      <span className="text-xs text-gray-600">Visa, Mastercard, Amex accepted</span>
+                    </div>
+                  </label>
+                  <label className="flex items-start gap-2 cursor-pointer border-2 border-black p-2 bg-white hover:bg-gray-50">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="paypal"
+                      checked={paymentMethod === 'paypal'}
+                      onChange={(e) => setPaymentMethod(e.target.value as 'paypal')}
+                      className="mt-0.5 flex-shrink-0"
+                    />
+                    <div className="flex-1">
+                      <span className="text-xs font-bold block">PayPal</span>
+                      <span className="text-xs text-gray-600">Pay with your PayPal account or card</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
               <p className="text-xs text-gray-600 mb-3 text-center">All sales are final.</p>
 
-              <RetroButton
-                onClick={handleCheckout}
-                disabled={isLoading}
-                className="w-full !px-4 !py-2.5 sm:!py-3 !text-sm sm:!text-base"
-              >
-                {isLoading ? 'Processing...' : (totalAmount > 0 ? 'Proceed to Payment' : 'Download for Free')}
-              </RetroButton>
+              {/* Stripe Checkout Button */}
+              {paymentMethod === 'stripe' && (
+                <RetroButton
+                  onClick={handleCheckout}
+                  disabled={isLoading}
+                  className="w-full !px-4 !py-2.5 sm:!py-3 !text-sm sm:!text-base"
+                >
+                  {isLoading ? 'Processing...' : (totalAmount > 0 ? 'Proceed to Payment' : 'Download for Free')}
+                </RetroButton>
+              )}
+
+              {/* PayPal Button Container */}
+              {paymentMethod === 'paypal' && (
+                <div>
+                  <div ref={paypalButtonRef} id="paypal-button-container"></div>
+                  {(!email || !validateEmail(email)) && (
+                    <p className="text-xs text-gray-600 text-center mt-2">Please enter a valid email address above</p>
+                  )}
+                </div>
+              )}
             </div>
           </>
         )}
       </div>
     </Modal>
+    </>
   );
+}
+
+// Add PayPal types to window object
+declare global {
+  interface Window {
+    paypal?: any;
+  }
 }

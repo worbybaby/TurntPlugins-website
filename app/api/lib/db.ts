@@ -4,6 +4,8 @@ export interface Order {
   id: string;
   email: string;
   stripe_session_id: string;
+  payment_provider?: string; // 'stripe' or 'paypal'
+  payment_transaction_id?: string; // Unified transaction ID
   amount_total: number;
   plugins: string; // JSON string of plugin IDs
   license_key?: string; // VocalFelt license key (if order includes VocalFelt)
@@ -48,6 +50,18 @@ export async function initDatabase() {
       ADD COLUMN IF NOT EXISTS license_key VARCHAR(50);
     `;
 
+    // Add payment_provider column (stripe or paypal)
+    await sql`
+      ALTER TABLE orders
+      ADD COLUMN IF NOT EXISTS payment_provider VARCHAR(20) DEFAULT 'stripe';
+    `;
+
+    // Add payment_transaction_id column (unified transaction ID)
+    await sql`
+      ALTER TABLE orders
+      ADD COLUMN IF NOT EXISTS payment_transaction_id VARCHAR(255);
+    `;
+
     // Create downloads table
     await sql`
       CREATE TABLE IF NOT EXISTS downloads (
@@ -72,6 +86,11 @@ export async function initDatabase() {
       CREATE INDEX IF NOT EXISTS idx_orders_stripe_session ON orders(stripe_session_id);
     `;
 
+    // Create index on payment_transaction_id
+    await sql`
+      CREATE INDEX IF NOT EXISTS idx_orders_payment_transaction ON orders(payment_transaction_id);
+    `;
+
     console.log('Database tables initialized successfully');
   } catch (error) {
     console.error('Error initializing database:', error);
@@ -82,16 +101,39 @@ export async function initDatabase() {
 // Save order to database
 export async function saveOrder(
   email: string,
-  stripeSessionId: string,
+  transactionId: string, // Stripe session ID or PayPal order ID
   amountTotal: number,
   plugins: Array<{ id: string; name: string }>,
   marketingOptIn: boolean = false,
-  licenseKey?: string
+  licenseKey?: string,
+  paymentProvider: 'stripe' | 'paypal' = 'stripe'
 ) {
   try {
+    // For backwards compatibility: populate stripe_session_id for Stripe orders
+    // For all orders: populate payment_transaction_id
+    const stripeSessionId = paymentProvider === 'stripe' ? transactionId : `${paymentProvider}_${Date.now()}`;
+
     const result = await sql`
-      INSERT INTO orders (email, stripe_session_id, amount_total, plugins, marketing_opt_in, license_key)
-      VALUES (${email}, ${stripeSessionId}, ${amountTotal}, ${JSON.stringify(plugins)}, ${marketingOptIn}, ${licenseKey || null})
+      INSERT INTO orders (
+        email,
+        stripe_session_id,
+        payment_transaction_id,
+        payment_provider,
+        amount_total,
+        plugins,
+        marketing_opt_in,
+        license_key
+      )
+      VALUES (
+        ${email},
+        ${stripeSessionId},
+        ${transactionId},
+        ${paymentProvider},
+        ${amountTotal},
+        ${JSON.stringify(plugins)},
+        ${marketingOptIn},
+        ${licenseKey || null}
+      )
       RETURNING id;
     `;
     return result.rows[0].id;
@@ -128,6 +170,8 @@ export async function getOrdersByEmail(email: string) {
         o.id,
         o.email,
         o.stripe_session_id,
+        o.payment_provider,
+        o.payment_transaction_id,
         o.amount_total,
         o.plugins,
         o.license_key,
@@ -150,6 +194,31 @@ export async function getOrdersByEmail(email: string) {
     return result.rows;
   } catch (error) {
     console.error('Error getting orders:', error);
+    throw error;
+  }
+}
+
+// Get order by transaction ID (works for both Stripe and PayPal)
+export async function getOrderByTransactionId(transactionId: string) {
+  try {
+    const result = await sql`
+      SELECT
+        o.id,
+        o.email,
+        o.stripe_session_id,
+        o.payment_provider,
+        o.payment_transaction_id,
+        o.amount_total,
+        o.plugins,
+        o.license_key,
+        o.created_at
+      FROM orders o
+      WHERE o.payment_transaction_id = ${transactionId}
+      LIMIT 1;
+    `;
+    return result.rows[0] || null;
+  } catch (error) {
+    console.error('Error getting order by transaction ID:', error);
     throw error;
   }
 }
