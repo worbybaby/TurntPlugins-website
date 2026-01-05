@@ -548,9 +548,19 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
               {/* PayPal Button Container */}
               {paymentMethod === 'paypal' && (
                 <div>
-                  <div ref={paypalButtonRef} id="paypal-button-container"></div>
-                  {(!email || !validateEmail(email)) && (
-                    <p className="text-xs text-gray-600 text-center mt-2">Please enter a valid email address above</p>
+                  {!process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? (
+                    <div className="bg-yellow-100 border-2 border-yellow-600 p-4 text-center">
+                      <p className="text-sm font-bold mb-2">PayPal Not Configured</p>
+                      <p className="text-xs">PayPal credentials need to be added to environment variables.</p>
+                      <p className="text-xs mt-2">Please use Stripe payment for now.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div ref={paypalButtonRef} id="paypal-button-container"></div>
+                      {(!email || !validateEmail(email)) && (
+                        <p className="text-xs text-gray-600 text-center mt-2">Please enter a valid email address above</p>
+                      )}
+                    </>
                   )}
                 </div>
               )}
