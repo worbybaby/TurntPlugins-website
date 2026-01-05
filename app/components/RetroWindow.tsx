@@ -18,9 +18,9 @@ export default function RetroWindow({
   height = 'h-auto'
 }: RetroWindowProps) {
   return (
-    <div className={`${width} ${height} max-w-full max-h-[90vh] bg-white border-4 border-black flex flex-col overflow-x-hidden`}>
+    <div className={`${width} ${height} max-w-full max-h-[85vh] bg-white border-4 border-black flex flex-col overflow-hidden`}>
       {/* Title Bar */}
-      <div className="bg-[#000080] px-4 py-3 flex items-center justify-between border-b-4 border-black flex-shrink-0 overflow-x-hidden">
+      <div className="bg-[#000080] px-4 py-3 flex items-center justify-between border-b-4 border-black flex-shrink-0 overflow-hidden">
         <div className="flex items-center gap-2 overflow-hidden">
           <span className="text-white font-bold text-lg truncate">{title}</span>
         </div>
@@ -35,7 +35,7 @@ export default function RetroWindow({
       </div>
 
       {/* Window Content */}
-      <div className="p-6 modal-content overflow-y-auto overflow-x-hidden flex-1 min-h-0">
+      <div className="p-4 sm:p-6 modal-content overflow-y-auto overflow-x-hidden flex-1">
         {children}
       </div>
     </div>
