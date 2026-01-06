@@ -76,7 +76,7 @@ export async function createPayPalOrder(params: CreatePayPalOrderParams) {
     },
   };
 
-  const response = await fetch(`${PAYPAL_API_BASE}/v2/orders`, {
+  const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
@@ -86,9 +86,18 @@ export async function createPayPalOrder(params: CreatePayPalOrderParams) {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    console.error('PayPal order creation failed:', errorData);
-    throw new Error(`Failed to create PayPal order: ${response.statusText}`);
+    const errorText = await response.text();
+    console.error('PayPal order creation failed:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText,
+    });
+    try {
+      const errorData = JSON.parse(errorText);
+      throw new Error(`Failed to create PayPal order: ${JSON.stringify(errorData)}`);
+    } catch {
+      throw new Error(`Failed to create PayPal order: ${response.statusText} - ${errorText}`);
+    }
   }
 
   const order = await response.json();
@@ -101,7 +110,7 @@ export async function createPayPalOrder(params: CreatePayPalOrderParams) {
 export async function capturePayPalOrder(orderId: string) {
   const accessToken = await getAccessToken();
 
-  const response = await fetch(`${PAYPAL_API_BASE}/v2/orders/${orderId}/capture`, {
+  const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${orderId}/capture`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
@@ -125,7 +134,7 @@ export async function capturePayPalOrder(orderId: string) {
 export async function getPayPalOrderDetails(orderId: string) {
   const accessToken = await getAccessToken();
 
-  const response = await fetch(`${PAYPAL_API_BASE}/v2/orders/${orderId}`, {
+  const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${orderId}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${accessToken}`,

@@ -556,8 +556,11 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                     </div>
                   ) : (
                     <>
-                      <div ref={paypalButtonRef} id="paypal-button-container"></div>
-                      {(!email || !validateEmail(email)) && (
+                      <div ref={paypalButtonRef} id="paypal-button-container" className="min-h-[45px]"></div>
+                      {!paypalLoaded && (
+                        <p className="text-xs text-gray-600 text-center mt-2">Loading PayPal...</p>
+                      )}
+                      {paypalLoaded && (!email || !validateEmail(email)) && (
                         <p className="text-xs text-gray-600 text-center mt-2">Please enter a valid email address above</p>
                       )}
                     </>
