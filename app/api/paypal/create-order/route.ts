@@ -10,8 +10,8 @@ const MAX_CART_ITEMS = 50;
 // Discount code validation (same as Stripe)
 const VALID_DISCOUNT_CODES: Record<string, number> = {
   'ALLMYFRIENDSAREPLUGINS': 100, // 100% off
-  'JUSTINSHERIFF': 100, // 100% off
   'TODAYSFUTURESOUND2026': 100, // 100% off
+  'THE ONE AND ONLY COLE OTTOSEN': 100, // 100% off
 };
 
 function validateDiscountCode(code: string | null): number {

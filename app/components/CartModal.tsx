@@ -43,7 +43,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     }
 
     // Validate discount code
-    if (code === 'ALLMYFRIENDSAREPLUGINS' || code === 'JUSTINSHERIFF' || code === 'TODAYSFUTURESOUND2026') {
+    if (code === 'ALLMYFRIENDSAREPLUGINS' || code === 'TODAYSFUTURESOUND2026' || code === 'THE ONE AND ONLY COLE OTTOSEN') {
       setAppliedDiscount({ code, percentage: 100 });
       setDiscountError('');
     } else {
