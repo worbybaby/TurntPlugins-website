@@ -497,8 +497,12 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                 </label>
               </div>
 
-              {/* Payment Method Selector */}
-              <div className="mb-3 sm:mb-4">
+              {/* Payment Method Selector - DISABLED: PayPal requires support contact */}
+              {/* PayPal account setting "Accept payments before API setup" was enabled */}
+              {/* but payments still fail with TRANSACTION_REFUSED */}
+              {/* User needs to contact PayPal Business Support: 1-888-221-1161 */}
+              {/* Reference Debug ID: 168e734e9b504 */}
+              {/* <div className="mb-3 sm:mb-4">
                 <label className="block text-xs font-bold mb-2">Payment Method:</label>
                 <div className="space-y-2">
                   <label className="flex items-start gap-2 cursor-pointer border-2 border-black p-2 bg-white hover:bg-gray-50">
@@ -530,7 +534,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                     </div>
                   </label>
                 </div>
-              </div>
+              </div> */}
 
               <p className="text-xs text-gray-600 mb-3 text-center">All sales are final.</p>
 
