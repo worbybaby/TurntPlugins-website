@@ -22,6 +22,7 @@ interface Order {
   created_at: string;
   download_count: number;
   license_key?: string;
+  payment_provider?: string;
 }
 
 interface PluginStat {
@@ -37,6 +38,12 @@ interface ChartData {
   revenue: number;
 }
 
+interface ProviderBreakdown {
+  provider: string;
+  orders: number;
+  revenue: number;
+}
+
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
@@ -46,6 +53,7 @@ export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [pluginStats, setPluginStats] = useState<PluginStat[]>([]);
+  const [providerBreakdown, setProviderBreakdown] = useState<ProviderBreakdown[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [generatingLicense, setGeneratingLicense] = useState(false);
   const [newLicenseEmail, setNewLicenseEmail] = useState('');
@@ -100,6 +108,7 @@ export default function AdminPage() {
         setStats(data.stats);
         setRecentOrders(data.recentOrders);
         setPluginStats(data.pluginStats);
+        setProviderBreakdown(data.providerBreakdown || []);
       }
 
       if (chartResponse.ok) {
@@ -291,6 +300,36 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* Payment Provider Breakdown */}
+        {providerBreakdown.length > 0 && (
+          <div className="bg-white border-4 border-black p-6 mb-8">
+            <h2 className="text-2xl font-bold mb-4">💳 Payment Provider Breakdown</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {providerBreakdown.map((provider) => (
+                <div key={provider.provider} className="bg-gray-100 border-2 border-black p-4">
+                  <h3 className="text-lg font-bold mb-3 uppercase">
+                    {provider.provider === 'stripe' ? '💳 Stripe' : '🅿️ PayPal'}
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm">Orders:</span>
+                      <span className="font-bold">{provider.orders}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">Revenue:</span>
+                      <span className="font-bold text-green-700">${(provider.revenue / 100).toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">Avg Order:</span>
+                      <span className="font-bold">${(provider.revenue / provider.orders / 100).toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Orders Chart */}
         <OrdersChart data={chartData} />
 
@@ -416,6 +455,7 @@ export default function AdminPage() {
                   <th className="text-left p-2 font-bold">Date</th>
                   <th className="text-left p-2 font-bold">Email</th>
                   <th className="text-left p-2 font-bold">Amount</th>
+                  <th className="text-left p-2 font-bold">Payment</th>
                   <th className="text-left p-2 font-bold">Plugins</th>
                   <th className="text-left p-2 font-bold">Downloads</th>
                 </tr>
@@ -427,6 +467,13 @@ export default function AdminPage() {
                     <td className="p-2">{order.email}</td>
                     <td className="p-2 font-bold">
                       {order.amount_total === 0 ? 'FREE' : `$${(order.amount_total / 100).toFixed(2)}`}
+                    </td>
+                    <td className="p-2">
+                      <span className={`px-2 py-1 text-xs font-bold border-2 border-black ${
+                        order.payment_provider === 'paypal' ? 'bg-blue-100' : 'bg-purple-100'
+                      }`}>
+                        {order.payment_provider === 'paypal' ? 'PayPal' : 'Stripe'}
+                      </span>
                     </td>
                     <td className="p-2">
                       {JSON.parse(order.plugins).map((p: { name: string }) => p.name).join(', ')}

@@ -15,6 +15,17 @@ export async function GET(req: NextRequest) {
       FROM orders;
     `;
 
+    // Get payment provider breakdown
+    const providerResult = await sql`
+      SELECT
+        payment_provider,
+        COUNT(*) as order_count,
+        SUM(amount_total) as revenue
+      FROM orders
+      WHERE amount_total > 0
+      GROUP BY payment_provider;
+    `;
+
     // Get total download count
     const downloadResult = await sql`
       SELECT SUM(download_count) as total_downloads
@@ -41,10 +52,11 @@ export async function GET(req: NextRequest) {
         o.plugins,
         o.created_at,
         o.license_key,
+        o.payment_provider,
         COALESCE(SUM(d.download_count), 0) as download_count
       FROM orders o
       LEFT JOIN downloads d ON o.id = d.order_id
-      GROUP BY o.id, o.email, o.amount_total, o.plugins, o.created_at, o.license_key
+      GROUP BY o.id, o.email, o.amount_total, o.plugins, o.created_at, o.license_key, o.payment_provider
       ORDER BY o.created_at DESC
       LIMIT 50;
     `;
@@ -59,6 +71,12 @@ export async function GET(req: NextRequest) {
       marketingSubscribers: parseInt(statsResult.rows[0].marketing_subscribers) || 0,
     };
 
+    const providerBreakdown = providerResult.rows.map(row => ({
+      provider: row.payment_provider || 'unknown',
+      orders: parseInt(row.order_count) || 0,
+      revenue: parseInt(row.revenue) || 0,
+    }));
+
     const pluginStats = pluginResult.rows.map(row => ({
       name: row.plugin_name,
       count: parseInt(row.order_count),
@@ -72,10 +90,12 @@ export async function GET(req: NextRequest) {
       created_at: row.created_at,
       download_count: parseInt(row.download_count) || 0,
       license_key: row.license_key || undefined,
+      payment_provider: row.payment_provider || 'stripe',
     }));
 
     return NextResponse.json({
       stats,
+      providerBreakdown,
       pluginStats,
       recentOrders,
     });
