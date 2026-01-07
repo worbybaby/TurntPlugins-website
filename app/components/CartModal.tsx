@@ -29,6 +29,97 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
   const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'paypal'>('stripe');
   const [paypalLoaded, setPaypalLoaded] = useState(false);
   const paypalButtonRef = useRef<HTMLDivElement>(null);
+  const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null);
+
+  // Common email domain typos and their corrections
+  const EMAIL_TYPO_MAP: Record<string, string> = {
+    // Gmail typos
+    'gmial.com': 'gmail.com',
+    'gmal.com': 'gmail.com',
+    'gmai.com': 'gmail.com',
+    'gmil.com': 'gmail.com',
+    'gamil.com': 'gmail.com',
+    'gnail.com': 'gmail.com',
+    'gmail.co': 'gmail.com',
+    'gmail.om': 'gmail.com',
+    'gmail.cm': 'gmail.com',
+    'gmail.con': 'gmail.com',
+    'gmail.cim': 'gmail.com',
+    'gmail.vom': 'gmail.com',
+    'gmaill.com': 'gmail.com',
+    'gmaiil.com': 'gmail.com',
+    'g]mail.com': 'gmail.com',
+    // Yahoo typos
+    'yaho.com': 'yahoo.com',
+    'yahooo.com': 'yahoo.com',
+    'yhoo.com': 'yahoo.com',
+    'yahho.com': 'yahoo.com',
+    'yahoo.co': 'yahoo.com',
+    'yahoo.om': 'yahoo.com',
+    'yahoo.con': 'yahoo.com',
+    // Hotmail typos
+    'hotmal.com': 'hotmail.com',
+    'hotmai.com': 'hotmail.com',
+    'hotmial.com': 'hotmail.com',
+    'hotmil.com': 'hotmail.com',
+    'hotmail.co': 'hotmail.com',
+    'hotmail.con': 'hotmail.com',
+    'hotmaill.com': 'hotmail.com',
+    // Outlook typos
+    'outlok.com': 'outlook.com',
+    'outloo.com': 'outlook.com',
+    'outllook.com': 'outlook.com',
+    'outlool.com': 'outlook.com',
+    'outlook.co': 'outlook.com',
+    'outlook.con': 'outlook.com',
+    // iCloud typos
+    'iclod.com': 'icloud.com',
+    'icloud.co': 'icloud.com',
+    'icloud.con': 'icloud.com',
+    'icoud.com': 'icloud.com',
+    // AOL typos
+    'aol.co': 'aol.com',
+    'aol.con': 'aol.com',
+    // Common TLD typos
+    '.con': '.com',
+    '.cmo': '.com',
+    '.ocm': '.com',
+  };
+
+  const checkEmailTypo = (emailValue: string): string | null => {
+    if (!emailValue || !emailValue.includes('@')) return null;
+
+    const [localPart, domain] = emailValue.toLowerCase().split('@');
+    if (!domain) return null;
+
+    // Check if domain is a known typo
+    if (EMAIL_TYPO_MAP[domain]) {
+      return `${localPart}@${EMAIL_TYPO_MAP[domain]}`;
+    }
+
+    // Check for TLD typos
+    for (const [typo, correct] of Object.entries(EMAIL_TYPO_MAP)) {
+      if (typo.startsWith('.') && domain.endsWith(typo)) {
+        const correctedDomain = domain.slice(0, -typo.length) + correct;
+        return `${localPart}@${correctedDomain}`;
+      }
+    }
+
+    return null;
+  };
+
+  const handleEmailBlur = () => {
+    const suggestion = checkEmailTypo(email);
+    setEmailSuggestion(suggestion);
+  };
+
+  const acceptEmailSuggestion = () => {
+    if (emailSuggestion) {
+      setEmail(emailSuggestion);
+      setEmailSuggestion(null);
+      setEmailError('');
+    }
+  };
 
   const handlePayAmountChange = (pluginId: string, amount: number) => {
     setPayAmounts({ ...payAmounts, [pluginId]: amount });
@@ -196,6 +287,7 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
     setEmail('');
     setOptInEmail(false);
     setEmailError('');
+    setEmailSuggestion(null);
     setDiscountCode('');
     setAppliedDiscount(null);
     setDiscountError('');
@@ -434,16 +526,39 @@ export default function CartModal({ isOpen, onClose, cartItems, onRemoveFromCart
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
+                    setEmailSuggestion(null);
                     if (emailError) {
                       setEmailError('');
                     }
                   }}
+                  onBlur={handleEmailBlur}
                   required
                   className="w-full px-2 py-1.5 sm:py-2 border border-black focus:outline-none text-sm"
                   placeholder="your@email.com"
                 />
                 {emailError && (
                   <p className="text-red-600 text-xs font-bold mt-1">{emailError}</p>
+                )}
+                {emailSuggestion && (
+                  <div className="bg-yellow-100 border-2 border-yellow-600 p-2 mt-1">
+                    <p className="text-xs font-bold text-yellow-800">Did you mean {emailSuggestion}?</p>
+                    <div className="flex gap-2 mt-1">
+                      <button
+                        type="button"
+                        onClick={acceptEmailSuggestion}
+                        className="text-xs bg-green-600 text-white px-2 py-1 hover:bg-green-700"
+                      >
+                        Yes, fix it
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEmailSuggestion(null)}
+                        className="text-xs bg-gray-600 text-white px-2 py-1 hover:bg-gray-700"
+                      >
+                        No, it's correct
+                      </button>
+                    </div>
+                  </div>
                 )}
               </div>
 
