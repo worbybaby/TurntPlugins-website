@@ -87,8 +87,31 @@ export async function POST(req: NextRequest) {
         }
 
         // Parse metadata from custom_id
+        // Supports both compressed format (e,m,d,p) and legacy format
         const metadata = JSON.parse(customData);
-        const { email, marketingOptIn, discountCode, plugins } = metadata;
+
+        // Plugin ID to name mapping
+        const PLUGIN_NAMES: Record<string, string> = {
+          '1': 'Cassette Vibe',
+          '2': 'Pretty Pretty Princess Sparkle',
+          '3': 'Space Bass Butt',
+          '4': 'Tape Bloom',
+          '5': 'Tapeworm',
+          'bundle': 'Complete Bundle',
+        };
+
+        // Handle compressed format (e,m,d,p) or legacy format
+        const email = metadata.e || metadata.email;
+        const marketingOptIn = metadata.m !== undefined ? metadata.m === 1 : metadata.marketingOptIn;
+        const discountCode = metadata.d !== undefined ? metadata.d : metadata.discountCode;
+
+        // Convert plugin IDs to objects with names if compressed format
+        let plugins;
+        if (metadata.p) {
+          plugins = metadata.p.map((id: string) => ({ id, name: PLUGIN_NAMES[id] || `Plugin ${id}` }));
+        } else {
+          plugins = metadata.plugins;
+        }
 
         // Get amount from resource (in cents)
         const amountTotal = parseInt(resource.amount?.value || '0') * 100; // Convert to cents

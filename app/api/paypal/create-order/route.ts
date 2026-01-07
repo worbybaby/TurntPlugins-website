@@ -172,11 +172,13 @@ export async function POST(req: NextRequest) {
     }
 
     // Create PayPal order with metadata in custom_id (JSON stringified)
+    // PayPal custom_id has a 127 character limit, so we use compressed format:
+    // e=email, m=marketingOptIn(1/0), d=discountCode, p=plugin IDs only
     const customData = JSON.stringify({
-      email,
-      marketingOptIn,
-      discountCode: discountCode || '',
-      plugins: expandedPlugins,
+      e: email,
+      m: marketingOptIn ? 1 : 0,
+      d: discountCode || '',
+      p: expandedPlugins.map(p => p.id),
     });
 
     const paypalOrder = await createPayPalOrder({
