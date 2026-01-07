@@ -60,6 +60,9 @@ export default function AdminPage() {
   const [generatedLicense, setGeneratedLicense] = useState('');
   const [addingSubscriber, setAddingSubscriber] = useState(false);
   const [newSubscriberEmail, setNewSubscriberEmail] = useState('');
+  const [updatingEmail, setUpdatingEmail] = useState(false);
+  const [oldEmail, setOldEmail] = useState('');
+  const [newEmail, setNewEmail] = useState('');
 
   useEffect(() => {
     // Check if already authenticated (session storage)
@@ -222,6 +225,42 @@ export default function AdminPage() {
       alert('Failed to add subscriber');
     } finally {
       setAddingSubscriber(false);
+    }
+  };
+
+  const updateCustomerEmail = async () => {
+    if (!oldEmail || !oldEmail.includes('@')) {
+      alert('Please enter a valid old email address');
+      return;
+    }
+    if (!newEmail || !newEmail.includes('@')) {
+      alert('Please enter a valid new email address');
+      return;
+    }
+
+    setUpdatingEmail(true);
+    try {
+      const response = await fetch('/api/admin/update-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldEmail, newEmail }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(data.message);
+        setOldEmail('');
+        setNewEmail('');
+        fetchAdminData(); // Refresh data
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to update email: ${errorData.error}`);
+      }
+    } catch (err) {
+      console.error('Failed to update email:', err);
+      alert('Failed to update email');
+    } finally {
+      setUpdatingEmail(false);
     }
   };
 
@@ -440,6 +479,44 @@ export default function AdminPage() {
               />
               <RetroButton onClick={addManualSubscriber} disabled={addingSubscriber}>
                 {addingSubscriber ? 'Adding...' : 'Add Subscriber'}
+              </RetroButton>
+            </div>
+          </div>
+        </div>
+
+        {/* Customer Email Fix */}
+        <div className="bg-white border-4 border-black p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-4">🔧 Fix Customer Email</h2>
+
+          <div className="bg-[#FFB6C1] border-2 border-black p-4">
+            <h3 className="font-bold mb-2">Update Order Email</h3>
+            <p className="text-sm mb-3">
+              Fix a customer&apos;s email address if they made a typo during checkout.
+              This will update all orders with the old email.
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold mb-1">Old Email (incorrect):</label>
+                <input
+                  type="email"
+                  value={oldEmail}
+                  onChange={(e) => setOldEmail(e.target.value)}
+                  placeholder="customer@gmial.com"
+                  className="w-full px-3 py-2 border-2 border-black focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold mb-1">New Email (correct):</label>
+                <input
+                  type="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="customer@gmail.com"
+                  className="w-full px-3 py-2 border-2 border-black focus:outline-none"
+                />
+              </div>
+              <RetroButton onClick={updateCustomerEmail} disabled={updatingEmail}>
+                {updatingEmail ? 'Updating...' : 'Update Email'}
               </RetroButton>
             </div>
           </div>

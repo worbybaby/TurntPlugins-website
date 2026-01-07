@@ -254,6 +254,26 @@ export async function getMarketingSubscribers() {
   }
 }
 
+// Update order email (for fixing typos)
+export async function updateOrderEmail(oldEmail: string, newEmail: string) {
+  try {
+    const result = await sql`
+      UPDATE orders
+      SET email = ${newEmail}
+      WHERE email = ${oldEmail}
+      RETURNING id, email;
+    `;
+    return {
+      success: true,
+      updatedCount: result.rowCount,
+      message: `Updated ${result.rowCount} order(s) from ${oldEmail} to ${newEmail}`
+    };
+  } catch (error) {
+    console.error('Error updating order email:', error);
+    throw error;
+  }
+}
+
 // Manually add a subscriber to marketing list
 export async function addManualSubscriber(email: string) {
   try {
