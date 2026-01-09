@@ -193,16 +193,7 @@ export default function DownloadsPage() {
                           {order.license_key}
                         </p>
                       </div>
-                      <details className="text-xs">
-                        <summary className="font-bold cursor-pointer mb-2">Installation Instructions</summary>
-                        <ol className="space-y-1 ml-4 list-decimal">
-                          <li>Download and install VocalFelt from the links below</li>
-                          <li>Create folder: <code className="bg-gray-200 px-1">~/Library/Application Support/TurntPlugins/</code></li>
-                          <li>Create file: <code className="bg-gray-200 px-1">VocalFelt.lic</code> in that folder</li>
-                          <li>Paste your license key into the file and save</li>
-                          <li>Restart your DAW and load VocalFelt</li>
-                        </ol>
-                      </details>
+                      <p className="text-xs">Enter your license key when the plugin loads and click ACTIVATE.</p>
                     </div>
                   )}
 
@@ -226,16 +217,7 @@ export default function DownloadsPage() {
                           {order.tape_bloom_license_key}
                         </p>
                       </div>
-                      <details className="text-xs">
-                        <summary className="font-bold cursor-pointer mb-2">Installation Instructions</summary>
-                        <ol className="space-y-1 ml-4 list-decimal">
-                          <li>Download and install TapeBloom from the links below</li>
-                          <li>Create folder: <code className="bg-gray-200 px-1">~/Library/Application Support/TurntPlugins/</code></li>
-                          <li>Create file: <code className="bg-gray-200 px-1">TapeBloom.lic</code> in that folder</li>
-                          <li>Paste your license key into the file and save</li>
-                          <li>Restart your DAW and load TapeBloom</li>
-                        </ol>
-                      </details>
+                      <p className="text-xs">Enter your license key when the plugin loads and click ACTIVATE.</p>
                     </div>
                   )}
 
