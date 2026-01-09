@@ -24,6 +24,7 @@ interface PurchaseConfirmationEmailProps {
     windowsDownloadUrl: string;
   }>;
   licenseKey?: string;
+  tapeBloomLicenseKey?: string;
 }
 
 export default function PurchaseConfirmationEmail({
@@ -33,6 +34,7 @@ export default function PurchaseConfirmationEmail({
   orderId,
   downloadLinks = [],
   licenseKey,
+  tapeBloomLicenseKey,
 }: PurchaseConfirmationEmailProps) {
   return (
     <Html>
@@ -86,6 +88,21 @@ export default function PurchaseConfirmationEmail({
                 <Text style={licenseKeyText}>{licenseKey}</Text>
                 <Text style={text}>
                   Download and install VocalFelt from the links below, then enter this activation code into the splash screen when you first load the plugin.
+                </Text>
+                <Text style={text}>
+                  <strong>Note:</strong> Keep this code safe! You can always access it from your downloads page.
+                </Text>
+              </Section>
+            )}
+
+            {/* License Key Section (for TapeBloom) */}
+            {tapeBloomLicenseKey && (
+              <Section style={tapeBloomLicenseBox}>
+                <Text style={orderTitle}>🎫 TapeBloom Activation Code:</Text>
+                <Hr style={hr} />
+                <Text style={licenseKeyText}>{tapeBloomLicenseKey}</Text>
+                <Text style={text}>
+                  Download and install TapeBloom from the links below, then enter this activation code into the splash screen when you first load the plugin.
                 </Text>
                 <Text style={text}>
                   <strong>Note:</strong> Keep this code safe! You can always access it from your downloads page.
@@ -345,6 +362,13 @@ const buttonContainer = {
 
 const licenseBox = {
   backgroundColor: '#FFD700',
+  border: '4px solid #000000',
+  padding: '20px',
+  margin: '20px 0',
+};
+
+const tapeBloomLicenseBox = {
+  backgroundColor: '#87CEEB',
   border: '4px solid #000000',
   padding: '20px',
   margin: '20px 0',

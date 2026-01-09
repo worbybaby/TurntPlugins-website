@@ -62,6 +62,12 @@ export async function initDatabase() {
       ADD COLUMN IF NOT EXISTS payment_transaction_id VARCHAR(255);
     `;
 
+    // Add tape_bloom_license_key column for TapeBloom licenses
+    await sql`
+      ALTER TABLE orders
+      ADD COLUMN IF NOT EXISTS tape_bloom_license_key VARCHAR(50);
+    `;
+
     // Create downloads table
     await sql`
       CREATE TABLE IF NOT EXISTS downloads (
@@ -106,7 +112,8 @@ export async function saveOrder(
   plugins: Array<{ id: string; name: string }>,
   marketingOptIn: boolean = false,
   licenseKey?: string,
-  paymentProvider: 'stripe' | 'paypal' = 'stripe'
+  paymentProvider: 'stripe' | 'paypal' = 'stripe',
+  tapeBloomLicenseKey?: string
 ) {
   try {
     // For backwards compatibility: populate stripe_session_id for Stripe orders
@@ -122,7 +129,8 @@ export async function saveOrder(
         amount_total,
         plugins,
         marketing_opt_in,
-        license_key
+        license_key,
+        tape_bloom_license_key
       )
       VALUES (
         ${email},
@@ -132,7 +140,8 @@ export async function saveOrder(
         ${amountTotal},
         ${JSON.stringify(plugins)},
         ${marketingOptIn},
-        ${licenseKey || null}
+        ${licenseKey || null},
+        ${tapeBloomLicenseKey || null}
       )
       RETURNING id;
     `;
@@ -175,6 +184,7 @@ export async function getOrdersByEmail(email: string) {
         o.amount_total,
         o.plugins,
         o.license_key,
+        o.tape_bloom_license_key,
         o.created_at,
         json_agg(
           json_build_object(
@@ -270,6 +280,20 @@ export async function updateOrderEmail(oldEmail: string, newEmail: string) {
     };
   } catch (error) {
     console.error('Error updating order email:', error);
+    throw error;
+  }
+}
+
+// Update TapeBloom license key for an order
+export async function updateTapeBloomLicenseKey(orderId: number, licenseKey: string) {
+  try {
+    await sql`
+      UPDATE orders
+      SET tape_bloom_license_key = ${licenseKey}
+      WHERE id = ${orderId};
+    `;
+  } catch (error) {
+    console.error('Error updating TapeBloom license key:', error);
     throw error;
   }
 }

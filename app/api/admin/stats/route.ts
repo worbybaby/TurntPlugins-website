@@ -52,11 +52,12 @@ export async function GET(req: NextRequest) {
         o.plugins,
         o.created_at,
         o.license_key,
+        o.tape_bloom_license_key,
         o.payment_provider,
         COALESCE(SUM(d.download_count), 0) as download_count
       FROM orders o
       LEFT JOIN downloads d ON o.id = d.order_id
-      GROUP BY o.id, o.email, o.amount_total, o.plugins, o.created_at, o.license_key, o.payment_provider
+      GROUP BY o.id, o.email, o.amount_total, o.plugins, o.created_at, o.license_key, o.tape_bloom_license_key, o.payment_provider
       ORDER BY o.created_at DESC
       LIMIT 50;
     `;
@@ -90,6 +91,7 @@ export async function GET(req: NextRequest) {
       created_at: row.created_at,
       download_count: parseInt(row.download_count) || 0,
       license_key: row.license_key || undefined,
+      tape_bloom_license_key: row.tape_bloom_license_key || undefined,
       payment_provider: row.payment_provider || 'stripe',
     }));
 

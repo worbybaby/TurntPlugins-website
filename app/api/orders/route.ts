@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrdersByEmail } from '../lib/db';
+import { getOrdersByEmail, updateTapeBloomLicenseKey } from '../lib/db';
+import { generateTapeBloomLicense } from '../../lib/licenseGenerator';
 
 export async function GET(req: NextRequest) {
   try {
@@ -23,6 +24,26 @@ export async function GET(req: NextRequest) {
     }
 
     const orders = await getOrdersByEmail(email);
+
+    // Auto-generate TapeBloom license keys for existing customers
+    // who purchased TapeBloom but don't have a license key yet
+    for (const order of orders) {
+      if (!order.tape_bloom_license_key) {
+        // Check if order contains TapeBloom (plugin id '4')
+        try {
+          const plugins = JSON.parse(order.plugins || '[]');
+          const hasTapeBloom = plugins.some((p: { id: string }) => p.id === '4');
+
+          if (hasTapeBloom) {
+            const newLicenseKey = generateTapeBloomLicense();
+            await updateTapeBloomLicenseKey(order.id, newLicenseKey);
+            order.tape_bloom_license_key = newLicenseKey;
+          }
+        } catch (parseError) {
+          console.error('Error parsing plugins for order:', order.id, parseError);
+        }
+      }
+    }
 
     return NextResponse.json({
       orders,

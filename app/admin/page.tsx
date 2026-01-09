@@ -22,6 +22,7 @@ interface Order {
   created_at: string;
   download_count: number;
   license_key?: string;
+  tape_bloom_license_key?: string;
   payment_provider?: string;
 }
 
@@ -58,6 +59,9 @@ export default function AdminPage() {
   const [generatingLicense, setGeneratingLicense] = useState(false);
   const [newLicenseEmail, setNewLicenseEmail] = useState('');
   const [generatedLicense, setGeneratedLicense] = useState('');
+  const [generatingTapeBloomLicense, setGeneratingTapeBloomLicense] = useState(false);
+  const [newTapeBloomLicenseEmail, setNewTapeBloomLicenseEmail] = useState('');
+  const [generatedTapeBloomLicense, setGeneratedTapeBloomLicense] = useState('');
   const [addingSubscriber, setAddingSubscriber] = useState(false);
   const [newSubscriberEmail, setNewSubscriberEmail] = useState('');
   const [updatingEmail, setUpdatingEmail] = useState(false);
@@ -194,6 +198,38 @@ export default function AdminPage() {
       alert('Failed to generate license');
     } finally {
       setGeneratingLicense(false);
+    }
+  };
+
+  const generateTapeBloomManualLicense = async () => {
+    if (!newTapeBloomLicenseEmail || !newTapeBloomLicenseEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    setGeneratingTapeBloomLicense(true);
+    try {
+      const response = await fetch('/api/admin/generate-tapebloom-license', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newTapeBloomLicenseEmail }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGeneratedTapeBloomLicense(data.licenseKey);
+        alert(`TapeBloom license generated and emailed to ${newTapeBloomLicenseEmail}!`);
+        setNewTapeBloomLicenseEmail('');
+        fetchAdminData(); // Refresh data
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to generate license: ${errorData.error}`);
+      }
+    } catch (err) {
+      console.error('Failed to generate TapeBloom license:', err);
+      alert('Failed to generate license');
+    } finally {
+      setGeneratingTapeBloomLicense(false);
     }
   };
 
@@ -456,6 +492,68 @@ export default function AdminPage() {
               ))}
             {recentOrders.filter(order => order.license_key).length === 0 && (
               <p className="text-sm text-gray-600">No VocalFelt licenses issued yet.</p>
+            )}
+          </div>
+        </div>
+
+        {/* TapeBloom License Management */}
+        <div className="bg-white border-4 border-black p-6 mb-8">
+          <h2 className="text-2xl font-bold mb-4">🎫 TapeBloom License Management</h2>
+
+          <div className="bg-[#87CEEB] border-2 border-black p-4 mb-4">
+            <h3 className="font-bold mb-2">Manual License Generation</h3>
+            <p className="text-sm mb-3">
+              Generate a new TapeBloom license for a customer who lost their original code.
+            </p>
+            <div className="flex gap-3">
+              <input
+                type="email"
+                value={newTapeBloomLicenseEmail}
+                onChange={(e) => setNewTapeBloomLicenseEmail(e.target.value)}
+                placeholder="customer@email.com"
+                className="flex-1 px-3 py-2 border-2 border-black focus:outline-none"
+              />
+              <RetroButton onClick={generateTapeBloomManualLicense} disabled={generatingTapeBloomLicense}>
+                {generatingTapeBloomLicense ? 'Generating...' : 'Generate & Email License'}
+              </RetroButton>
+            </div>
+            {generatedTapeBloomLicense && (
+              <div className="mt-3 p-3 bg-white border-2 border-black">
+                <p className="text-xs font-bold mb-1">Generated TapeBloom License:</p>
+                <p className="font-mono text-sm font-bold">{generatedTapeBloomLicense}</p>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="font-bold mb-2">Recent TapeBloom Licenses</h3>
+            {recentOrders
+              .filter(order => order.tape_bloom_license_key)
+              .slice(0, 5)
+              .map((order) => (
+                <div key={order.id} className="bg-gray-100 border border-black p-3 flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-sm">{order.email}</p>
+                    <p className="text-xs text-gray-600">{new Date(order.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <code className="font-mono text-xs bg-white border border-black px-2 py-1">
+                      {order.tape_bloom_license_key}
+                    </code>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(order.tape_bloom_license_key!);
+                        alert('License copied!');
+                      }}
+                      className="px-2 py-1 bg-white border-2 border-black hover:bg-gray-200 text-xs font-bold"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+              ))}
+            {recentOrders.filter(order => order.tape_bloom_license_key).length === 0 && (
+              <p className="text-sm text-gray-600">No TapeBloom licenses issued yet.</p>
             )}
           </div>
         </div>

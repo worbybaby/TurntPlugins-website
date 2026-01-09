@@ -12,6 +12,7 @@ export default function DownloadsPage() {
     created_at: string;
     amount_total: number;
     license_key?: string;
+    tape_bloom_license_key?: string;
     downloads: Array<{
       plugin_id: string;
       plugin_name: string;
@@ -200,6 +201,39 @@ export default function DownloadsPage() {
                           <li>Create file: <code className="bg-gray-200 px-1">VocalFelt.lic</code> in that folder</li>
                           <li>Paste your license key into the file and save</li>
                           <li>Restart your DAW and load VocalFelt</li>
+                        </ol>
+                      </details>
+                    </div>
+                  )}
+
+                  {/* TapeBloom License Key */}
+                  {order.tape_bloom_license_key && (
+                    <div className="bg-[#87CEEB] border-4 border-black p-4 mb-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <p className="font-bold text-sm">🎫 TapeBloom License Key</p>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(order.tape_bloom_license_key!);
+                            alert('License key copied to clipboard!');
+                          }}
+                          className="px-3 py-1 bg-white border-2 border-black hover:bg-gray-200 font-bold text-xs"
+                        >
+                          Copy Key
+                        </button>
+                      </div>
+                      <div className="bg-white border-2 border-black p-3 mb-3">
+                        <p className="font-mono text-center font-bold text-base tracking-wider">
+                          {order.tape_bloom_license_key}
+                        </p>
+                      </div>
+                      <details className="text-xs">
+                        <summary className="font-bold cursor-pointer mb-2">Installation Instructions</summary>
+                        <ol className="space-y-1 ml-4 list-decimal">
+                          <li>Download and install TapeBloom from the links below</li>
+                          <li>Create folder: <code className="bg-gray-200 px-1">~/Library/Application Support/TurntPlugins/</code></li>
+                          <li>Create file: <code className="bg-gray-200 px-1">TapeBloom.lic</code> in that folder</li>
+                          <li>Paste your license key into the file and save</li>
+                          <li>Restart your DAW and load TapeBloom</li>
                         </ol>
                       </details>
                     </div>

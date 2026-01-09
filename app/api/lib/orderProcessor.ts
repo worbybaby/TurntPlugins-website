@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 import PurchaseConfirmationEmail from '@/emails/PurchaseConfirmation';
 import { saveOrder, saveDownloadLink, initDatabase } from './db';
 import { generateSignedUrl } from '@/app/data/pluginFiles';
-import { generateVocalFeltLicense } from '../../lib/licenseGenerator';
+import { generateVocalFeltLicense, generateTapeBloomLicense } from '../../lib/licenseGenerator';
 
 export interface ProcessOrderParams {
   email: string;
@@ -24,6 +24,7 @@ export interface ProcessOrderResult {
   orderId: number;
   downloadLinks: DownloadLink[];
   licenseKey?: string;
+  tapeBloomLicenseKey?: string;
 }
 
 /**
@@ -52,6 +53,15 @@ export async function processOrder(params: ProcessOrderParams): Promise<ProcessO
     console.log('🎫 Generated VocalFelt license:', licenseKey);
   }
 
+  // Check if TapeBloom (id: '4') is in the order
+  const hasTapeBloom = plugins.some((plugin) => plugin.id === '4');
+  let tapeBloomLicenseKey: string | undefined;
+
+  if (hasTapeBloom) {
+    tapeBloomLicenseKey = generateTapeBloomLicense();
+    console.log('🎫 Generated TapeBloom license:', tapeBloomLicenseKey);
+  }
+
   // Initialize database tables if needed
   await initDatabase();
   console.log('📦 Database initialized');
@@ -64,7 +74,8 @@ export async function processOrder(params: ProcessOrderParams): Promise<ProcessO
     plugins,
     marketingOptIn,
     licenseKey,
-    paymentProvider
+    paymentProvider,
+    tapeBloomLicenseKey
   );
   console.log('💾 Order saved with ID:', orderId);
 
@@ -118,6 +129,7 @@ export async function processOrder(params: ProcessOrderParams): Promise<ProcessO
         orderId: transactionId,
         downloadLinks,
         licenseKey,
+        tapeBloomLicenseKey,
       }),
     });
 
@@ -133,5 +145,6 @@ export async function processOrder(params: ProcessOrderParams): Promise<ProcessO
     orderId,
     downloadLinks,
     licenseKey,
+    tapeBloomLicenseKey,
   };
 }
