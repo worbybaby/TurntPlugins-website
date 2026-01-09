@@ -26,7 +26,14 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
     // Get the appropriate download URL based on platform
     // trialDownloadUrl contains the Mac version, we derive Windows from it
     const macUrl = plugin.trialDownloadUrl!;
-    const windowsUrl = macUrl.replace('VocalFelt_v1.0.4.pkg', 'VocalFelt-v1.0.4-Windows-x64.exe');
+    let windowsUrl = macUrl;
+
+    // Convert Mac URL to Windows URL based on plugin
+    if (macUrl.includes('VocalFelt')) {
+      windowsUrl = macUrl.replace('VocalFelt_v1.0.4.pkg', 'VocalFelt-v1.0.4-Windows-x64.exe');
+    } else if (macUrl.includes('TapeBloom')) {
+      windowsUrl = macUrl.replace('TapeBloom_v2.0.1.pkg', 'TapeBloom-v2.0.1-Windows-x64.exe');
+    }
 
     link.href = platform === 'mac' ? macUrl : windowsUrl;
     link.download = '';
