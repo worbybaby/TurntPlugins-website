@@ -147,7 +147,7 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
           </p>
         )
       )}
-      <p className="text-base mb-5 leading-loose">{plugin.description}</p>
+      <p className="text-sm mb-5 leading-relaxed">{plugin.description}</p>
       {plugin.videos && plugin.videos.length > 0 ? (
         <div className="mb-4 space-y-2">
           {plugin.videos.map((video, index) => (
