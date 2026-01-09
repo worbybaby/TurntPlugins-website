@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrdersByEmail, updateTapeBloomLicenseKey } from '../lib/db';
+import { getOrdersByEmail, updateTapeBloomLicenseKey, initDatabase } from '../lib/db';
 import { generateTapeBloomLicense } from '../../lib/licenseGenerator';
 
 export async function GET(req: NextRequest) {
   try {
+    // Ensure database schema is up to date (adds tape_bloom_license_key column if missing)
+    await initDatabase();
+
     const { searchParams } = new URL(req.url);
     const email = searchParams.get('email');
 
