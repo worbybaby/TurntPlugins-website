@@ -33,7 +33,7 @@ export const plugins: Plugin[] = [
   {
     id: '4',
     name: 'Tape Bloom',
-    description: 'I made this to emulate the non-linear stereo bloom and cross talk found in analog tape machines. I\'m particularly fond of it on the drum bus, reverbs, and sometimes my instrument aux. AU/VST3 Mac & Windows',
+    description: 'Taste the new Floral Experience. I\'m serious...lick it, taste it. I made this to emulate the non-linear stereo bloom and cross talk found in analog tape machines. I\'m particularly fond of it on the drum bus, reverbs, and sometimes my instrument aux. AU/VST3 Mac & Windows',
     image: '/plugins/TapeBloom.png',
     price: 19,
     minimumPrice: 3,
