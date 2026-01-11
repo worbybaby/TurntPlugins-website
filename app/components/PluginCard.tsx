@@ -32,7 +32,7 @@ export default function PluginCard({ plugin, onAddToCart }: PluginCardProps) {
     if (macUrl.includes('VocalFelt')) {
       windowsUrl = macUrl.replace('VocalFelt_v1.0.4.pkg', 'VocalFelt-v1.0.4-Windows-x64.exe');
     } else if (macUrl.includes('TapeBloom')) {
-      windowsUrl = macUrl.replace('TapeBloom_v2.0.1.pkg', 'TapeBloom-v2.0.1-Windows-x64.exe');
+      windowsUrl = macUrl.replace('TapeBloom_v2.0.2.pkg', 'TapeBloom-v2.0.2-Windows-x64.exe');
     }
 
     link.href = platform === 'mac' ? macUrl : windowsUrl;
