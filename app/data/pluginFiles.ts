@@ -71,14 +71,14 @@ export const pluginFiles: Record<string, PluginFile> = {
     id: '4',
     files: [
       {
-        fileName: 'TapeBloom_v2.0.1.pkg',
-        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/TapeBloom_v2.0.1.pkg`,
+        fileName: 'TapeBloom_v2.0.2.pkg',
+        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/TapeBloom_v2.0.2.pkg`,
         fileSize: '81MB',
         platform: 'macOS',
       },
       {
-        fileName: 'TapeBloom-v2.0.1-Windows-x64.exe',
-        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/TapeBloom-v2.0.1-Windows-x64.exe`,
+        fileName: 'TapeBloom-v2.0.2-Windows-x64.exe',
+        downloadUrl: `${GITHUB_RELEASE_BASE_URL}/TapeBloom-v2.0.2-Windows-x64.exe`,
         fileSize: '19MB',
         platform: 'Windows',
       },
