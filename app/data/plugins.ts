@@ -38,7 +38,7 @@ export const plugins: Plugin[] = [
     price: 19,
     minimumPrice: 3,
     videoUrl: 'https://youtu.be/pkPvLBkCqag',
-    trialDownloadUrl: 'https://github.com/worbybaby/TurntPlugins-website/releases/download/installers-v1.0.0/TapeBloom_v2.0.1.pkg'
+    trialDownloadUrl: 'https://github.com/worbybaby/TurntPlugins-website/releases/download/installers-v1.0.0/TapeBloom_v2.0.2.pkg'
   },
   {
     id: '3',
